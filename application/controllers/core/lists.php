@@ -101,6 +101,43 @@ class Lists extends CI_Controller {
 
         echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
     }
+    public function years($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/roles';
+        $cols = array('ID','Name','Start Date','End Date',' ');
+        $table = 'academic_years';
+        $select = 'academic_years.*';
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'academic/years_form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $json[$res->id] = array(
+                    "id"=>$res->id,   
+                    "title"=>ucwords(strtolower($res->name)),   
+                    "start_date"=>sql2Date($res->start_date),   
+                    "end_date"=>sql2Date($res->end_date),   
+                    "link"=>$link
+                );
+            }
+        }
+
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
 	public function get_menus($id=null,$asJson=true){
         $this->load->helper('site/pagination_helper');
         $pagi = null;

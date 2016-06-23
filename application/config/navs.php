@@ -6,6 +6,12 @@
 $nav = array();
 ///ADMIN CONTROL////////////////////////////////
 // $nav['dashboard'] = array('title'=>'<i class="fa fa-dashboard"></i> <span>Dashboard</span>','path'=>'site','exclude'=>1);
+
+	$academic['courses'] = array('title'=>'Courses','path'=>'academic/courses','exclude'=>0);
+	$academic['batches'] = array('title'=>'Batch','path'=>'academic/courses','exclude'=>0);
+	$academic['aca_years'] = array('title'=>'Academic Years','path'=>'academic/years','exclude'=>0);
+$nav['academic'] = array('title'=>'<i class="fa fa-university"></i> <span>Academic</span>','path'=>$academic,'exclude'=>1);
+$nav['student'] = array('title'=>'<i class="fa fa-users"></i> <span>Student</span>','path'=>$academic,'exclude'=>1);
 $config['sideNav'] = $nav;
 //////////////////////////////////////////////////
 /// RIGHT SIDE BAR LINKS ///

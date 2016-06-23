@@ -11,6 +11,8 @@ $styleSheets[] = "dist/css/AdminLTE.css";
 $styleSheets[] = "dist/css/skins/_all-skins.min.css";
 $styleSheets[] = "dist/css/page.css";
 $styleSheets[] = "plugins/perfect-scrollbar/css/perfect-scrollbar.css";
+$styleSheets[] = "plugins/daterangepicker/daterangepicker-bs3.css";
+$styleSheets[] = "plugins/datepicker/datepicker3.css";
 $config['incCss'] = $styleSheets;
 ////////////////////////////////////////////////
 /// Include your js files                   ///
@@ -24,6 +26,8 @@ $jsFiles[] = "plugins/noty/packaged/jquery.noty.packaged.min.js";
 $jsFiles[] = "plugins/jquery.floatThead.js";
 $jsFiles[] = "plugins/perfect-scrollbar/js/perfect-scrollbar.jquery.js";
 $jsFiles[] = "plugins/bootbox.js";
+$jsFiles[] = "plugins/daterangepicker/daterangepicker.js";
+$jsFiles[] = "plugins/datepicker/bootstrap-datepicker.js";
 
 $jsFiles[] = "dist/js/app.min.js";
 $jsFiles[] = "dist/js/initial.js";

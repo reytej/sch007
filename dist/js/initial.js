@@ -21,4 +21,7 @@ $(document).ready(function(){
 		$('.list-page-body').perfectScrollbar();
 		$('.list-page').rList();
 	}
+
+	$('.pick-date').datepicker();
+
 });

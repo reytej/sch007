@@ -64,7 +64,7 @@ $autoload['libraries'] = array('syter','html','session','database');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','site_helper','list_helper');
+$autoload['helper'] = array('url','site_helper','list_helper','site_session_helper');
 
 
 /*

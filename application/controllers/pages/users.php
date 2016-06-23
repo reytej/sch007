@@ -28,7 +28,7 @@ class Users extends CI_Controller {
 			}
 		}
 		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
-		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="http://localhost/AdminRTJ/users"','text'=>"<i class='fa fa-fw fa-reply'></i>");
+		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'users"','text'=>"<i class='fa fa-fw fa-reply'></i>");
 		$data['code'] = usersPage($det,$img);
 		$data['load_js'] = 'pages/users';
 		$data['use_js'] = 'usersFormJs';

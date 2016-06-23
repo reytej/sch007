@@ -74,6 +74,13 @@ function iSetObj($obj,$name,$noneText=null){
     }
     else return $noneText;
 }
+function iSetObjDate($obj,$name,$noneText=null){
+    if(isset($obj->$name)){
+        if($obj->$name != "")
+            return sql2Date($obj->$name);
+    }
+    else return $noneText;
+}
 
 function iSet($ar,$name,$noneText=null,$equal=null){
     if(isset($ar[$name])){

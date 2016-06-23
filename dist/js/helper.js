@@ -106,9 +106,13 @@
                   // alert(data);
                   settings.onComplete.call(this,data);
                 // });    
-                },"json");    
+                },"json").fail( function(xhr, textStatus, errorThrown) {
+           alert(xhr.responseText);
+        });    
               }
-            },"json");
+            },"json").fail( function(xhr, textStatus, errorThrown) {
+           alert(xhr.responseText);
+        });
           }
           else{
             $.post(baseUrl+settings.passTo,formData,function(data){
@@ -118,7 +122,9 @@
               }
               settings.onComplete.call(this,data);
             // });
-            },"json");
+            },"json").fail( function(xhr, textStatus, errorThrown) {
+           alert(xhr.responseText);
+        });
           }
         }
         else{
@@ -139,7 +145,9 @@
                   settings.onComplete.call(this,data);
                 });   
               }
-            },"json");
+            },"json").fail( function(xhr, textStatus, errorThrown) {
+           alert(xhr.responseText);
+        });
           }
           else{
             $.post(baseUrl+settings.passTo,formData,function(data){

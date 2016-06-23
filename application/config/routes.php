@@ -48,6 +48,10 @@ $route['users/(:any)'] = "pages/users/$1";
 $route['admin'] = "pages/admin";
 $route['admin/(:any)'] = "pages/admin/$1";
 
+$route['academic'] = "school/academic";
+$route['academic/(:any)'] = "school/academic/$1";
+
+
 $route['lists'] = "core/lists";
 $route['lists/(:any)'] = "core/lists/$1";
 /* End of file routes.php */
