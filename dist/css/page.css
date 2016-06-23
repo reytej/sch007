@@ -216,6 +216,11 @@
   height: 28px;
   font-size:14px;
 }
+.paper-textarea textarea{
+  border: 1px solid #888;
+  font-size:14px;
+  padding:5px;
+}
 .has-feedback {
   position: relative;
 }

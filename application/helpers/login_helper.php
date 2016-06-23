@@ -1,9 +1,10 @@
 <?php
-function loginPage($obj=array()){
+function loginPage($prefs=array()){
 	$CI =& get_instance();
 	$CI->html->sDiv(array('class'=>'login-box'));
 		$CI->html->sDiv(array('class'=>'login-logo'));
-			$CI->html->span('<b>Admin</b>RTJ');
+			// $CI->html->span('<b>Admin</b>RTJ');
+			$CI->html->span('<b>'.$prefs['comp_name'].'</b>');
 		$CI->html->eDiv();
 		$CI->html->sDiv(array('class'=>'login-box-body'));
 			$CI->html->sForm("site/login_db",'login-form');

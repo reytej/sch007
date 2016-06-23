@@ -56,7 +56,12 @@ class Site_model extends CI_Model{
 		$this->db->from($table);
 		if (!is_null($joinTables) && is_array($joinTables)) {
 			foreach ($joinTables as $k => $v) {
-				$this->db->join($k,$v['content'],(!empty($v['mode']) ? $v['mode'] : 'inner'));
+				if(is_array($v)){
+					$this->db->join($k,$v['content'],(!empty($v['mode']) ? $v['mode'] : 'inner'));
+				}
+				else{
+					$this->db->join($k,$v);
+				}
 			}
 		}
 		if(!empty($args)){
@@ -103,6 +108,21 @@ class Site_model extends CI_Model{
 				return $query;
 			}
 		}
+	}
+	public function get_settings($prefs=null,$category=null){
+		$args = array();
+		$prefs = array();
+		if($category != null){
+			$args['settings.category'] = $category;
+		}
+		else{
+			$args['settings.code'] = $prefs;  
+		}
+		$result = $this->get_tbl('settings',$args);
+		foreach ($result as $res) {
+			$prefs[$res->code] = $res->value;
+		}
+		return $prefs;
 	}
 	public function get_tbl_cols($tbl=null){
 		$cols = null;

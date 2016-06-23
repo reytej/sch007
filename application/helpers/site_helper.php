@@ -89,6 +89,10 @@ function iSet($ar,$name,$noneText=null,$equal=null){
     else return $noneText;
 }
 
+function ucFix($text=""){
+    return ucwords(strtolower($text));
+}
+
 function iEqual($value,$equal=0,$dfltTxtActive='Active',$dfltTxtInactive='Inactive'){
     if($value == $equal){
         return "<span class='text-success'>".$dfltTxtActive."</span>";

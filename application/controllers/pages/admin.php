@@ -61,4 +61,62 @@ class Admin extends CI_Controller {
 		}
 		echo json_encode(array('error'=>$error,'msg'=>$msg));
 	}
+	public function company($id=null){
+		$data = $this->syter->spawn('company');
+		$data['page_title'] = fa('fa-building-o')." Company";
+		
+		$prefs = $this->site_model->get_settings(null,"company");
+
+		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
+		$data['code'] = companyPage($prefs);
+		$data['load_js'] = 'pages/admin';
+		$data['use_js'] = 'companyFormJs';
+		$this->load->view('page',$data);
+	}
+	public function company_db($id=null){
+		$prefs = array(
+		    "comp_name"=>$this->input->post('comp_name'),
+		    "comp_tin"=>$this->input->post('comp_tin'),
+		    "comp_email"=>$this->input->post('comp_email'),
+		    "comp_contact_no"=>$this->input->post('comp_contact_no'),
+		    "comp_address"=>$this->input->post('comp_address'),
+		);
+		$error = 0;
+		$msg = "";
+
+		foreach ($prefs as $code => $value) {
+			$this->site_model->update_tbl('settings','code',array('value'=>$value),$code);
+		}
+		$msg = "Updated Company Settings.";
+	
+
+		$image = null;
+		$ext = null;
+		if(isset($_FILES['fileUpload'])){
+		    if(is_uploaded_file($_FILES['fileUpload']['tmp_name'])){
+		        $info = pathinfo($_FILES['fileUpload']['name']);
+		        if(isset($info['extension']))
+		            $ext = $info['extension'];
+		       
+		        $newname = "logo.png";            
+		        if (!file_exists("uploads/company/")) {
+		            mkdir("uploads/company/", 0777, true);
+		        }
+		        $target = 'uploads/company/'.$newname;
+		        if(!move_uploaded_file( $_FILES['fileUpload']['tmp_name'], $target)){
+		            $msg = "Image Upload failed";
+		            $error = 1;
+		        }
+		        else{
+		            $new_image = $target;
+		            $this->site_model->update_tbl('settings','code',array('value'=>$new_image),'comp_logo');
+		        }
+		        ####
+		    }
+		}
+		if($error == 0){
+			site_alert($msg,'success');
+		}
+		echo json_encode(array('error'=>$error,'msg'=>$msg));
+	}
 }

@@ -768,7 +768,6 @@ class Html{
 
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
-
 	    function select($label=null,$nameID=null,$options=array(),$value=null,$params=array(),$icon1=null,$icon2=null){
 	    	$str = "";
 
@@ -1028,6 +1027,35 @@ class Html{
 	    	$str .= $this->eTag('div');
 	    	if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
+	    function textareaPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){
+	    	$str = "";
+	    	$str .= $this->sTag('div',array('class'=>'row div-under-no-spaces'));
+	    		if($label != ""){
+	    			$str .= $this->sTag('div',array('class'=>'col-sm-4 text-left'));
+	    				$str .= $this->tag('H4',$label,array('class'=>'paper-label'));
+	    			$str .= $this->eTag('div');
+	    		}
+	    		$wi = 'col-sm-12';
+	    		if($label != ""){
+	    			$wi = 'col-sm-8';
+	    		}	
+	    		$str .= $this->sTag('div',array('class'=>$wi.' text-left'));
+					$str .= $this->sTag('div',array('class'=>'form-group paper-textarea'));
+						if(!isset($params['rows']))
+							$params['rows'] = '4';
+						if($nameID != null){
+							$params['id'] = $nameID;
+							$params['name'] = $nameID;
+						}
+						if($placeholder != null)
+							$params['placeholder'] = $placeholder;
+						$params = $this->classitize($params,"form-control ");
+						$str .= $this->tag('textarea',$value,$params);
+					$str .= $this->eTag('div');
+				$str .= $this->eTag('div');
+	    	$str .= $this->eTag('div');
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
 	/////////////////////////////////////////////////////////////
     /////	MAKE HTML TEXT       ///////////////////////////////
     ///////////////////////////////////////////////////////////
@@ -1110,6 +1138,23 @@ class Html{
 				$opts['- Select Role -']  = "";
 				foreach ($results as $res) {
 					$opts[$res->role] = $res->id;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+	    function courseDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('courses',array('id,name'),null,null,true);
+				$opts  = array();
+				$opts['- Select Course -']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->id;
 				}
 				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;

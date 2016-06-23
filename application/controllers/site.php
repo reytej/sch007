@@ -15,8 +15,12 @@ class Site extends CI_Controller {
 	## LOGIN
 		public function login(){
 			$this->load->helper('login_helper');
+
+			$prefs = $this->site_model->get_settings(null,"company");
+
 			$data = $this->syter->spawn(null,false);
-			$data['code'] = loginPage();
+			$data['comp_name'] = $prefs['comp_name'];
+			$data['code'] = loginPage($prefs);
 			$data['load_js'] = 'site.php';
 			$data['use_js'] = 'loginJs';
 			$this->load->view('login',$data);
@@ -46,6 +50,10 @@ class Site extends CI_Controller {
 					"img"=>$img,
 				);
 				$this->session->set_userdata($session_details);
+
+				$prefs = $this->site_model->get_settings(null,"company");
+				$session_company['company'] = $prefs;
+				$this->session->set_userdata($session_company);
 			}
 			else{
 				$error_msg = "Username and password doesn't match.";

@@ -61,4 +61,46 @@ function underRoles($nav=array(),$access=array(),$main=null){
 	}
 	return $CI->html->code();
 }
+function companyPage($prefs=array()){
+	$CI =& get_instance();
+	$CI->html->sDivRow();
+		$CI->html->sDivCol(10,'left',1);
+			$CI->html->sBox('solid');
+				$CI->html->sBoxBody(array('class'=>'paper'));
+					$CI->html->sForm("admin/company_db","general-form");
+						$CI->html->sDivRow();
+							$CI->html->sDivCol(8);
+								$CI->html->sDivRow(array('class'=>'div-under-no-spaces','style'=>'margin-top:20px;'));
+									$CI->html->sDivCol(6);
+										$CI->html->inputPaper(null,'comp_name',$prefs['comp_name'],'Compnay Name',array('class'=>'rOkay input-lg'));
+									$CI->html->eDivCol();
+								$CI->html->eDivRow();
+							$CI->html->eDivCol();
+							$CI->html->sDivCol(4,'right');
+								$url = base_url().'dist/img/no-photo.jpg';
+								if($prefs['comp_logo'] != ""){					
+									$url = base_url().$prefs['comp_logo'];
+								}
+								$CI->html->img($url,array('style'=>'height:100px;','class'=>'media-object thumbnail pull-right','id'=>'target'));
+								$CI->html->file('fileUpload',array('style'=>'display:none;'));
+							$CI->html->eDivCol();
+						$CI->html->eDivRow();
+						$CI->html->H(4,"",array('class'=>'page-header'));
+						$CI->html->sDivRow();
+							$CI->html->sDivCol(6);
+								$CI->html->H(4,"General Information",array('class'=>'form-titler'));
+								$CI->html->inputPaper('TIN:','comp_tin',$prefs['comp_tin'],null,array());
+								$CI->html->inputPaper('Email:','comp_email',$prefs['comp_email'],null,array(),'fa-envelope');
+								$CI->html->inputPaper('Contact Number:','comp_contact_no',$prefs['comp_contact_no'],null,array(),'fa-phone');
+								$CI->html->inputPaper('Address:','comp_address',$prefs['comp_address'],null,array(),'fa-home');
+							$CI->html->eDivCol();
+						$CI->html->eDivRow();
+					$CI->html->eForm();
+					$CI->html->H(4,"",array('class'=>'page-header'));
+				$CI->html->eBoxBody();
+			$CI->html->eBox();
+		$CI->html->eDivCol();
+	$CI->html->eDivRow();
+	return $CI->html->code();
+}
 ?>

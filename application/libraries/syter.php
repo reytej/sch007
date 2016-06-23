@@ -46,6 +46,13 @@ class Syter{
 		}
 		$setup['crumb'] = $crumb;
 		$setup['page_title'] = $page_title;
+
+		$company = sess('company');
+		if(count($company) != ""){
+			$setup['comp_name'] = $company['comp_name'];
+			$setup['comp_logo'] = $company['comp_logo'];
+		}
+
 		return $setup;
 	}
 	function get_navs(){
