@@ -249,7 +249,6 @@ class Lists extends CI_Controller {
                 );
             }
         }
-
         echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
     }
     public function students($tbl=null){

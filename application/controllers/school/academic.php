@@ -64,19 +64,57 @@ class Academic extends CI_Controller {
 		$data['page_subtitle'] = "Add Course";
 		$det = array();
 		$img = array();
+		$subjects = array();
 		if($id != null){
 			$details = $this->site_model->get_tbl('courses',array('id'=>$id));
 			if($details){
 				$det = $details[0];
 				$data['page_subtitle'] = "Edit Course ".ucwords(strtolower($det->name));
+				$select   = "course_subjects.*,subjects.code as subj_code,subjects.name as subj_name";
+				$result = $this->site_model->get_tbl('course_subjects',array('course_id'=>$id),array(),array('subjects'=>'course_subjects.subject_id = subjects.id'),true,$select);
+				foreach ($result as $res) {
+					$subjects[] = array(
+						"subj_id" => $res->subject_id,
+						"subj_code" => $res->subj_code,
+						"subj_name" => $res->subj_name,
+					);
+				}
 			}
 		}
+		sess_initialize("subjects",$subjects);
 		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
 		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'academic/courses"','text'=>"<i class='fa fa-fw fa-reply'></i>");
-		$data['code'] = coursesPage($det);
+		$data['code'] = coursesPage($det,$subjects);
 		$data['load_js'] = 'school/academic';
 		$data['use_js'] = 'coursesFormJs';
 		$this->load->view('page',$data);
+	}
+	public function courses_add_subj($subj_id=null){
+		$subjects = sess('subjects');
+		$status = "success";
+		$msg    = "";
+		$check  = true;
+		$row    = array();
+		$id 	= null;
+		foreach ($subjects as $ctr => $row) {
+			if($row['subj_id'] == $subj_id){
+				$check = false;
+				$status = "error";
+				$msg    = "Subject is already added.";
+				break;
+			}	
+		}
+		if($check){
+			$details = $this->site_model->get_tbl('subjects',array('id'=>$subj_id));
+			if(count($details) > 0){
+				$det = $details[0];
+				$row = array('subj_id'=>$det->id,'subj_code'=>$det->code,'subj_name'=>$det->name); 
+				$cart = sess_add('subjects',$row);
+				$id = $cart['id'];
+				$msg   = "Subject Added.";
+			}
+		}
+		echo json_encode(array('status'=>$status,'msg'=>$msg,'row'=>$row,'id'=>$id));
 	}
 	public function courses_db($id=null){
 		$user = sess('user');
@@ -170,6 +208,7 @@ class Academic extends CI_Controller {
 			}
 		}
 		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
+		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-new-btn" class="btn-flat btn-flat btn btn-info"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE AS NEW");
 		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'academic/subjects"','text'=>"<i class='fa fa-fw fa-reply'></i>");
 		$data['code'] = subjectsPage($det);
 		$data['load_js'] = 'school/academic';
@@ -185,14 +224,20 @@ class Academic extends CI_Controller {
 		);
 		$error = 0;
 		$msg = "";
-		if(!$this->input->post('id')){
+		if($this->input->post('new')){
 			$id = $this->site_model->add_tbl('subjects',$items,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
 			$msg = "Added New Subject ".$items['name'];
 		}
 		else{
-			$id = $this->input->post('id');
-			$this->site_model->update_tbl('subjects','id',$items,$id);
-			$msg = "Updated Subject ".$items['name'];
+			if(!$this->input->post('id')){
+				$id = $this->site_model->add_tbl('subjects',$items,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
+				$msg = "Added New Subject ".$items['name'];
+			}
+			else{
+				$id = $this->input->post('id');
+				$this->site_model->update_tbl('subjects','id',$items,$id);
+				$msg = "Updated Subject ".$items['name'];
+			}
 		}
 		if($error == 0){
 			site_alert($msg,'success');

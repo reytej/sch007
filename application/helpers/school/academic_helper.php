@@ -22,7 +22,7 @@ function yearsPage($det=array()){
 	$CI->html->eDivRow();
 	return $CI->html->code();
 }
-function coursesPage($det=array()){
+function coursesPage($det=array(),$subjects=array()){
 	$CI =& get_instance();
 	$CI->html->sDivRow();
 		$CI->html->sDivCol(10,'left',1);
@@ -47,12 +47,12 @@ function coursesPage($det=array()){
 											$CI->html->subjectsDropPaper('Subject:','subject',null,null,array('class'=>'rOkay'));
 										$CI->html->eDivCol();
 										$CI->html->sDivCol(1);
-											$CI->html->button(fa('fa-plus').' ADD',array('class'=>'btn-sm btn-flat'),'primary');	
+											$CI->html->button(fa('fa-plus').' ADD',array('id'=>'add-subj-btn','class'=>'btn-sm btn-flat'),'primary');	
 										$CI->html->eDivCol();
 									$CI->html->eDivRow();
 									$CI->html->sDivRow();
 										$CI->html->sDivCol(6);
-											$CI->html->sTable(array('class'=>'table table-striped'));
+											$CI->html->sTable(array('class'=>'table table-striped','id'=>'main-tbl'));
 												$CI->html->sTablehead();
 													$CI->html->sRow();
 														$CI->html->th('Code');
@@ -60,6 +60,16 @@ function coursesPage($det=array()){
 														$CI->html->th(' ');
 													$CI->html->eRow();
 												$CI->html->eTablehead();
+												$CI->html->sTableBody();
+													$CI->html->sRow();
+													foreach ($subjects as $ctr => $row) {
+														$link = $CI->html->A(fa('fa-remove fa-lg'),'#',array('class'=>'remove','id'=>'remove-'.$ctr,'ref'=>$ctr,'return'=>'true'));
+														$CI->html->td($row['subj_code']);
+														$CI->html->td($row['subj_name']);
+														$CI->html->td($link,array('style'=>'text-align:right;'));
+													}
+													$CI->html->eRow();
+												$CI->html->eTableBody();
 											$CI->html->eTable();
 										$CI->html->eDivCol();
 									$CI->html->eDivRow();
