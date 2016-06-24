@@ -215,6 +215,105 @@ class Lists extends CI_Controller {
 
         echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
     }
+    public function subjects($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/subjects';
+        $cols = array('ID','Code','Name','Description',' ');
+        $table = 'subjects';
+        $select = 'subjects.*';
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'academic/subjects_form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $json[$res->id] = array(
+                    "id"=>$res->id,   
+                    "title"=>strtoupper($res->code),   
+                    "name"=>ucFix($res->name),   
+                    "description"=>$res->description,   
+                    "link"=>$link
+                );
+            }
+        }
+
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
+    public function students($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+        
+        $cols = array('ID','Code','Name','Gender','Age','Reg Date','Inactive','');
+        $table  = 'students';
+        $select = 'students.*';
+        $join   = null;
+        
+        $post = array();
+        $args = array();
+        if(count($this->input->post()) > 0){
+            $post = $this->input->post();
+        }
+        if($this->input->post('name')){
+            $lk  =$this->input->post('name');
+            $args["(students.fname like '%".$lk."%' OR students.mname like '%".$lk."%' OR students.lname like '%".$lk."%' OR students.suffix like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }        
+        $order = array('students.fname'=>'asc');
+        
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate('lists/students',$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+        
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = $this->html->A(fa('fa-edit fa-lg'),base_url().'students/form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $name = $res->fname." ".$res->mname." ".$res->lname." ".$res->suffix;
+                $json[$res->id] = array(
+                    "id"=>$res->id,   
+                    "code"=>$res->code,   
+                    "title"=>$name,   
+                    "desc"=>strtoupper($res->sex),   
+                    "subtitle"=>"Age ".age($res->bday),   
+                    "reg_date"=>sql2Date($res->reg_date),
+                    "inactive"=>($res->inactive == 0 ? 'No' : 'Yes'),
+                    "link"=>$link
+                );
+                $ids[] = $res->id;
+            }
+            $images = $this->site_model->get_image(null,null,'students',array('images.img_ref_id'=>$ids)); 
+            foreach ($images as $res) {
+                if(isset($json[$res->img_ref_id])){
+                    $js = $json[$res->img_ref_id];
+                    $js['grid-image'] = $res->img_path;
+                    $json[$res->img_ref_id] = $js;
+                }
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
+    public function students_filter(){
+        $this->html->sForm();
+            $this->html->inputPaper('Name:','name','');
+        $this->html->eForm();
+        $data['code'] = $this->html->code();
+        $this->load->view('load',$data);   
+    }
 	public function get_menus($id=null,$asJson=true){
         $this->load->helper('site/pagination_helper');
         $pagi = null;

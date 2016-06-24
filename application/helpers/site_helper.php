@@ -9,6 +9,16 @@ function site_alert($text="",$type="alert"){
     $site_alerts[] = array("text"=>$text,"type"=>$type);
     $CI->session->set_userdata('site_alerts',$site_alerts);
 }
+function age($dob){
+    if(!empty($dob)){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $age = $birthdate->diff($today)->y;
+        return $age;
+    }else{
+        return 0;
+    }
+}
 function getPercent($num1,$num2){
     $percentage = 0;
     if($num1 > 0 && $num2 > 0)

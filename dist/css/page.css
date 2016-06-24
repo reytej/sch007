@@ -216,6 +216,19 @@
   height: 28px;
   font-size:14px;
 }
+.paper-select .btn-default{
+  background-color: #fff; 
+  border: 0px;
+  border-bottom: 1px solid #888;
+  padding: 0px;
+  padding-left:10px;
+  height: 28px;
+  font-size:14px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  outline: none !important;
+}
 .paper-textarea textarea{
   border: 1px solid #888;
   font-size:14px;

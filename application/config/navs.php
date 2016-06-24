@@ -9,6 +9,7 @@ $nav = array();
 
 	$academic['courses'] = array('title'=>'Courses','path'=>'academic/courses','exclude'=>0);
 	$academic['batches'] = array('title'=>'Batch','path'=>'academic/batches','exclude'=>0);
+	$academic['subjects'] = array('title'=>'Subjects','path'=>'academic/subjects','exclude'=>0);
 	$academic['aca_years'] = array('title'=>'Academic Years','path'=>'academic/years','exclude'=>0);
 $nav['academic'] = array('title'=>'<i class="fa fa-university"></i> <span>Academic</span>','path'=>$academic,'exclude'=>1);
 $nav['students'] = array('title'=>'<i class="fa fa-mortar-board"></i> <span>Students</span>','path'=>'students','exclude'=>1);

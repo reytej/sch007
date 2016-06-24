@@ -986,7 +986,7 @@ class Html{
 	    	$str .= $this->eTag('div');
 	    	if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
-	    function selectPaper($label=null,$nameID=null,$options=array(),$value=null,$placeholder=null,$params=array(),$feedback=null){
+	    function selectPaper($label=null,$nameID=null,$options=array(),$value=null,$placeholder=null,$params=array(),$searcher=true){
 	    	$str = "";
 	    	$str .= $this->sTag('div',array('class'=>'row div-under-no-spaces'));
 	    		if($label != ""){
@@ -1003,7 +1003,10 @@ class Html{
 	    				$params['id'] = $nameID;
 	    				$params['name'] = $nameID;
 	    			}
-	    			$params = $this->classitize($params,"form-control paper-select");
+	    			$params = $this->classitize($params,"form-control paper-select show-tick");
+	    			if($searcher){
+	    				$params['data-live-search'] = "true";
+	    			}
 	    			$str .= $this->sTag('select',$params);
 	    				if(count($options) > 0){
 	    					foreach ($options as $text => $opt) {
@@ -1125,7 +1128,7 @@ class Html{
 				$str .= $this->select($label,$nameID,$opts,$value,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
-	    function roleDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){
+	    function roleDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
 	    	$CI =& get_instance();
 	 		$CI->load->model('site/site_model');
 	    	$str = "";
@@ -1135,14 +1138,14 @@ class Html{
 
 				$results=$CI->site_model->get_custom_val('user_roles',array('id,role'),null,null,true);
 				$opts  = array();
-				$opts['- Select Role -']  = "";
+				$opts['Select Role']  = "";
 				foreach ($results as $res) {
 					$opts[$res->role] = $res->id;
 				}
 				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
-	    function courseDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){
+	    function courseDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
 	    	$CI =& get_instance();
 	 		$CI->load->model('site/site_model');
 	    	$str = "";
@@ -1152,7 +1155,24 @@ class Html{
 
 				$results=$CI->site_model->get_custom_val('courses',array('id,name'),null,null,true);
 				$opts  = array();
-				$opts['- Select Course -']  = "";
+				$opts['Select Course']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->id;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+	    function subjectsDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('subjects',array('id,name'),null,null,true);
+				$opts  = array();
+				$opts['Select Subject']  = "";
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}

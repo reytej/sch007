@@ -151,4 +151,52 @@ class Academic extends CI_Controller {
 		}
 		echo json_encode(array('error'=>$error,'msg'=>$msg));
 	}
+	public function subjects(){
+		$data = $this->syter->spawn('subjects');
+		$data['code'] = listPage(fa('fa-book')." Subjects",'subjects','academic/subjects_form','list','list',false);
+		$this->load->view('list',$data);
+	}
+	public function subjects_form($id=null){
+		$data = $this->syter->spawn('subjects');
+		$data['page_title'] = fa('fa-book')." Subjects";
+		$data['page_subtitle'] = "Add Subject";
+		$det = array();
+		$img = array();
+		if($id != null){
+			$details = $this->site_model->get_tbl('subjects',array('id'=>$id));
+			if($details){
+				$det = $details[0];
+				$data['page_subtitle'] = "Edit Sunject ".ucwords(strtolower($det->name));
+			}
+		}
+		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
+		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'academic/subjects"','text'=>"<i class='fa fa-fw fa-reply'></i>");
+		$data['code'] = subjectsPage($det);
+		$data['load_js'] = 'school/academic';
+		$data['use_js'] = 'subjectsFormJs';
+		$this->load->view('page',$data);
+	}
+	public function subjects_db($id=null){
+		$user = sess('user');
+		$items = array(
+		    "name"=>$this->input->post('name'),
+		    "code"=>$this->input->post('code'),
+		    "description"=>$this->input->post('description'),
+		);
+		$error = 0;
+		$msg = "";
+		if(!$this->input->post('id')){
+			$id = $this->site_model->add_tbl('subjects',$items,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
+			$msg = "Added New Subject ".$items['name'];
+		}
+		else{
+			$id = $this->input->post('id');
+			$this->site_model->update_tbl('subjects','id',$items,$id);
+			$msg = "Updated Subject ".$items['name'];
+		}
+		if($error == 0){
+			site_alert($msg,'success');
+		}
+		echo json_encode(array('error'=>$error,'msg'=>$msg));
+	}	
 }

@@ -50,6 +50,8 @@ $route['admin/(:any)'] = "pages/admin/$1";
 
 $route['academic'] = "school/academic";
 $route['academic/(:any)'] = "school/academic/$1";
+$route['students'] = "school/students";
+$route['students/(:any)'] = "school/students/$1";
 
 
 $route['lists'] = "core/lists";

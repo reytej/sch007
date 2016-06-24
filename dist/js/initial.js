@@ -23,5 +23,6 @@ $(document).ready(function(){
 	}
 
 	$('.pick-date').datepicker();
+	$('.paper-select').selectpicker();
 
 });

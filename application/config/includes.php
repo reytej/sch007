@@ -13,6 +13,7 @@ $styleSheets[] = "dist/css/page.css";
 $styleSheets[] = "plugins/perfect-scrollbar/css/perfect-scrollbar.css";
 $styleSheets[] = "plugins/daterangepicker/daterangepicker-bs3.css";
 $styleSheets[] = "plugins/datepicker/datepicker3.css";
+$styleSheets[] = "plugins/bootstrap-select/css/bootstrap-select.min.css";
 $config['incCss'] = $styleSheets;
 ////////////////////////////////////////////////
 /// Include your js files                   ///
@@ -28,6 +29,7 @@ $jsFiles[] = "plugins/perfect-scrollbar/js/perfect-scrollbar.jquery.js";
 $jsFiles[] = "plugins/bootbox.js";
 $jsFiles[] = "plugins/daterangepicker/daterangepicker.js";
 $jsFiles[] = "plugins/datepicker/bootstrap-datepicker.js";
+$jsFiles[] = "plugins/bootstrap-select/js/bootstrap-select.min.js";
 
 $jsFiles[] = "dist/js/app.min.js";
 $jsFiles[] = "dist/js/initial.js";
