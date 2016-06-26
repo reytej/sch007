@@ -116,6 +116,9 @@ class Academic extends CI_Controller {
 		}
 		echo json_encode(array('status'=>$status,'msg'=>$msg,'row'=>$row,'id'=>$id));
 	}
+	public function courses_remove_subj($id=null){
+		sess_delete('subjects',$id);
+	}
 	public function courses_db($id=null){
 		$user = sess('user');
 		$items = array(
@@ -133,7 +136,20 @@ class Academic extends CI_Controller {
 			$id = $this->input->post('id');
 			$this->site_model->update_tbl('courses','id',$items,$id);
 			$msg = "Updated Course ".$items['name'];
+			$this->site_model->delete_tbl('course_subjects',array('course_id'=>$id));
 		}
+		$subjects = sess('subjects');
+		if(count($subjects) > 0){
+			$details = array();
+			foreach ($subjects as $ctr => $row) {
+				$details[] = array(
+					"course_id" => $id,
+					"subject_id" => $row['subj_id'],
+				);
+			}
+			$this->site_model->add_tbl_batch('course_subjects',$details);
+		}
+
 		if($error == 0){
 			site_alert($msg,'success');
 		}

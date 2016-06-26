@@ -281,7 +281,7 @@ class Lists extends CI_Controller {
         if(count($items) > 0){
             $ids = array();
             foreach ($items as $res) {
-                $link = $this->html->A(fa('fa-edit fa-lg'),base_url().'students/form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $link = $this->html->A(fa('fa-edit fa-lg'),base_url().'students/profile/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
                 $name = $res->fname." ".$res->mname." ".$res->lname." ".$res->suffix;
                 $json[$res->id] = array(
                     "id"=>$res->id,   

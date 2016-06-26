@@ -1007,6 +1007,8 @@ class Html{
 	    			if($searcher){
 	    				$params['data-live-search'] = "true";
 	    			}
+	    			else
+	    				$params['data-live-search'] = "false";
 	    			$str .= $this->sTag('select',$params);
 	    				if(count($options) > 0){
 	    					foreach ($options as $text => $opt) {
@@ -1109,6 +1111,19 @@ class Html{
 					$opts[$res->fname.' '.$res->lname] = $res->id;
 				}
 				$str .= $this->select($label,$nameID,$opts,$value,$selectParams,$icon=null,$icon2=null);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+	    function genderDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+				
+				$opts["Male"] = "male";
+				$opts["Female"] = "female";
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams,false);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function roleDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){

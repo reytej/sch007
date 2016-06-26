@@ -1,12 +1,6 @@
 <?php
 function usersPage($det=array(),$img=array()){
 	$CI =& get_instance();
-	// $CI->html->sDivRow(array('class'=>'form-top-btns'));
-	// 	$CI->html->sDivCol(11,'right');
-	// 		$CI->html->button(fa('fa-save')." SAVE ",array('id'=>'save-btn','class'=>'btn-flat'),'success');
-	// 		$CI->html->A(fa('fa-reply'),base_url()."users",array('class'=>'btn btn-primary btn-flat'));
-	// 	$CI->html->eDivCol();
-	// $CI->html->eDivRow();
 	$CI->html->sDivRow();
 		$CI->html->sDivCol(10,'left',1);
 			$CI->html->sBox('solid');
@@ -61,11 +55,9 @@ function usersPage($det=array(),$img=array()){
 							$CI->html->eDivCol();
 						$CI->html->eDivRow();
 					$CI->html->eForm();
-					$CI->html->H(4,"",array('class'=>'page-header'));
+					$CI->html->H(4,"");
 				$CI->html->eBoxBody();
-				$CI->html->sBoxFoot();
-					
-				$CI->html->eBoxFoot();
+
 			$CI->html->eBox();
 		$CI->html->eDivCol();
 	$CI->html->eDivRow();

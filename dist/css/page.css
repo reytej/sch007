@@ -1,3 +1,6 @@
+*:focus{
+outline: none !important;
+}
 /* MAIN */
 .content-wrapper,
 .right-side {
@@ -291,3 +294,21 @@
 .bootbox-filter{
   width: 40%;
 }
+
+.btn-white {
+    background: #fff;
+    /*color: #ffffff;*/
+    border-color:#ddd;
+}
+
+.btn-profile-vertical button{
+  text-align: left !important;
+  padding:10px;
+}
+.btn-profile-vertical button i{
+  margin-right: 15px;
+}
+.btn-profile-vertical button:hover,.btn-profile-vertical button:active{
+  background-color:#f9f9fb !important;
+}
+

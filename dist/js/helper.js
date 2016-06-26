@@ -332,4 +332,10 @@
       div.html('<center style="margin-top:30px;font-size:16px;font-weight:bold;">No Results Found.</center>');
     }
   }
+  $.fn.rLoad = function(options){
+    var opts = $.extend({
+      url         :   "",
+    },options);
+    $(this).html('<center style="padding:25px;"><span><i class="fa fa-refresh fa-3x fa-spin"></i></span></center>').load(baseUrl+opts.url);
+  }
 }(jQuery));

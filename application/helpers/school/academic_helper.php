@@ -61,14 +61,14 @@ function coursesPage($det=array(),$subjects=array()){
 													$CI->html->eRow();
 												$CI->html->eTablehead();
 												$CI->html->sTableBody();
-													$CI->html->sRow();
 													foreach ($subjects as $ctr => $row) {
-														$link = $CI->html->A(fa('fa-remove fa-lg'),'#',array('class'=>'remove','id'=>'remove-'.$ctr,'ref'=>$ctr,'return'=>'true'));
-														$CI->html->td($row['subj_code']);
-														$CI->html->td($row['subj_name']);
-														$CI->html->td($link,array('style'=>'text-align:right;'));
+														$CI->html->sRow(array('id'=>'row-'.$ctr));
+															$link = $CI->html->A(fa('fa-remove fa-lg'),'#',array('class'=>'remove','id'=>'remove-'.$ctr,'ref'=>$ctr,'return'=>'true'));
+															$CI->html->td($row['subj_code']);
+															$CI->html->td($row['subj_name']);
+															$CI->html->td($link,array('style'=>'text-align:right;'));
+														$CI->html->eRow();
 													}
-													$CI->html->eRow();
 												$CI->html->eTableBody();
 											$CI->html->eTable();
 										$CI->html->eDivCol();
