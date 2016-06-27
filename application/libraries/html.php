@@ -1204,11 +1204,61 @@ class Html{
 
     			$results=$CI->site_model->get_custom_val('students',array('id,code,fname,mname,lname,suffix'),null,null,true);
     			$opts  = array();
-    			$opts['Select Subject']  = "";
+    			$opts['Select Student']  = "";
     			foreach ($results as $res) {
     				$opts["[".$res->code."] ".$res->fname." ".$res->mname." ".$res->lname." ".$res->suffix] = $res->id;
     			}
     			$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
     		if($this->returnitize($params)) return $str; else $this->code .= $str;
         }
+        function uomDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('uom',array('abbrev,name'),null,null,true);
+				$opts  = array();
+				$opts['Select UOM']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->abbrev;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+	    function itemTypeDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$opts  = array();
+				$opts['Select Item Type']  = "";
+				$opts['Service']  = "service";
+				$opts['Inventory']  = "inventory";
+				
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+	    function itemTaxTypeDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('tax_types',array('id,name'),null,null,true);
+				$opts  = array();
+				$opts['Select Tax Type']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->id;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
 }

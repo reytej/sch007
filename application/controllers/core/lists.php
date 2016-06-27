@@ -373,4 +373,75 @@ class Lists extends CI_Controller {
         }
         echo json_encode(array('rows'=>$json,'page'=>$page['code'],'post'=>$post));
     }
+    public function uom($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/uom';
+        $cols = array('ID','Code','Name',' ');
+        $table = 'uom';
+        $select = 'uom.*';
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'inventory/uom_form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $json[$res->id] = array(
+                    "id"=>$res->id,   
+                    "title"=>strtoupper($res->abbrev),   
+                    "name"=>ucFix($res->name),   
+                    "link"=>$link
+                );
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
+    public function item_categories($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/item_categories';
+        $cols = array('ID','Name','UOM','Type',' ');
+        $table = 'item_categories';
+        $select = 'item_categories.*';
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'items/categories_form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $json[$res->id] = array(
+                    "id"=>$res->id,   
+                    "title"=>ucFix($res->name),   
+                    "uom"=>$res->uom,   
+                    "name"=>ucFix($res->type),   
+                    "link"=>$link
+                );
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
 }

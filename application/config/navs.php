@@ -21,8 +21,8 @@ $rnav = array();
 
 	$inventory['inv-maintenance'] = array('title'=>'Maintenance','path'=>null,'exclude'=>0);
 		$inventory['items'] = array('title'=>'Items','path'=>'items','exclude'=>0);
-		$inventory['category'] = array('title'=>'Categories','path'=>'items','exclude'=>0);
-		$inventory['uom'] = array('title'=>'Unit Of Measures','path'=>'items','exclude'=>0);
+		$inventory['category'] = array('title'=>'Categories','path'=>'items/categories','exclude'=>0);
+		$inventory['uom'] = array('title'=>'Unit Of Measures','path'=>'inventory/uom','exclude'=>0);
 $rnav['inventory'] = array('title'=>'<i class="fa fa-cubes"></i> <span>Inventory</span>','path'=>$inventory,'exclude'=>0);
 
 	$academic['aca-maintenance'] = array('title'=>'Maintenance','path'=>null,'exclude'=>0);
