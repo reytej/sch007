@@ -47,7 +47,7 @@ $(document).ready(function(){
 					tr.append('<td>'+val['subj_code']+'</td>');
 					tr.append('<td>'+val['subj_name']+'</td>');
 					var link = $('<a class="remove" href="#" id="remove-'+id+'" ref="'+id+'"><i class="fa fa-remove fa-lg"></i></a>');
-					var td = $('<td style="text-align:right;padding-right:8px;"></td>');
+					var td = $('<td style="text-align:right;padding-right:10px;"></td>');
 					link.click(function(){
 						subj_remove(id);
 						// $("#subject").val('').trigger('change');

@@ -278,13 +278,16 @@ outline: none !important;
   line-height: 30px;
 }
 /* table */
+.paper-table{
+  border-bottom: 1px solid #8F8F8F;
+}
 .paper-table thead tr th{
   border-bottom: 1px solid #8F8F8F;
 }
 .paper-table thead tr th,
 .paper-table tbody tr td,
 .paper-table thead tr td{
-  padding: 3px;
+  padding: 5px;
 }
 
 .paper-table tbody tr:nth-child(odd) td{
