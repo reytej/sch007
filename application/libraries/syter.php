@@ -99,31 +99,39 @@ class Syter{
 	function build_menu($navs,$sub=false){
 		$menu = "";
 		foreach ($navs as $page_key => $nav) {
-			if(!is_array($nav['path'])){
-				if($this->checkAccess($page_key,$nav)){
-					$menu .= "<li>";
-						$menu .= $this->linkitize($nav,$sub);
-					$menu .= "</li>";
-				}
-
+			if($nav['path'] == null){
+				$menu .= "<li class='separator'>";
+					$menu .= $nav['title'];
+				$menu .= "</li>";
+				// $menu .= "<li class='divider'>";
+				// $menu .= "</li>";
 			}
 			else{
-				if($this->checkAccess($page_key,$nav)){
-					
-					$menu .= '<li class="dropdown">';
+				if(!is_array($nav['path'])){
+					if($this->checkAccess($page_key,$nav)){
+						$menu .= "<li>";
 							$menu .= $this->linkitize($nav,$sub);
-							$menu .= "<ul class='dropdown-menu' role='menu'>";
-								$menu .= $this->build_menu($nav['path'],true);
-							$menu .= "</ul>";
-					$menu .= "</li>";
-					// $menu .= "<li class='treeview'>";
-					// 		$menu .= $this->linkitize($nav,$sub);
-					// 		$menu .= "<ul class='treeview-menu'>";
-					// 			$menu .= $this->build_menu($nav['path'],true);
-					// 		$menu .= "</ul>";
-					// $menu .= "</li>";
+						$menu .= "</li>";
+					}
 				}
-			}
+				else{
+					if($this->checkAccess($page_key,$nav)){
+						
+						$menu .= '<li class="dropdown">';
+								$menu .= $this->linkitize($nav,$sub);
+								$menu .= "<ul class='dropdown-menu' role='menu'>";
+									$menu .= $this->build_menu($nav['path'],true);
+								$menu .= "</ul>";
+						$menu .= "</li>";
+						// $menu .= "<li class='treeview'>";
+						// 		$menu .= $this->linkitize($nav,$sub);
+						// 		$menu .= "<ul class='treeview-menu'>";
+						// 			$menu .= $this->build_menu($nav['path'],true);
+						// 		$menu .= "</ul>";
+						// $menu .= "</li>";
+					}
+				}
+			}	
 		}
 		return $menu;
 	}

@@ -52,7 +52,7 @@ function coursesPage($det=array(),$subjects=array()){
 									$CI->html->eDivRow();
 									$CI->html->sDivRow();
 										$CI->html->sDivCol(6);
-											$CI->html->sTable(array('class'=>'table table-striped','id'=>'main-tbl'));
+											$CI->html->sTable(array('class'=>'table paper-table','id'=>'main-tbl'));
 												$CI->html->sTablehead();
 													$CI->html->sRow();
 														$CI->html->th('Code');

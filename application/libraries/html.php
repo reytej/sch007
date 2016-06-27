@@ -1194,4 +1194,21 @@ class Html{
 				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
+        function studentsDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+        	$CI =& get_instance();
+     		$CI->load->model('site/site_model');
+        	$str = "";
+    			$selectParams = $params;
+    			if(!isset($selectParams['return']))
+    				$selectParams['return'] = true;
+
+    			$results=$CI->site_model->get_custom_val('students',array('id,code,fname,mname,lname,suffix'),null,null,true);
+    			$opts  = array();
+    			$opts['Select Subject']  = "";
+    			foreach ($results as $res) {
+    				$opts["[".$res->code."] ".$res->fname." ".$res->mname." ".$res->lname." ".$res->suffix] = $res->id;
+    			}
+    			$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+    		if($this->returnitize($params)) return $str; else $this->code .= $str;
+        }
 }

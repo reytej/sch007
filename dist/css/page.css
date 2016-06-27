@@ -2,6 +2,17 @@
 outline: none !important;
 }
 /* MAIN */
+.dropdown-menu li.separator{
+  display: block;
+  padding: 3px 12px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #fff;
+  white-space: nowrap;
+  background-color: #72AFD2;
+}
+
 .content-wrapper,
 .right-side {
   background-color: #F3F5F6;
@@ -266,6 +277,23 @@ outline: none !important;
   height: 30px;
   line-height: 30px;
 }
+/* table */
+.paper-table thead tr th{
+  border-bottom: 1px solid #8F8F8F;
+}
+.paper-table thead tr th,
+.paper-table tbody tr td,
+.paper-table thead tr td{
+  padding: 3px;
+}
+
+.paper-table tbody tr:nth-child(odd) td{
+  background-color:#EEF0F0;
+}
+.paper-table tbody tr:nth-child(even) td{
+  background-color:#fff;
+}
+
 /* PAGINATION */
 .pagination > li > a {
   background: #fafafa;
