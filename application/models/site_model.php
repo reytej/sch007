@@ -144,8 +144,24 @@ class Site_model extends CI_Model{
 		$this->db->insert($table_name,$items);
 		return $this->db->insert_id();
 	}
-	public function update_tbl($table_name,$table_key,$items,$id){
-		$this->db->where($table_key,$id);
+	public function update_tbl($table_name,$table_key,$items,$id=null){
+		if(is_array($table_key)){
+			foreach ($table_key as $key => $val) {
+				if(is_array($val)){
+					$this->db->where_in($key,$val);
+				}
+				else
+					$this->db->where($key,$val);
+			}
+		}
+		else{
+			if(is_array($id)){
+				$this->db->where_in($table_key,$id);
+			}
+			else
+				$this->db->where($table_key,$id);
+		}
+
 		$this->db->update($table_name,$items);
 		return $this->db->last_query();
 	}
@@ -286,6 +302,121 @@ class Site_model extends CI_Model{
 		$this->db->update('users', $user);
 
 		return $this->db->last_query();
+	}
+	public function get_trans_types($id=null,$ref=null){
+		$this->db->trans_start();
+			$this->db->select('*');
+			$this->db->from('trans_types');
+			if($id != null){
+				$this->db->where('trans_types.type_id',$id);
+			}
+			if($ref != null){
+				$this->db->where('trans_types.reference',$ref);
+			}
+			$this->db->order_by('type_id desc');
+			$query = $this->db->get();
+			$result = $query->result();
+		$this->db->trans_complete();
+		return $result;
+	}
+	public function get_next_ref($type=null){
+		$this->db->trans_start();
+			$this->db->select('next_ref');
+			$this->db->from('trans_types');
+			if($type != null){
+				$this->db->where('trans_types.type_id',$type);
+			}
+			$query = $this->db->get();
+			$result = $query->result();
+		$this->db->trans_complete();
+
+		$ref = $result[0]->next_ref;
+		if(!$this->ref_unused($type,$ref)){
+			$nr = $this->get_right_ref($type,$ref);
+			$unused = $nr['unused'];
+			$next_re = $nr['nr'];
+			while ($unused == false) {
+				$arr = $this->get_right_ref($type,$next_re);
+				$unused = $arr['unused'];
+				$next_re = $arr['nr'];
+			}
+			$ref = $next_re;
+		}
+		return $ref;
+	}
+	function ref_unused($trans_type,$ref){
+		$this->db->from('trans_refs');
+		$this->db->where('type_id',$trans_type);
+		$this->db->where('trans_ref',$ref);
+		$query=$this->db->get();
+		return ($query->num_rows()>0)?false:true;		
+	}
+	public function save_ref($type=null,$ref=null){
+		if($this->ref_unused($type,$ref)){
+			$user = $this->session->userdata('user');
+			$refs=$this->write_ref($type,$ref,$user['id']);
+			$this->update_next_ref($type,$refs['ref']);
+			// echo "here";
+		}
+		else{
+			$nr = $this->get_right_ref($type,$ref);
+			$unused = $nr['unused'];
+			$next_re = $nr['nr'];
+			while ($unused == false) {
+				$arr = $this->get_right_ref($type,$next_re);
+				$unused = $arr['unused'];
+				$next_re = $arr['nr'];
+			}
+			$user = $this->session->userdata('user');
+			$refs=$this->write_ref($type,$next_re,$user['id']);
+			$this->update_next_ref($type,$refs['ref']);
+		}
+	}
+	public function get_right_ref($type=null,$ref=null){
+		$nr = $this->on_next_ref($type,$ref);
+		$unused = $this->ref_unused($type,$nr);
+		return array('unused'=>$unused,'nr'=>$nr);
+	}
+	public function on_next_ref($trans_type,$ref){
+	    if (preg_match('/^(\D*?)(\d+)(.*)/', $ref, $result) == 1) 
+	    {
+	        list($all, $prefix, $number, $postfix) = $result;
+	        $dig_count = strlen($number); // How many digits? eg. 0003 = 4
+	        $fmt = '%0' . $dig_count . 'd'; // Make a format string - leading zeroes
+	        $nextval =  sprintf($fmt, intval($number + 1)); // Add one on, and put prefix back on
+
+	        $new_ref=$prefix.$nextval.$postfix;
+	    }
+	    else 
+	        $new_ref=$ref;
+	    return $new_ref;
+	}
+	public function write_ref($trans_type,$ref=null,$user_id=null){
+		$this->db->trans_start();			
+			if($ref==null)
+				$ref=$this->get_next_ref($trans_type);
+			$items = array(
+				'type_id'=>$trans_type,
+				'trans_ref'=>$ref,
+				'user_id'=>$user_id
+			);
+			$this->db->insert('trans_refs',$items);
+		$this->db->trans_complete();
+		return array('ref'=>$ref);		
+	}
+	public function update_next_ref($trans_type,$ref){
+        if (preg_match('/^(\D*?)(\d+)(.*)/', $ref, $result) == 1) 
+        {
+			list($all, $prefix, $number, $postfix) = $result;
+			$dig_count = strlen($number); // How many digits? eg. 0003 = 4
+			$fmt = '%0' . $dig_count . 'd'; // Make a format string - leading zeroes
+			$nextval =  sprintf($fmt, intval($number + 1)); // Add one on, and put prefix back on
+
+			$new_ref=$prefix.$nextval.$postfix;
+        }
+        else 
+            $new_ref=$ref;		
+		$this->db->update('trans_types',array('next_ref'=>$new_ref),array('type_id'=>$trans_type));
 	}
 }
 ?>

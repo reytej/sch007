@@ -9,15 +9,34 @@ function studentsProfile($det=array(),$img=array()){
 					if(iSetObj($img,'img_path') != ""){					
 						$url = base_url().$img->img_path;
 					}
-					$CI->html->img($url,array('style'=>'width:100%;max-height:300px;'));
-					$student = iSetObj($det,"fname")." ".iSetObj($det,"mname")." ".iSetObj($det,"lname")." ".iSetObj($det,"suffix");
-					$CI->html->H(4,"[".iSetObj($det,"code")."] ".ucwords(strtolower($student)),array('style'=>'text-align:center;'));
-					$CI->html->H(5,"Reg Date: ".iSetObjDate($det,"reg_date"),array('style'=>'text-align:center;'));
+					$CI->html->sDiv(array('style'=>'position:relative;width:100%;background-color:#ddd;'));
+						$CI->html->img($url,array('style'=>'width:100%;max-height:300px;','id'=>'profile-pic'));
+						
+						if(iSetObj($det,"id")){
+							$CI->html->sDiv(array('style'=>'position:absolute;bottom:0;left:0;width:100%;height:25px;text-align:right;padding-right:5px;color:#fff'));
+								$CI->html->A(fa('fa-camera fa-lg'),'#',array('style'=>'color:#fff;','id'=>'target'));
+								$CI->html->sForm("students/pic_upload","pic-form");
+									$CI->html->file('fileUpload',array('style'=>'display:none;'));
+									$CI->html->hidden('id',iSetObj($det,'id'));
+								$CI->html->eForm();
+							$CI->html->eDiv();
+						}
+					$CI->html->eDiv();
+
+					if(iSetObj($det,"id")){
+						$student = iSetObj($det,"fname")." ".iSetObj($det,"mname")." ".iSetObj($det,"lname")." ".iSetObj($det,"suffix");
+						$CI->html->H(5,"[".iSetObj($det,"code")."] ".ucwords(strtolower($student)),array('style'=>'text-align:center;'));
+						$CI->html->H(6,"Reg Date: ".iSetObjDate($det,"reg_date"),array('style'=>'text-align:center;'));						
+					}
+					
 				$CI->html->eBoxBody();
 			$CI->html->eBox();
 			$CI->html->sDiv(array('class'=>'btn-group-vertical btn-profile-vertical','style'=>'width:100%;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);'));
 				$CI->html->button(fa('fa-info-circle').' General Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_general'));
-				$CI->html->button(fa('fa-users').' Guardian Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_guardian'));
+				if(iSetObj($det,"id")){
+					#$CI->html->button(fa('fa-users').' Guardian Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_guardian'));
+				}
+
 			$CI->html->eDiv();
 		$CI->html->eDivCol();
 		$CI->html->sDivCol(10);
@@ -31,16 +50,20 @@ function studentsProfile($det=array(),$img=array()){
 	$CI->html->eDivRow();
 	return $CI->html->code();
 }
-function generalDetails($det=array()){
+function generalDetails($next_ref="",$det=array()){
 	$CI =& get_instance();
 	
-		$CI->html->sForm("users/db","users-form");
+		$CI->html->sForm("students/profile_general_db","general-form");
 			$CI->html->hidden('id',iSetObj($det,'id'));
 			$CI->html->sDivRow();
 				$CI->html->sDivCol(1);
 					$CI->html->sDivRow(array('class'=>'div-under-no-spaces','style'=>'margin-top:20px;'));
 						$CI->html->sDivCol();
-							$CI->html->inputPaper(null,'Code',iSetObj($det,'code'),'Student Code',array('class'=>'rOkay input-lg'));
+							$params = array('class'=>'rOkay input-lg');
+							if(iSetObj($det,'id')){
+								$params['readOnly'] = 'readOnly';
+							}
+							$CI->html->inputPaper(null,'Code',iSetObj($det,'code',$next_ref),'Student Code',$params);
 						$CI->html->eDivCol();
 					$CI->html->eDivRow();
 				$CI->html->eDivCol();
@@ -89,7 +112,7 @@ function generalDetails($det=array()){
 			$CI->html->eDivRow();
 			$CI->html->sDivRow(array('style'=>'margin-bottom:20px;margin-top:20px;'));
 				$CI->html->sDivCol(12,'center');
-					$CI->html->button(fa('fa-save').' Save Details',array('class'=>'btn-flat'),'success');
+					$CI->html->button(fa('fa-save').' Save Details',array('class'=>'btn-flat','id'=>'save-btn'),'success');
 				$CI->html->eDivCol();
 			$CI->html->eDivRow();
 		$CI->html->eForm();

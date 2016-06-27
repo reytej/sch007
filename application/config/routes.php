@@ -52,6 +52,8 @@ $route['academic'] = "school/academic";
 $route['academic/(:any)'] = "school/academic/$1";
 $route['students'] = "school/students";
 $route['students/(:any)'] = "school/students/$1";
+$route['enrollment'] = "school/enrollment";
+$route['enrollment/(:any)'] = "school/enrollment/$1";
 
 
 $route['lists'] = "core/lists";
