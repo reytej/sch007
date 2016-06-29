@@ -20,7 +20,21 @@
             speed: 500 // opening & closing animation speed
           }
      }).setTimeout(3000);
-    }
+    },
+    fetch: function(options){
+      var opt = $.extend({
+        func       :   '',
+        key        :   '',
+        onComplete :   function(response){}
+      }, options);
+      if(opt.func != ''){
+        $.post(baseUrl+'fetch/'+opt.func+'/'+opt.key,function(data){
+            opt.onComplete.call(this,data.details);
+        },"json").fail( function(xhr, textStatus, errorThrown) {
+          alert(xhr.responseText);
+        });
+      } 
+    },
   });
   $.fn.exists = function(){return this.length>0;}
   $.fn.rOkay = function(options)  {
@@ -337,5 +351,42 @@
       url         :   "",
     },options);
     $(this).html('<center style="padding:25px;"><span><i class="fa fa-refresh fa-3x fa-spin"></i></span></center>').load(baseUrl+opts.url);
+  }
+  $.fn.rTable = function(options){
+    var opt = $.extend({
+      table     :     $(this),
+    },options);
+    var tbl = opt.table;
+    var body = tbl.children('tbody');
+
+    
+    var link = $('<a href="#" id="add-item">Add an Item</a>');
+    var row = $('<tr></tr>');
+    var td = $('<td colspan="100%" style="text-align:right;"></td>');
+    link.appendTo(td);
+    td.appendTo(row);
+    body.append(row);
+
+    body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
+    body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
+
+    var form_row = body.find('tr.form-row');
+    form_row.hide();
+    var line_id = 0;
+    $('tr.form-row .rtbl-input').each(function(){
+      var id = $(this).attr('id');
+      if (typeof id !== typeof undefined && id !== false) {
+          $(this).attr('id',id+'-'+line_id);
+          console.log($(this).attr('id'));
+      }
+      var name = $(this).attr('name');      
+      if (typeof name !== typeof undefined && name !== false) {
+          $(this).attr('name',name+'['+line_id+']');
+          console.log($(this).attr('name'));
+      }
+    });
+
+
+
   }
 }(jQuery));

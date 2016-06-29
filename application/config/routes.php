@@ -63,5 +63,7 @@ $route['items/(:any)'] = "inventory/items/$1";
 
 $route['lists'] = "core/lists";
 $route['lists/(:any)'] = "core/lists/$1";
+$route['fetch'] = "core/fetch";
+$route['fetch/(:any)'] = "core/fetch/$1";
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

@@ -279,19 +279,24 @@ outline: none !important;
 }
 /* table */
 .paper-table{
-  border-bottom: 1px solid #8F8F8F;
+  /*border-bottom: 1px solid #8F8F8F;*/
+}
+.paper-table .form-group{
+  margin: 0px;
 }
 .paper-table thead tr th{
-  border-bottom: 1px solid #8F8F8F;
+  /*border-bottom: 1px solid #8F8F8F;*/
+  border-bottom: 1px solid #ddd;
 }
 .paper-table thead tr th,
 .paper-table tbody tr td,
 .paper-table thead tr td{
   padding: 5px;
+  vertical-align: middle;
 }
 
 .paper-table tbody tr:nth-child(odd) td{
-  background-color:#EEF0F0;
+  background-color:#f1f1f1;
 }
 .paper-table tbody tr:nth-child(even) td{
   background-color:#fff;

@@ -1126,6 +1126,23 @@ class Html{
 				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams,false);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
+	    function itemsDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('items',array('id,code,name'),null,null,true);
+				$opts  = array();
+				$opts['- Select Items -']  = "";
+				foreach ($results as $res) {
+					$opts["[".$res->code."] ".$res->name] = $res->id;
+				}
+				$str .= $this->select($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
 	    function roleDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){
 	    	$CI =& get_instance();
 	 		$CI->load->model('site/site_model');
@@ -1255,6 +1272,23 @@ class Html{
 				$results=$CI->site_model->get_custom_val('tax_types',array('id,name'),null,null,true);
 				$opts  = array();
 				$opts['Select Tax Type']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->id;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+	    function itemCategoriesDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('item_categories',array('id,name'),null,null,true);
+				$opts  = array();
+				$opts['Select Category']  = "";
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}
