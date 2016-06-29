@@ -2,7 +2,7 @@
 MySQL Backup
 Source Server Version: 5.5.27
 Source Database: sch007
-Date: 6/27/2016 15:53:19
+Date: 6/29/2016 16:57:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -103,7 +103,7 @@ CREATE TABLE `images` (
   `datetime` datetime DEFAULT NULL,
   `disabled` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`img_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `items`
@@ -120,8 +120,10 @@ CREATE TABLE `items` (
   `type` varchar(150) DEFAULT NULL,
   `tax_type_id` int(11) DEFAULT NULL,
   `inactive` tinyint(1) DEFAULT '0',
+  `reg_date` datetime DEFAULT NULL,
+  `reg_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `item_categories`
@@ -135,7 +137,7 @@ CREATE TABLE `item_categories` (
   `tax_type_id` int(11) DEFAULT NULL,
   `inactive` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `settings`
@@ -312,10 +314,10 @@ INSERT INTO `ci_sessions` VALUES ('32ad99345dbafdca88ba248765dc9deac7b4564f','::
 INSERT INTO `courses` VALUES ('1','CRSE001','Kindergarten','Kids in garten','2016-06-23 08:18:42','1','0');
 INSERT INTO `course_batches` VALUES ('1','CRSB001','Kindergarten 2016 - 2017','1','2016-06-06','2017-03-31','2016-06-23 08:23:30','1');
 INSERT INTO `course_subjects` VALUES ('1','1','1'), ('2','1','4'), ('3','1','6');
-INSERT INTO `images` VALUES ('1','2.png','uploads/users/2.png','2','users',NULL,'2016-02-12 08:23:10','0'), ('5','1.png','uploads/users/1.png','1','users',NULL,'2016-02-12 08:30:45','0'), ('6','3.png','uploads/users/3.png','3','users',NULL,'2016-02-12 08:33:04','0'), ('7','5.png','uploads/users/5.png','5','users',NULL,'2016-02-12 08:37:36','0'), ('8','6.png','uploads/users/6.png','6','users',NULL,'2016-02-12 08:37:41','0'), ('9','7.png','uploads/users/7.png','7','users',NULL,'2016-02-12 08:37:41','0'), ('11','9.png','uploads/users/9.png','9','users',NULL,'2016-02-12 08:40:22','0'), ('12','8.png','uploads/users/8.png','8','users',NULL,'2016-02-12 08:45:13','0'), ('13','4.png','uploads/users/4.png','4','users',NULL,'2016-02-12 08:50:13','0'), ('14','10.png','uploads/users/10.png','10','users',NULL,'2016-02-12 09:43:46','0'), ('18','1.png','uploads/students/1.png','1','students',NULL,'2016-06-27 12:20:16','0'), ('19','2.png','uploads/students/2.png','2','students',NULL,'2016-06-27 12:20:37','0'), ('20','3.png','uploads/students/3.png','3','students',NULL,'2016-06-27 12:20:46','0');
-INSERT INTO `items` VALUES ('1','FEE001','Kindergarten Tuition Fee','Kindergarten Fee','unit','30000','1','service','1','0'), ('2','FEE002','Misc. Fee','Miscellaneous Fee','unit','10000','1','service','1','0'), ('3','FEE003','Meals Fee','Meals Fee','unit','10000','1','service','1','0');
-INSERT INTO `item_categories` VALUES ('1','Fees','unit','service','1','0');
-INSERT INTO `settings` VALUES ('comp_address','company',NULL), ('comp_contact_no','company',NULL), ('comp_email','company',NULL), ('comp_logo','company',NULL), ('comp_name','company','Sch007'), ('comp_tin','company',NULL);
+INSERT INTO `images` VALUES ('1','2.png','uploads/users/2.png','2','users',NULL,'2016-02-12 08:23:10','0'), ('5','1.png','uploads/users/1.png','1','users',NULL,'2016-02-12 08:30:45','0'), ('6','3.png','uploads/users/3.png','3','users',NULL,'2016-02-12 08:33:04','0'), ('7','5.png','uploads/users/5.png','5','users',NULL,'2016-02-12 08:37:36','0'), ('8','6.png','uploads/users/6.png','6','users',NULL,'2016-02-12 08:37:41','0'), ('9','7.png','uploads/users/7.png','7','users',NULL,'2016-02-12 08:37:41','0'), ('11','9.png','uploads/users/9.png','9','users',NULL,'2016-02-12 08:40:22','0'), ('12','8.png','uploads/users/8.png','8','users',NULL,'2016-02-12 08:45:13','0'), ('13','4.png','uploads/users/4.png','4','users',NULL,'2016-02-12 08:50:13','0'), ('14','10.png','uploads/users/10.png','10','users',NULL,'2016-02-12 09:43:46','0'), ('18','1.png','uploads/students/1.png','1','students',NULL,'2016-06-27 12:20:16','0'), ('19','2.png','uploads/students/2.png','2','students',NULL,'2016-06-27 12:20:37','0'), ('20','3.png','uploads/students/3.png','3','students',NULL,'2016-06-27 12:20:46','0'), ('22','4.png','uploads/items/4.png','4','items',NULL,'2016-06-28 09:14:11','0'), ('24','1.png','uploads/items/1.png','1','items',NULL,'2016-06-28 15:12:44','0');
+INSERT INTO `items` VALUES ('1','FEE001','Kindergarten Tuition Fee','Kindergarten Fee','unit','30000','1','service','1','0','2016-06-28 07:36:02','1'), ('2','FEE002','Misc. Fee','Miscellaneous Fee','unit','10000','1','service','1','0','2016-06-28 07:36:05','1'), ('3','FEE003','Meals Fee','Meals Fee','unit','10000','1','service','1','0','2016-06-28 07:36:08','1'), ('4','BK0001','English Kinder Book','English Kinder Book','pc','580','2','inventory','1','0','2016-06-28 09:11:22','1');
+INSERT INTO `item_categories` VALUES ('1','Fees','unit','service','1','0'), ('2','Books','pc','inventory','1','0');
+INSERT INTO `settings` VALUES ('comp_address','company',''), ('comp_contact_no','company',''), ('comp_email','company',''), ('comp_logo','company','uploads/company/logo.png'), ('comp_name','company','Sch007'), ('comp_tin','company','');
 INSERT INTO `students` VALUES ('1','STD0001','Kaya','Haber','Tejada','','female','0+','2010-04-14',NULL,'','','','','','','','','0','2016-06-27 12:16:51','1'), ('2','STD0002','Boy','Bouy','Bought','','male','A','2009-02-28',NULL,'','','','','','','','','0','2016-06-27 12:18:54','1'), ('3','STD0003','Girl','Girlie','Gurl','','female','AB','2009-03-05',NULL,'','','','','','','','','0','2016-06-27 12:20:04','1');
 INSERT INTO `student_details` VALUES ('1','1','Reynaldo C. Tejada Jr','0917 555 06 82','Programmer','Karlene Haber','0917 222 888','Teacher');
 INSERT INTO `student_guardians` VALUES ('1','1','Rey Tejada','Father','1013 Kamagong Street Napico Pasig City','02 898 3813','0987 737 1737','rey.tejada01@gmail.com','2016-06-24 07:34:16','1');
