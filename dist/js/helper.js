@@ -37,6 +37,21 @@
     },
   });
   $.fn.exists = function(){return this.length>0;}
+  $.fn.serializeAnything = function() {
+
+    var toReturn  = [];
+    var els     = $(this).find(':input').get();
+
+    $.each(els, function() {
+      if (this.name && !this.disabled && (this.checked || /select|textarea/i.test(this.nodeName) || /text|hidden|password/i.test(this.type))) {
+        var val = $(this).val();
+        toReturn.push( encodeURIComponent(this.name) + "=" + encodeURIComponent( val ) );
+      }
+    });
+
+    return toReturn.join("&").replace(/%20/g, "+");
+
+  }
   $.fn.rOkay = function(options)  {
     var settings = $.extend({
       passTo          :   this.attr('action'),
@@ -355,38 +370,79 @@
   $.fn.rTable = function(options){
     var opt = $.extend({
       table     :     $(this),
+      cart      :     "cart"
     },options);
     var tbl = opt.table;
     var body = tbl.children('tbody');
-
-    
-    var link = $('<a href="#" id="add-item">Add an Item</a>');
-    var row = $('<tr></tr>');
-    var td = $('<td colspan="100%" style="text-align:right;"></td>');
-    link.appendTo(td);
-    td.appendTo(row);
-    body.append(row);
-
-    body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
-    body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
-
     var form_row = body.find('tr.form-row');
     form_row.hide();
-    var line_id = 0;
-    $('tr.form-row .rtbl-input').each(function(){
-      var id = $(this).attr('id');
-      if (typeof id !== typeof undefined && id !== false) {
-          $(this).attr('id',id+'-'+line_id);
-          console.log($(this).attr('id'));
-      }
-      var name = $(this).attr('name');      
-      if (typeof name !== typeof undefined && name !== false) {
-          $(this).attr('name',name+'['+line_id+']');
-          console.log($(this).attr('name'));
-      }
+    addLink();
+    initialize();
+
+    var add = $('<a href="#" id="add" style="margin-right:3px;"><i class="fa fa-check fa-lg"></i></a>');
+    var close = $('<a href="#" id="close"><i class="fa fa-times fa-lg"></i></a>');
+    add.click(function(){
+      var formData = form_row.serializeAnything();
+      $.post(baseUrl+'cart/add/'+opt.cart,formData,function(data){
+        console.log(data);
+        createRow();
+      },'json').fail( function(xhr, textStatus, errorThrown) {
+         alert(xhr.responseText);
+      });
+      return false;
     });
-
-
-
+    close.click(function(){
+      form_row.hide();
+      $('#add-item').show();
+      return false;
+    });
+    form_row.find('td:last').append(add); 
+    form_row.find('td:last').append(close); 
+    function addLink(){
+      var link = $('<a href="#" id="add-item">Add an Item</a>');
+      var row = $('<tr></tr>');
+      var td = $('<td colspan="100%" style="text-align:right;"></td>');
+      link.click(function(){
+        form_row.show();
+        $(this).hide();
+        return false;
+      });
+      link.appendTo(td);
+      td.append('&nbsp;');
+      td.appendTo(row);
+      body.append(row);
+      body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
+      body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
+    }    
+    function initialize(){
+      $.post(baseUrl+'cart/initial/'+opt.cart);
+    }
+    function createRow(){
+      var txt = form_row.find('.rtbl-txt');
+      var row = $('<tr></tr>');
+      txt.each(function(){
+        var elem = $(this);
+        var value = "";
+        if(!elem.hasClass('bootstrap-select')){
+          if(elem.is('input')){
+            value = elem.val();
+          }
+          else if(elem.is('select')){
+              value = elem.find("option:selected").text();
+          }
+          else{
+            value = elem.text();
+          }
+          row.append('<td>'+value+'</td>');
+        }
+      });
+      var edit = $('<a href="#" id="edit" style="margin-right:3px;"><i class="fa fa-edit fa-lg"></i></a>');
+      var cancel = $('<a href="#" id="cancel"><i class="fa fa-times fa-lg"></i></a>');
+      var td = $('<td colspan="100%" style="text-align:right;"></td>');
+      td.append(edit);
+      td.append(cancel);
+      row.append(td);
+      form_row.before(row);
+    }
   }
 }(jQuery));
