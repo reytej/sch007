@@ -50,7 +50,6 @@
     });
 
     return toReturn.join("&").replace(/%20/g, "+");
-
   }
   $.fn.rOkay = function(options)  {
     var settings = $.extend({
@@ -370,7 +369,9 @@
   $.fn.rTable = function(options){
     var opt = $.extend({
       table     :     $(this),
-      cart      :     "cart"
+      cart      :     "cart",
+      onAdd     :     function(response){},
+      onRemove  :     function(response){},
     },options);
     var tbl = opt.table;
     var body = tbl.children('tbody');
@@ -385,7 +386,8 @@
       var formData = form_row.serializeAnything();
       $.post(baseUrl+'cart/add/'+opt.cart,formData,function(data){
         console.log(data);
-        createRow();
+        createRow(data.id);
+        opt.onAdd.call(this,data);
       },'json').fail( function(xhr, textStatus, errorThrown) {
          alert(xhr.responseText);
       });
@@ -417,9 +419,9 @@
     function initialize(){
       $.post(baseUrl+'cart/initial/'+opt.cart);
     }
-    function createRow(){
+    function createRow(id){
       var txt = form_row.find('.rtbl-txt');
-      var row = $('<tr></tr>');
+      var row = $('<tr class="rtbl-row" id = "rtbl-row-'+id+'"></tr>');
       txt.each(function(){
         var elem = $(this);
         var value = "";
@@ -436,11 +438,27 @@
           row.append('<td>'+value+'</td>');
         }
       });
-      var edit = $('<a href="#" id="edit" style="margin-right:3px;"><i class="fa fa-edit fa-lg"></i></a>');
-      var cancel = $('<a href="#" id="cancel"><i class="fa fa-times fa-lg"></i></a>');
+      // var edit = $('<a href="#" id="edit-'+id+'" ref="'+id+'" style="margin-right:3px;"><i class="fa fa-edit fa-lg"></i></a>');
+      var del = $('<a href="#" id="del-'+id+'" ref="'+id+'"><i class="fa fa-trash fa-lg"></i></a>');
       var td = $('<td colspan="100%" style="text-align:right;"></td>');
-      td.append(edit);
-      td.append(cancel);
+      del.click(function(){
+        $.post(baseUrl+'cart/initial/'+opt.cart+'/'+id,function(){
+          body.find('tr#rtbl-row-'+id).remove();
+          opt.onRemove.call(this);
+        });
+        return false;
+      });
+      // edit.click(function(){
+      //   var editRow = body.find('tr#rtbl-row-'+id);
+      //   var index = editRow.index();
+      //   var formIndex = form_row.index();
+      //   editRow.hide();
+      //   // form_row.index(index);
+      //   body.find('tr').eq(index).after(form_row);
+      //   return false;
+      // });
+      // td.append(edit);
+      td.append(del);
       row.append(td);
       form_row.before(row);
     }

@@ -12,4 +12,7 @@ class Cart extends CI_Controller {
         $sess = sess_add($name,$post);   
         echo json_encode($sess);
     }
+    public function remove($name=null,$id=null){
+        $sess = sess_delete($name,$id);   
+    }
 }

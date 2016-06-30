@@ -72,9 +72,16 @@ $(document).ready(function(){
     			subj_remove(id);
     		});
     	});
-    	$('#items-tbl').rTable();
+    	$('#items-tbl').rTable({
+    		onAdd	: 	function(data){
+    						resetForm();
+    					}
+    	});
     	$("#item_id").change(function(){
     		loadDetails();
+    	});
+    	$('#qty').blur(function(){
+    		lineTotal();
     	});
     	function loadDetails(){
     		var id = $('#item_id').val();
@@ -87,8 +94,24 @@ $(document).ready(function(){
     								$('#qty').val(1);
     								$('#uom-txt').text(data.uom);
     								$('#uom').val(data.uom);
+    								lineTotal();
     							} 	
     		});
+    	}
+    	function lineTotal(){
+    		var qty = parseFloat($('#qty').val());
+    		var price = parseFloat($('#price').val());
+    		var total = qty * price;
+    		$("#total-txt").number(total,2);
+    	}
+    	function resetForm(){
+			$('#price-txt').number(0,2);
+			$('#price').val(0);
+			$('#qty').val("");
+			$('#uom-txt').text("");
+			$('#uom').val("");
+			$('#item_id').selectpicker('val','');
+			$('#total-txt').number(0,2);
     	}
     	function subj_remove(id){
     		$.post(baseUrl+'academic/courses_remove_subj/'+id,function(data){
