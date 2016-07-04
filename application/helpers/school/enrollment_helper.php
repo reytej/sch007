@@ -1,5 +1,5 @@
 <?php
-function enrollmentForm(){
+function enrollmentForm($now=null,$next_ref=null){
 	$CI =& get_instance();
 		$CI->html->sForm("enrollment/db","enrollment-form");
 		$CI->html->sBox('solid');
@@ -10,9 +10,12 @@ function enrollmentForm(){
 						$CI->html->courseDropPaper("Course:","course");
 						$CI->html->batchDropPaper("Batch:","batch");
 						$CI->html->sectionsDropPaper("Section:","section");
-						$CI->html->inputPaper('Trans Date:',"trans_date",null,null,array('class'=>'pick-date'));
 					$CI->html->eDivCol();
-					$CI->html->sDivCol(5,'right',2);
+					$CI->html->sDivCol(3);
+						$CI->html->inputPaper('Reference:',"trans_ref",$next_ref,null);
+						$CI->html->inputPaper('Trans Date:',"trans_date",sql2Date($now),null,array('class'=>'pick-date'));
+					$CI->html->eDivCol();
+					$CI->html->sDivCol(4,'right');
 						$url = base_url().'dist/img/no-photo.jpg';
 						$CI->html->img($url,array('style'=>'height:150px;','class'=>'media-object thumbnail pull-right','id'=>'std-img'));
 					$CI->html->eDivCol();

@@ -8,31 +8,101 @@ class Enrollment extends CI_Controller {
 	public function form(){
 		$data = $this->syter->spawn('enroll');
 		$data['page_title'] = fa('fa-bookmark')." Enrollment";
+		
 		$subjects = array();
 		$items = array();
 		$payments = array();
 		sess_initialize('subjects',$subjects);
 		sess_initialize('items',$items);
 		sess_initialize('payments',$payments);
+		$now = $this->site_model->get_db_now();
+		$next_ref = $this->site_model->get_next_ref(ENROLLMENT);
 		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
-		$data['code'] = enrollmentForm();
+		$data['code'] = enrollmentForm($now,$next_ref);
 		$data['load_js'] = 'school/enrollment';
 		$data['use_js'] = 'enrollmentJs';
 		$this->load->view('page',$data);
 	}
 	public function db(){
+		$trans_type = ENROLLMENT;
+		$reference = $this->input->post('trans_ref');
+		$user = sess('user');
+
 		$subjects 	= sess('subjects');
 		$items 		= sess('items');
 		$payments 	= sess('payments');
 
-		$items = array(
+		$date_range = $this->input->post('date_range');
+		$date = explode(' - ', $date_range);
+
+		$details = array(
+			"trans_ref"  => $reference,
 			"student_id" => $this->input->post('student'),
 			"course_id"  => $this->input->post('course'),
 			"batch_id"   => $this->input->post('batch'),
 			"section_id" => $this->input->post('section'),
-			"trans_date" => sql2Date($trans_date)
+			"trans_date" => date2Sql($this->input->post('trans_date')),
+			"start_date"  => date2Sql($date[0]),
+			"end_date"    => date2Sql($date[1])
 		);
 
+		$error = 0;
+		$msg = "";
+		$id = 0;
+
+		$check = $this->site_model->ref_unused(ENROLLMENT,$reference);
+		if($check){
+			$id = $this->site_model->add_tbl('enrolls',$details,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
+			$msg = "Student Enrolled. Reference #".$reference;	
+			$this->site_model->save_ref(ENROLLMENT,$reference);			
+		}
+		else{
+			$error = 1;
+			$msg = "Reference number is already used.";
+		}
+
+		if($id != 0){
+			$sub = array();
+			foreach ($subjects as $ctr => $subj) {
+				$sub[] = array(
+					"enroll_id" => $id,
+					"subject_id" => $subj['subj_id'],
+				);
+			}
+			if(count($sub) > 0){
+				$this->site_model->add_tbl_batch('enroll_subjects',$sub);
+			}
+			$ite = array();
+			foreach ($items as $ctr => $item) {
+				$ite[] = array(
+					"enroll_id" => $id,
+					"item_id" => $item['item_id'],
+					"qty" => $item['qty'],
+					"uom" => $item['uom'],
+					"price" => $item['price'],
+				);
+			}
+			if(count($ite) > 0){
+				$this->site_model->add_tbl_batch('enroll_items',$ite);
+			}
+			$pay = array();
+			foreach ($payments as $ctr => $paym) {
+				$pay[] = array(
+					"enroll_id" => $id,
+					"type" => $paym['type'],
+					"amount" => $paym['amount'],
+					"due_date" => $paym['due_date'],
+				);
+			}
+			if(count($pay) > 0){
+				$this->site_model->add_tbl_batch('enroll_payments',$pay);
+			}
+
+		}
+		if($error == 0){
+			site_alert($msg,'success');
+		}
+		echo json_encode(array('error'=>$error,'msg'=>$msg,"id"=>$id));
 	}
 	public function cart_months(){
 		$post = $this->input->post();
@@ -50,12 +120,14 @@ class Enrollment extends CI_Controller {
 
 		$amt_due = 0;
 		if($total > 0)
-			$amt_due = $total / $no_months;
+			$amt_due = $total;
+
 		$row = "";
 		$ctr = 1;
 		$due_date = $date[0];		
 		$dateY = date("Y", strtotime($due_date));
-		$dateM = date("m", strtotime($due_date . " +1 Months"));
+		// $dateM = date("m", strtotime($due_date . " +1 Months"));
+		$dateM = date("m", strtotime($due_date));
 		$due_date = $dateY."-".$dateM."-".$day_of_month;
 
 		if($dp_use_1 == 1){
@@ -82,7 +154,7 @@ class Enrollment extends CI_Controller {
 				$this->html->td(num($amt_due));
 			$this->html->eRow();
 			$payments[] = array(
-				"type" 	   => "dp",
+				"type" 	   => "month",
 				"due_date" => $due_date,
 				"amount"   => $amt_due,
 			);

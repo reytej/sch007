@@ -1,6 +1,24 @@
 <script>
 $(document).ready(function(){
 	<?php if($use_js == 'enrollmentJs'): ?>
+		$('#save-btn').click(function(){
+			var btn = $(this);
+			var noError = $('#enrollment-form').rOkay({
+    			btn_load		: 	btn,
+				bnt_load_remove	: 	true,
+				asJson			: 	true,
+				onComplete		: 	function(data){
+										// alert(data.error);
+										if(data.error == 0){
+											window.location.reload();
+										}
+										else{
+											$.alertMsg({msg:data.msg,type:'error'});
+										}
+									},
+    		});
+			return false;
+    	});
 		$('#course').change(function(){
 			loadCourseDetails();
 		});
@@ -111,7 +129,6 @@ $(document).ready(function(){
     		},'json').fail( function(xhr, textStatus, errorThrown) {
 		       alert(xhr.responseText);
 		    });
-    		
     	}
 	<?php endif; ?>
 });
