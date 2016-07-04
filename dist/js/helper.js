@@ -378,7 +378,8 @@
     var form_row = body.find('tr.form-row');
     form_row.hide();
     addLink();
-    initialize();
+    // initialize();
+    loadRow();
 
     var add = $('<a href="#" id="add" style="margin-right:3px;"><i class="fa fa-check fa-lg"></i></a>');
     var close = $('<a href="#" id="close"><i class="fa fa-times fa-lg"></i></a>');
@@ -412,9 +413,9 @@
       link.appendTo(td);
       td.append('&nbsp;');
       td.appendTo(row);
-      body.append(row);
-      body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
-      body.append('<tr><td colspan="100%">&nbsp;</td></tr>');
+      form_row.after(row);
+      // body.find('tr:last-child').before('<tr><td colspan="100%">&nbsp;</td></tr>');
+      body.find('tr:last-child').after('<tr><td colspan="100%">&nbsp;</td></tr>');
     }    
     function initialize(){
       $.post(baseUrl+'cart/initial/'+opt.cart);
@@ -440,9 +441,9 @@
       });
       // var edit = $('<a href="#" id="edit-'+id+'" ref="'+id+'" style="margin-right:3px;"><i class="fa fa-edit fa-lg"></i></a>');
       var del = $('<a href="#" id="del-'+id+'" ref="'+id+'"><i class="fa fa-trash fa-lg"></i></a>');
-      var td = $('<td colspan="100%" style="text-align:right;"></td>');
+      var td = $('<td colspan="100%" style="text-align:right;padding-right:10px;"></td>');
       del.click(function(){
-        $.post(baseUrl+'cart/initial/'+opt.cart+'/'+id,function(){
+        $.post(baseUrl+'cart/remove/'+opt.cart+'/'+id,function(){
           body.find('tr#rtbl-row-'+id).remove();
           opt.onRemove.call(this);
         });
@@ -461,6 +462,21 @@
       td.append(del);
       row.append(td);
       form_row.before(row);
+    }
+    function loadRow(){
+      var dels = $('.del');
+      dels.each(function(){
+        $(this).click(function(){
+          var id = $(this).attr('ref');
+          if(id == "")
+            id = 0;
+          $.post(baseUrl+'cart/remove/'+opt.cart+'/'+id,function(){
+            body.find('tr#rtbl-row-'+id).remove();
+            opt.onRemove.call(this);
+          });
+          return false;
+        });
+      });
     }
   }
 }(jQuery));

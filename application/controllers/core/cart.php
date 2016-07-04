@@ -5,7 +5,7 @@ class Cart extends CI_Controller {
 		parent::__construct();
 	}	
     public function initial($name=null){
-        sess_initialize($name,array());
+        sess_initialize($name);
     }    
     public function add($name=null){
         $post = $this->input->post();
@@ -14,5 +14,9 @@ class Cart extends CI_Controller {
     }
     public function remove($name=null,$id=null){
         $sess = sess_delete($name,$id);   
+    }
+    public function all($name=null){
+        $sess = sess($name);
+        echo json_encode($sess);
     }
 }

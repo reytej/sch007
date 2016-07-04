@@ -47,5 +47,35 @@ class Fetch extends CI_Controller {
         }
         echo json_encode(array('details'=>$json));
     }
-
+    public function students($id=null){
+        $args = array();
+        $join = array();
+        $order = array();
+        $table = 'students';
+        $select = 'students.*';
+        $args['students.id'] = $id;
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select);
+        $json = array();
+        if(count($items) > 0){
+            foreach ($items as $res) {
+                $json = array(
+                    "id"=>$res->id,   
+                    "code"=>$res->code,   
+                    "fname"=>$res->fname,   
+                    "mname"=>$res->mname,   
+                    "lname"=>$res->lname,   
+                    "suffix"=>$res->suffix,   
+                    "bday"=>$res->bday,   
+                    "sex"=>$res->sex,   
+                    "image"=>"",   
+                );
+            }
+            $images = $this->site_model->get_image(null,null,'students',array('images.img_ref_id'=>$id)); 
+            if(count($images) > 0){
+                $img = $images[0];
+                $json['image'] = $img->img_path;
+            }
+        }
+        echo json_encode(array('details'=>$json));
+    }
 }

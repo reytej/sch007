@@ -297,9 +297,21 @@ outline: none !important;
 
 .paper-table tbody tr:nth-child(odd) td{
   background-color:#f1f1f1;
+  border: none;
 }
 .paper-table tbody tr:nth-child(even) td{
   background-color:#fff;
+  border: none;
+}
+
+/*.paper-table tbody tr td{
+  border-bottom: 1px solid #f1f1f1;
+}
+*/
+.paper-tab{
+  margin-bottom: 0px;
+  box-shadow: none;
+  border-radius: none;
 }
 
 /* PAGINATION */

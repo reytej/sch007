@@ -1061,6 +1061,27 @@ class Html{
 	    	$str .= $this->eTag('div');
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
+	    function textPaper($label=null,$text=null,$params=array()){
+	    	$str = "";
+	    	$str .= $this->sTag('div',array('class'=>'row div-under-no-spaces'));
+	    		if($label != ""){
+	    			$str .= $this->sTag('div',array('class'=>'col-sm-4 text-left'));
+	    				$str .= $this->tag('H4',$label,array('class'=>'paper-label'));
+	    			$str .= $this->eTag('div');
+	    		}
+	    		$wi = 'col-sm-12';
+	    		if($label != ""){
+	    			$wi = 'col-sm-8';
+	    		}	
+	    		$str .= $this->sTag('div',array('class'=>$wi.' text-left'));
+	    			$str .= $this->sTag('div',array('class'=>'col-sm-4 text-left'));
+	    				$params = $this->classitize($params,"paper-label ");
+	    				$str .= $this->tag('H4',$text,$params);
+	    			$str .= $this->eTag('div');
+	    		$str .= $this->eTag('div');
+	    	$str .= $this->eTag('div');
+	    	if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
 	/////////////////////////////////////////////////////////////
     /////	MAKE HTML TEXT       ///////////////////////////////
     ///////////////////////////////////////////////////////////
@@ -1194,6 +1215,23 @@ class Html{
 				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
+	    function batchDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('course_batches',array('id,name'),null,null,true);
+				$opts  = array();
+				$opts['Select Batch']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->id;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
 	    function subjectsDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
 	    	$CI =& get_instance();
 	 		$CI->load->model('site/site_model');
@@ -1205,6 +1243,23 @@ class Html{
 				$results=$CI->site_model->get_custom_val('subjects',array('id,name'),null,null,true);
 				$opts  = array();
 				$opts['Select Subject']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->id;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+	    function sectionsDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('sections',array('id,name'),null,null,true);
+				$opts  = array();
+				$opts['Select Section']  = "";
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}

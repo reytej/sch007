@@ -11,6 +11,8 @@ $nav = array();
 		$enrollment['enroll'] = array('title'=>'Enroll Student','path'=>'enrollment/form','exclude'=>0);
 	$enrollment['enr-inquiry'] = array('title'=>'Inquiries','path'=>null,'exclude'=>0);
 		$enrollment['fees'] = array('title'=>'Enrollments','path'=>'enrollment/form','exclude'=>0);
+	$enrollment['enr-maintenance'] = array('title'=>'Maintenance','path'=>null,'exclude'=>0);
+		$enrollment['pay_terms'] = array('title'=>'Payment Terms','path'=>'enrollment/pay_terms','exclude'=>0);
 $nav['enrollment'] = array('title'=>'<i class="fa fa-bookmark"></i> <span>Enrollment</span>','path'=>$enrollment,'exclude'=>0);
 $nav['students'] = array('title'=>'<i class="fa fa-mortar-board"></i> <span>Students</span>','path'=>'students','exclude'=>0);	
 $config['sideNav'] = $nav;
@@ -28,6 +30,7 @@ $rnav['inventory'] = array('title'=>'<i class="fa fa-cubes"></i> <span>Inventory
 	$academic['aca-maintenance'] = array('title'=>'Maintenance','path'=>null,'exclude'=>0);
 		$academic['courses'] = array('title'=>'Courses','path'=>'academic/courses','exclude'=>0);
 		$academic['batches'] = array('title'=>'Batch','path'=>'academic/batches','exclude'=>0);
+		$academic['sections'] = array('title'=>'Sections','path'=>'academic/sections','exclude'=>0);
 		$academic['subjects'] = array('title'=>'Subjects','path'=>'academic/subjects','exclude'=>0);
 		$academic['aca_years'] = array('title'=>'Academic Years','path'=>'academic/years','exclude'=>0);
 $rnav['academic'] = array('title'=>'<i class="fa fa-university"></i> <span>Academic</span>','path'=>$academic,'exclude'=>0);

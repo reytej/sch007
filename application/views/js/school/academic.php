@@ -73,9 +73,14 @@ $(document).ready(function(){
     		});
     	});
     	$('#items-tbl').rTable({
-    		onAdd	: 	function(data){
-    						resetForm();
-    					}
+    		cart 		: 	"items",
+    		onAdd		: 	function(data){
+	    						resetForm();
+	    						grandTotal();
+    						},
+    		onRemove	: 	function(data){
+	    						grandTotal();
+    						}
     	});
     	$("#item_id").change(function(){
     		loadDetails();
@@ -103,6 +108,20 @@ $(document).ready(function(){
     		var price = parseFloat($('#price').val());
     		var total = qty * price;
     		$("#total-txt").number(total,2);
+    	}
+    	function grandTotal(){
+			$.post(baseUrl+'cart/all/items',function(data){
+				var grandTotal = 0;
+				$.each(data,function(key,row){
+					var qty = parseFloat(row['qty']);
+		    		var price = parseFloat(row['price']);
+		    		var total = qty * price;
+		    		grandTotal += total;
+				});
+				$("#grand-total-txt").number(grandTotal,2);
+			},'json').fail( function(xhr, textStatus, errorThrown) {
+		       alert(xhr.responseText);
+		    });
     	}
     	function resetForm(){
 			$('#price-txt').number(0,2);
@@ -165,6 +184,24 @@ $(document).ready(function(){
 										if(data.error == 0){
 											// location.reload();
 											window.location = baseUrl+'academic/subjects';
+										}
+										else{
+											$.alertMsg({msg:data.msg,type:'error'});
+										}
+									},
+    		});
+			return false;
+    	});	
+    <?php elseif($use_js == 'sectionsFormJs'): ?>
+		$('#save-btn').click(function(){
+			var btn = $(this);
+			var noError = $('#general-form').rOkay({
+    			btn_load		: 	btn,
+				bnt_load_remove	: 	true,
+				asJson			: 	true,
+				onComplete		: 	function(data){
+										if(data.error == 0){
+											window.location = baseUrl+'academic/sections';
 										}
 										else{
 											$.alertMsg({msg:data.msg,type:'error'});

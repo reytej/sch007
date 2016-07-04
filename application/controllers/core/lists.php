@@ -251,6 +251,41 @@ class Lists extends CI_Controller {
         }
         echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
     }
+    public function sections($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/sections';
+        $cols = array('ID','Code','Name',' ');
+        $table = 'sections';
+        $select = 'sections.*';
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'academic/sections_form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $json[$res->id] = array(
+                    "id"=>$res->id,   
+                    "title"=>strtoupper($res->code),   
+                    "name"=>ucFix($res->name),   
+                    "link"=>$link
+                );
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
     public function students($tbl=null){
         $total_rows = 30;
         $pagi = null;

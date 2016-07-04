@@ -65,6 +65,7 @@ class Academic extends CI_Controller {
 		$det = array();
 		$img = array();
 		$subjects = array();
+		$items = array();
 		if($id != null){
 			$details = $this->site_model->get_tbl('courses',array('id'=>$id));
 			if($details){
@@ -79,12 +80,24 @@ class Academic extends CI_Controller {
 						"subj_name" => $res->subj_name,
 					);
 				}
+				$select   = "course_items.*,items.code as item_code,items.name as item_name,items.uom as item_uom,items.price as item_price";
+				$result   = $this->site_model->get_tbl('course_items',array('course_id'=>$id),array(),array('items'=>'course_items.item_id = items.id'),true,$select);
+				foreach ($result as $res) {
+					$items[] = array(
+						'item_id' => $res->item_id,
+						'qty' => $res->qty,
+						'uom' => $res->item_uom,
+						'price' => $res->item_price,
+						'item_name' => "[".$res->item_code."]".$res->item_name
+					);
+				}	
 			}
 		}
 		sess_initialize("subjects",$subjects);
+		sess_initialize("items",$items);
 		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
 		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'academic/courses"','text'=>"<i class='fa fa-fw fa-reply'></i>");
-		$data['code'] = coursesPage($det,$subjects);
+		$data['code'] = coursesPage($det,$subjects,$items);
 		$data['load_js'] = 'school/academic';
 		$data['use_js'] = 'coursesFormJs';
 		$this->load->view('page',$data);
@@ -121,6 +134,7 @@ class Academic extends CI_Controller {
 	}
 	public function courses_db($id=null){
 		$user = sess('user');
+		
 		$items = array(
 		    "name"=>$this->input->post('name'),
 		    "code"=>$this->input->post('code'),
@@ -137,6 +151,7 @@ class Academic extends CI_Controller {
 			$this->site_model->update_tbl('courses','id',$items,$id);
 			$msg = "Updated Course ".$items['name'];
 			$this->site_model->delete_tbl('course_subjects',array('course_id'=>$id));
+			$this->site_model->delete_tbl('course_items',array('course_id'=>$id));
 		}
 		$subjects = sess('subjects');
 		if(count($subjects) > 0){
@@ -149,7 +164,18 @@ class Academic extends CI_Controller {
 			}
 			$this->site_model->add_tbl_batch('course_subjects',$details);
 		}
-
+		$items = sess('items');
+		if(count($items) > 0){
+			$details = array();
+			foreach ($items as $ctr => $row) {
+				$details[] = array(
+					"course_id" => $id,
+					"item_id" => $row['item_id'],
+					"qty" => $row['qty'],
+				);
+			}
+			$this->site_model->add_tbl_batch('course_items',$details);
+		}
 		if($error == 0){
 			site_alert($msg,'success');
 		}
@@ -253,6 +279,59 @@ class Academic extends CI_Controller {
 				$id = $this->input->post('id');
 				$this->site_model->update_tbl('subjects','id',$items,$id);
 				$msg = "Updated Subject ".$items['name'];
+			}
+		}
+		if($error == 0){
+			site_alert($msg,'success');
+		}
+		echo json_encode(array('error'=>$error,'msg'=>$msg));
+	}
+	public function sections(){
+		$data = $this->syter->spawn('sections');
+		$data['code'] = listPage(fa('fa-flag')." Sections",'sections','academic/sections_form','list','list',false);
+		$this->load->view('list',$data);
+	}
+	public function sections_form($id=null){
+		$data = $this->syter->spawn('sections');
+		$data['page_title'] = fa('fa-flag')." Sections";
+		$data['page_subtitle'] = "Add New Section";
+		$det = array();
+		$img = array();
+		if($id != null){
+			$details = $this->site_model->get_tbl('sections',array('id'=>$id));
+			if($details){
+				$det = $details[0];
+				$data['page_subtitle'] = "Edit Section ".ucwords(strtolower($det->name));
+			}
+		}
+		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
+		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'academic/sections"','text'=>"<i class='fa fa-fw fa-reply'></i>");
+		$data['code'] = sectionsPage($det);
+		$data['load_js'] = 'school/academic';
+		$data['use_js'] = 'sectionsFormJs';
+		$this->load->view('page',$data);
+	}
+	public function sections_db($id=null){
+		$user = sess('user');
+		$items = array(
+		    "name"=>$this->input->post('name'),
+		    "code"=>$this->input->post('code'),
+		);
+		$error = 0;
+		$msg = "";
+		if($this->input->post('new')){
+			$id = $this->site_model->add_tbl('sections',$items,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
+			$msg = "Added New Section ".$items['name'];
+		}
+		else{
+			if(!$this->input->post('id')){
+				$id = $this->site_model->add_tbl('sections',$items,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
+				$msg = "Added New Section ".$items['name'];
+			}
+			else{
+				$id = $this->input->post('id');
+				$this->site_model->update_tbl('sections','id',$items,$id);
+				$msg = "Updated Section ".$items['name'];
 			}
 		}
 		if($error == 0){
