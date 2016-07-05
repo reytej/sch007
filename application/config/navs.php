@@ -9,10 +9,11 @@ $nav = array();
 
 	$enrollment['enr-transactions'] = array('title'=>'Transactions','path'=>null,'exclude'=>0);
 		$enrollment['enroll'] = array('title'=>'Enroll Student','path'=>'enrollment/form','exclude'=>0);
+		$enrollment['enroll_pay'] = array('title'=>'Student Payment','path'=>'payment/form','exclude'=>0);
 	$enrollment['enr-inquiry'] = array('title'=>'Inquiries','path'=>null,'exclude'=>0);
-		$enrollment['fees'] = array('title'=>'Enrollments','path'=>'enrollment/form','exclude'=>0);
-	$enrollment['enr-maintenance'] = array('title'=>'Maintenance','path'=>null,'exclude'=>0);
-		$enrollment['pay_terms'] = array('title'=>'Payment Terms','path'=>'enrollment/pay_terms','exclude'=>0);
+		$enrollment['enroll_list'] = array('title'=>'Enrollments','path'=>'enrollment','exclude'=>0);
+	// $enrollment['enr-maintenance'] = array('title'=>'Maintenance','path'=>null,'exclude'=>0);
+	// 	$enrollment['pay_terms'] = array('title'=>'Payment Terms','path'=>'enrollment/pay_terms','exclude'=>0);
 $nav['enrollment'] = array('title'=>'<i class="fa fa-bookmark"></i> <span>Enrollment</span>','path'=>$enrollment,'exclude'=>0);
 $nav['students'] = array('title'=>'<i class="fa fa-mortar-board"></i> <span>Students</span>','path'=>'students','exclude'=>0);	
 $config['sideNav'] = $nav;

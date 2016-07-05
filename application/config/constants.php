@@ -7,6 +7,7 @@
 */
 define('STUDENT_CODE', 1);
 define('ENROLLMENT', 10);
+define('PAYMENT', 20);
 
 
 

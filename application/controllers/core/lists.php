@@ -542,4 +542,71 @@ class Lists extends CI_Controller {
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
     }
+    public function enrolls($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/enrolls';
+        $cols = array('Reference','Student','Course','Batch','Section','Start Date','End Date','Trans Date',' ');
+        $table = 'enrolls';
+        $select = 'enrolls.*,
+                   students.fname as std_fname,students.mname as std_mname,students.lname as std_lname,students.suffix as std_suffix,
+                   courses.name as course_name,
+                   course_batches.name as batch_name,
+                   sections.name as section_name';
+        $join['students'] = "enrolls.student_id = students.id";
+        $join['courses'] = "enrolls.course_id = courses.id";
+        $join['course_batches'] = "enrolls.batch_id = course_batches.id";
+        $join['sections'] = "enrolls.section_id = sections.id";
+
+        if($this->input->post('student_name')){
+            $lk  =$this->input->post('student_name');
+            $args["(students.fname like '%".$lk."%' OR students.mname like '%".$lk."%' OR students.lname like '%".$lk."%' OR students.suffix like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+        if($this->input->post('trans_ref')){
+            $lk  =$this->input->post('trans_ref');
+            $args["(enrolls.trans_ref like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = "";
+                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'enrollment/form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
+                $json[] = array(
+                    "title"     =>  strtoupper($res->trans_ref),   
+                    "name"      =>  ucFix($name),   
+                    "course"    =>  ucFix($res->course_name),   
+                    "batch"     =>  ucFix($res->batch_name),   
+                    "section"   =>  ucFix($res->section_name),   
+                    "trans_date"=>  sql2Date($res->trans_date),   
+                    "start_date"=>  sql2Date($res->start_date),   
+                    "end_date"  =>  sql2Date($res->end_date),   
+                    "link"      =>  $link
+                );
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
+    public function enrolls_filter(){
+        $this->html->sForm();
+            $this->html->inputPaper('Reference:','trans_ref','');
+            $this->html->inputPaper('Student:','student_name','');
+        $this->html->eForm();
+        $data['code'] = $this->html->code();
+        $this->load->view('load',$data);   
+    }
 }

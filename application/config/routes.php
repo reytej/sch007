@@ -54,6 +54,8 @@ $route['students'] = "school/students";
 $route['students/(:any)'] = "school/students/$1";
 $route['enrollment'] = "school/enrollment";
 $route['enrollment/(:any)'] = "school/enrollment/$1";
+$route['payment'] = "school/payment";
+$route['payment/(:any)'] = "school/payment/$1";
 
 $route['inventory'] = "inventory/inventory";
 $route['inventory/(:any)'] = "inventory/inventory/$1";
