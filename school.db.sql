@@ -2,7 +2,7 @@
 MySQL Backup
 Source Server Version: 5.5.27
 Source Database: sch007
-Date: 7/5/2016 14:02:33
+Date: 7/5/2016 16:21:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -136,6 +136,7 @@ DROP TABLE IF EXISTS `enroll_payments`;
 CREATE TABLE `enroll_payments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `enroll_id` int(11) DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
   `type` varchar(50) DEFAULT NULL,
   `amount` double DEFAULT NULL,
   `due_date` date DEFAULT NULL,
@@ -204,6 +205,54 @@ CREATE TABLE `item_categories` (
   `inactive` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `payments`
+-- ----------------------------
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE `payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `trans_ref` varchar(50) DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `trans_date` date DEFAULT NULL,
+  `total_amount` double DEFAULT '0',
+  `remarks` longtext,
+  `reg_date` datetime DEFAULT NULL,
+  `reg_user` int(11) DEFAULT NULL,
+  `inactive` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `payment_details`
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_details`;
+CREATE TABLE `payment_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pay_id` int(11) DEFAULT NULL,
+  `type` varchar(25) DEFAULT NULL,
+  `amount` double DEFAULT NULL,
+  `bank` varchar(150) DEFAULT NULL,
+  `branch` varchar(150) DEFAULT NULL,
+  `ref_no` varchar(150) DEFAULT NULL,
+  `approval_code` varchar(150) DEFAULT NULL,
+  `check_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `payment_for`
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_for`;
+CREATE TABLE `payment_for` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pay_id` int(11) DEFAULT NULL,
+  `src_type` int(11) DEFAULT NULL,
+  `src_id` int(11) DEFAULT NULL,
+  `src_det_id` int(11) DEFAULT NULL,
+  `amount` double DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `payment_terms`
@@ -427,7 +476,7 @@ INSERT INTO `course_items` VALUES ('18','1','1','1'), ('19','1','2','1'), ('20',
 INSERT INTO `course_subjects` VALUES ('19','1','1'), ('20','1','4'), ('21','1','6');
 INSERT INTO `enrolls` VALUES ('1','ENR0001','1','1','1','1','2016-07-01','2016-11-01','3','4','5','52000','2016-07-05','2016-07-05 12:26:55','1','0');
 INSERT INTO `enroll_items` VALUES ('4','1','1','1','unit','8000','0'), ('5','1','2','1','unit','2000','0'), ('6','1','3','1','unit','3000','0');
-INSERT INTO `enroll_payments` VALUES ('3','1','dp','13000','2016-07-05','0',NULL), ('4','1','month','13000','2016-08-05','0',NULL), ('5','1','month','13000','2016-09-05','0',NULL), ('6','1','month','13000','2016-10-05','0',NULL);
+INSERT INTO `enroll_payments` VALUES ('3','1','1','dp','13000','2016-07-05','0',NULL), ('4','1','1','month','13000','2016-08-05','0',NULL), ('5','1','1','month','13000','2016-09-05','0',NULL), ('6','1','1','month','13000','2016-10-05','0',NULL);
 INSERT INTO `enroll_subjects` VALUES ('4','1','1'), ('5','1','4'), ('6','1','6');
 INSERT INTO `images` VALUES ('1','2.png','uploads/users/2.png','2','users',NULL,'2016-02-12 08:23:10','0'), ('5','1.png','uploads/users/1.png','1','users',NULL,'2016-02-12 08:30:45','0'), ('6','3.png','uploads/users/3.png','3','users',NULL,'2016-02-12 08:33:04','0'), ('7','5.png','uploads/users/5.png','5','users',NULL,'2016-02-12 08:37:36','0'), ('8','6.png','uploads/users/6.png','6','users',NULL,'2016-02-12 08:37:41','0'), ('9','7.png','uploads/users/7.png','7','users',NULL,'2016-02-12 08:37:41','0'), ('11','9.png','uploads/users/9.png','9','users',NULL,'2016-02-12 08:40:22','0'), ('12','8.png','uploads/users/8.png','8','users',NULL,'2016-02-12 08:45:13','0'), ('13','4.png','uploads/users/4.png','4','users',NULL,'2016-02-12 08:50:13','0'), ('14','10.png','uploads/users/10.png','10','users',NULL,'2016-02-12 09:43:46','0'), ('18','1.png','uploads/students/1.png','1','students',NULL,'2016-06-27 12:20:16','0'), ('19','2.png','uploads/students/2.png','2','students',NULL,'2016-06-27 12:20:37','0'), ('20','3.png','uploads/students/3.png','3','students',NULL,'2016-06-27 12:20:46','0'), ('22','4.png','uploads/items/4.png','4','items',NULL,'2016-06-28 09:14:11','0'), ('24','1.png','uploads/items/1.png','1','items',NULL,'2016-06-28 15:12:44','0');
 INSERT INTO `items` VALUES ('1','FEE001','Kindergarten Tuition Fee','Kindergarten Fee','unit','8000','1','service','1','0','2016-06-28 07:36:02','1'), ('2','FEE002','Misc. Fee','Miscellaneous Fee','unit','2000','1','service','1','0','2016-06-28 07:36:05','1'), ('3','FEE003','Meals Fee','Meals Fee','unit','3000','1','service','1','0','2016-06-28 07:36:08','1'), ('4','BK0001','English Kinder Book','English Kinder Book','pc','580','2','inventory','1','0','2016-06-28 09:11:22','1');

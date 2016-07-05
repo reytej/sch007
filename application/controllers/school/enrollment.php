@@ -134,6 +134,7 @@ class Enrollment extends CI_Controller {
 			foreach ($payments as $ctr => $paym) {
 				$pay[] = array(
 					"enroll_id" => $id,
+					"student_id" => $this->input->post('student') ,
 					"type" => $paym['type'],
 					"amount" => $paym['amount'],
 					"due_date" => $paym['due_date'],
