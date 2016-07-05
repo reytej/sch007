@@ -6,6 +6,11 @@ $(document).ready(function(){
 				var type = $(this).attr('ref');
 				var formData = $('#'+type+'-pane').serializeAnything();
 				formData += '&type='+type;
+				$.post(baseUrl+'payment/add_payment_cart',formData,function(data){
+					
+				},'json').fail( function(xhr, textStatus, errorThrown) {
+		           alert(xhr.responseText);
+		        });
 				return false;
 			});
 		});

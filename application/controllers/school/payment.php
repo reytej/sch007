@@ -16,11 +16,42 @@ class Payment extends CI_Controller {
 		$now = $this->site_model->get_db_now();
 
 		$next_ref = $this->site_model->get_next_ref(PAYMENT);
+		$payments = array();
 		
+		sess_initialize('payments',$payments);
 		$data['code'] = paymentForm($now,$next_ref);
 		$data['load_js'] = 'school/payment';
 		$data['use_js'] = 'paymentFormJs';
 		$this->load->view('page',$data);
+	}
+	public function add_payment_cart(){
+		$post = $this->input->post();
+		$payments = sess('payments');
+		$type = $post['type'];
+		$amount = 0;
+		if(isset($post[$post.'_amt']))
+			$amount = $post[$post.'_amt'];
+		$bank = "";
+		if(isset($post[$post.'_bank']))
+			$bank = $post[$post.'_bank'];
+		$ref_no = "";
+		if(isset($post['credit_card_no']))
+			$ref_no = $post['credit_card_no'];
+		if(isset($post['check_no']))
+			$ref_no = $post['check_no'];
+		$pay = array(
+					"type" 			=> $type,
+					"amount" 		=> $amount,
+					"bank"			=> $bank,
+					"branch"		=> $this->input->post('check_branch'),
+					"ref_no" 		=> $ref_no,
+					"check_date"	=> $this->input->post('check_date'),
+					"approval_code"	=> $this->input->post('credit_approval'),
+				);
+		$sess = sess_add('payments',$pay);
+		$json['sess'] = $sess;
+		$json['html'] = "";
+		echo json_encode($json);
 	}
 	public function get_student_dues($id=null){
 		$json = array();
