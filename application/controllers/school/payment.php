@@ -19,6 +19,8 @@ class Payment extends CI_Controller {
 		$payments = array();
 		
 		sess_initialize('payments',$payments);
+		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
+		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'payment"','text'=>"<i class='fa fa-fw fa-table'></i>");
 		$data['code'] = paymentForm($now,$next_ref);
 		$data['load_js'] = 'school/payment';
 		$data['use_js'] = 'paymentFormJs';
@@ -29,11 +31,11 @@ class Payment extends CI_Controller {
 		$payments = sess('payments');
 		$type = $post['type'];
 		$amount = 0;
-		if(isset($post[$post.'_amt']))
-			$amount = $post[$post.'_amt'];
+		if(isset($post[$type.'_amt']))
+			$amount = $post[$type.'_amt'];
 		$bank = "";
-		if(isset($post[$post.'_bank']))
-			$bank = $post[$post.'_bank'];
+		if(isset($post[$type.'_bank']))
+			$bank = $post[$type.'_bank'];
 		$ref_no = "";
 		if(isset($post['credit_card_no']))
 			$ref_no = $post['credit_card_no'];
@@ -50,7 +52,15 @@ class Payment extends CI_Controller {
 				);
 		$sess = sess_add('payments',$pay);
 		$json['sess'] = $sess;
-		$json['html'] = "";
+
+		$this->html->sRow(array('id'=>'payments-row-'.$sess['id'],'class'=>'payments-rows'));
+			$this->html->td($sess['id'] + 1);
+			$this->html->td(strtoupper($type));
+			$this->html->td(num($amount));
+			$link = $this->html->A(fa('fa-times fa-lg'),'#',array('id'=>'del-pay-'.$sess['id'],'ref'=>$sess['id'],'return'=>true));
+			$this->html->td($link);
+		$this->html->eRow();
+		$json['html'] = $this->html->code();
 		echo json_encode($json);
 	}
 	public function get_student_dues($id=null){
@@ -75,11 +85,11 @@ class Payment extends CI_Controller {
 					$balance = $res->amount - $res->pay;
 					$this->html->td(num($balance) ) ;
 					$this->html->sTd(array('style'=>'width:120px;'));
-						$this->html->input("","tender[".$res->id."]",null,null,array('class'=>'paper-input'));
+						$this->html->input("","tender[".$res->id."]",null,null,array('class'=>'paper-input tenders','id'=>'tender-'.$res->id));
 					$this->html->eTd();
 					$link = "";
-					$link .= $this->html->A(fa('fa-check-circle fa-fw fa-lg'),'#',array('return'=>'true'));
-					$link .= $this->html->A(fa('fa-times-circle fa-fw fa-lg'),'#',array('return'=>'true'));
+					$link .= $this->html->A(fa('fa-check-circle fa-fw fa-lg'),'#',array('class'=>'all-ins','id'=>'all-in-'.$res->id,'ref'=>$res->id,'return'=>'true'));
+					$link .= $this->html->A(fa('fa-times-circle fa-fw fa-lg'),'#',array('class'=>'all-dels','id'=>'all-del-'.$res->id,'ref'=>$res->id,'return'=>'true'));
 					$this->html->td($link,array('style'=>'width:80px;'));
 				$this->html->eRow();	
 			}
