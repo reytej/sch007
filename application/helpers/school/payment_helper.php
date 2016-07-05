@@ -1,6 +1,7 @@
 <?php
 function paymentForm($now=null,$next_ref=null,$det=array()){
 	$CI =& get_instance();
+	$CI->html->sForm("payment/db","general-form");
 	$CI->html->sBox('solid');
 		$CI->html->sBoxBody();
 			$CI->html->sDivRow(array('style'=>'margin-top:10px;'));
@@ -63,10 +64,10 @@ function paymentForm($now=null,$next_ref=null,$det=array()){
 								$CI->html->inputPaper('Branch:','check_branch',null,null,array('class'=>''));
 							$CI->html->eDivCol();
 							$CI->html->sDivCol(2);
-								$CI->html->inputPaper('Check No.:','check_no',null,null,array('class'=>'pick-date'));
+								$CI->html->inputPaper('Check No.:','check_no',null,null,array('class'=>''));
 							$CI->html->eDivCol();
 							$CI->html->sDivCol(2);
-								$CI->html->inputPaper('Check Date:','check_date',sql2Date($now),null,array('class'=>''));
+								$CI->html->inputPaper('Check Date:','check_date',sql2Date($now),null,array('class'=>'pick-date'));
 							$CI->html->eDivCol();
 							$CI->html->sDivCol(1);
 								$CI->html->button("ADD",array('ref'=>'check','class'=>'amt-btns btn-flat btn-sm'),'primary');
@@ -137,6 +138,7 @@ function paymentForm($now=null,$next_ref=null,$det=array()){
 
 		$CI->html->eBoxBody();
 	$CI->html->eBox();
+	$CI->html->eForm();
 	return $CI->html->code();
 }
 

@@ -144,7 +144,7 @@ class Site_model extends CI_Model{
 		$this->db->insert($table_name,$items);
 		return $this->db->insert_id();
 	}
-	public function update_tbl($table_name,$table_key,$items,$id=null){
+	public function update_tbl($table_name,$table_key,$items,$id=null,$set=array()){
 		if(is_array($table_key)){
 			foreach ($table_key as $key => $val) {
 				if(is_array($val)){
@@ -161,7 +161,11 @@ class Site_model extends CI_Model{
 			else
 				$this->db->where($table_key,$id);
 		}
-
+		if(!empty($set)){
+			foreach ($set as $key => $val) {
+				$this->db->set($key, $val, FALSE);
+			}
+		}
 		$this->db->update($table_name,$items);
 		return $this->db->last_query();
 	}

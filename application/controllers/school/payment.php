@@ -26,6 +26,97 @@ class Payment extends CI_Controller {
 		$data['use_js'] = 'paymentFormJs';
 		$this->load->view('page',$data);
 	}
+	public function db(){
+		$trans_type = PAYMENT;
+		$reference = $this->input->post('trans_ref');
+		$user = sess('user');
+
+		$payments 	= sess('payments');
+		$total_amount = $this->input->post('total-allocate');
+		$tenders = $this->input->post('tender');
+		$enrolls = $this->input->post('enrolls');
+
+		$details = array(
+			"trans_ref"  => $reference,
+			"student_id" => $this->input->post('student'),
+			"trans_date" => date2Sql($this->input->post('trans_date')),
+			"total_amount" => $total_amount,
+			"remarks"  => $this->input->post('remarks'),
+		);
+
+		$error = 0;
+		$msg = "";
+		$id = 0;
+		$check = $this->site_model->ref_unused(PAYMENT,$reference);
+		if($check){
+			$id = $this->site_model->add_tbl('payments',$details,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
+			$msg = "Payment Successfull. Reference #".$reference;	
+			$this->site_model->save_ref(PAYMENT,$reference);			
+		}
+		else{
+			$error = 1;
+			$msg = "Reference number ".$reference." is already used.";
+		}
+		if($id != 0){
+			$pay = array();
+			foreach ($payments as $ctr => $pyt) {
+				$branch = "";
+				if($pyt['branch']){
+					$branch = $pyt['branch'];
+				}
+				$app_code = "";
+				if($pyt['approval_code']){
+					$app_code = $pyt['approval_code'];
+				}
+				$check_date = null;
+				if($pyt['check_date']){
+					$check_date = date2Sql($pyt['check_date']);
+				}
+				$pay[] = array(
+					"pay_id" 		=> $id,
+					"type" 			=> $pyt['type'],
+					"amount" 		=> $pyt['amount'],
+					"bank"			=> $pyt['bank'],
+					"branch"		=> $branch,
+					"ref_no" 		=> $pyt['ref_no'],
+					"check_date"	=> $check_date,
+					"approval_code"	=> $app_code,
+				);
+			}
+			if(count($pay) > 0){
+				$this->site_model->add_tbl_batch('payment_details',$pay);
+			}
+			$ten = array();
+			foreach ($tenders as $en_py_id => $tnd) {
+				if($tnd > 0){
+					$enroll_id = null;
+					if(isset($enrolls[$en_py_id]))
+						$enroll_id = $enrolls[$en_py_id];
+					$ten[] = array(
+						"pay_id" 		=> $id,
+						"src_type" 		=> ENROLLMENT,
+						"src_id" 		=> $enroll_id,
+						"src_det_id"	=> $en_py_id,
+						"amount"		=> $tnd,
+					);
+				}
+			}
+			if(count($ten) > 0){
+				$this->site_model->add_tbl_batch('payment_for',$ten);
+				foreach ($tenders as $en_py_id => $tnd) {
+					if($tnd > 0){
+						$args = array('pay_date'=>date2Sql($this->input->post('trans_date')));
+						$set = array('pay'=>'pay+'.$tnd);
+						$this->site_model->update_tbl('enroll_payments','id',$args,$en_py_id,$set);
+					}
+				}	
+			}
+		}	
+		if($error == 0){
+			site_alert($msg,'success');
+		}
+		echo json_encode(array('error'=>$error,'msg'=>$msg,"id"=>$id));
+	}
 	public function add_payment_cart(){
 		$post = $this->input->post();
 		$payments = sess('payments');
@@ -86,6 +177,7 @@ class Payment extends CI_Controller {
 					$this->html->td(num($balance) ) ;
 					$this->html->sTd(array('style'=>'width:120px;'));
 						$this->html->input("","tender[".$res->id."]",null,null,array('class'=>'paper-input tenders','id'=>'tender-'.$res->id));
+						$this->html->hidden("enrolls[".$res->id."]",$res->enroll_id);
 					$this->html->eTd();
 					$link = "";
 					$link .= $this->html->A(fa('fa-check-circle fa-fw fa-lg'),'#',array('class'=>'all-ins','id'=>'all-in-'.$res->id,'ref'=>$res->id,'return'=>'true'));

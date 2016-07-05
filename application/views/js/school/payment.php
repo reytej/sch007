@@ -1,6 +1,51 @@
 <script>
 $(document).ready(function(){
 	<?php if($use_js == 'paymentFormJs'): ?>
+		$('#save-btn').click(function(){
+			var check = checkTenders();
+			if(check){
+				var btn = $(this);
+				var noError = $('#general-form').rOkay({
+	    			btn_load		: 	btn,
+					bnt_load_remove	: 	true,
+					asJson			: 	true,
+					onComplete		: 	function(data){
+											if(data.error == 0){
+												location.reload();
+											}
+											else{
+												$.alertMsg({msg:data.msg,type:'error'});
+											}
+										},
+	    		});
+			}
+			return false;
+		});
+		function checkTenders(){
+			var total = parseFloat($('#total-allocate').val());	
+			var tenders = 0;
+			$('.tenders').each(function(){
+				var val = $(this).val();
+				if(isNumber(val)){
+					tenders += parseFloat(val);
+				}
+			});
+			if(total == 0){
+				$.alertMsg({'msg':'No Payment Amount Added.','type':'error'});
+				return false;
+			}
+			else if(tenders == 0){
+				$.alertMsg({'msg':'No Payment Tendered','type':'error'});
+				return false;
+			}
+			else if((total - tenders) > 0){
+				$.alertMsg({'msg':'Please input all allocated Amount.','type':'error'});
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
 		$('.amt-btns').each(function(){
 			$(this).click(function(){
 				var type = $(this).attr('ref');
