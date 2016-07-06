@@ -342,6 +342,9 @@ outline: none !important;
 .bootbox-filter{
   width: 40%;
 }
+.bootbox-wide{
+  width: 80%;
+}
 
 .btn-white {
     background: #fff;

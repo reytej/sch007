@@ -202,7 +202,8 @@
       table           :   this.find('.list-load').attr('table'),
       form            :   this.find('.list-load').attr('form'),
       view            :   this.find('.list-load').attr('view'),
-      dflt            :   this.find('.list-load').attr('dflt-view')
+      dflt            :   this.find('.list-load').attr('dflt-view'),
+      onComplete      :   function(response){}
     },options);
     var getUrl = 'lists/'+atr.table;
     var div = atr.div;
@@ -277,6 +278,7 @@
             else{
               gridView(div,rows,cols);
             }
+            atr.onComplete.call(this,data);
             if(data.pagi != ""){
               $('.list-page-pagi').html(data.pagi);
               $('.pagination li a.ragi').click(function(data){
@@ -478,5 +480,27 @@
         });
       });
     }
+  }
+  $.fn.rView = function(loadUrl){
+    var href = "";
+    if(typeof loadUrl !== undefined && loadUrl !== false){
+       href = $(this).attr('href');
+    }
+    else{
+      href = loadUrl;
+    }
+    var boxTitle = "";
+    var title = $(this).attr('title');
+    if(typeof title !== undefined && title !== false){
+      boxTitle = title;
+    }
+    $(this).click(function(){
+      bootbox.dialog({
+        message: baseUrl+href,
+        title: boxTitle,
+        className: 'bootbox-wide',
+      });
+      return false;
+    });
   }
 }(jQuery));

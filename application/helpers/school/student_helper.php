@@ -116,10 +116,9 @@ function generalDetails($next_ref="",$det=array()){
 				$CI->html->eDivCol();
 			$CI->html->eDivRow();
 		$CI->html->eForm();
-
 	return $CI->html->code();
 }
-function balanceDetails(){
+function balanceDetails($result=array()){
 	$CI =& get_instance();
 		$CI->html->sTable(array('class'=>'table paper-table','id'=>'balance-tbl'));
 			$CI->html->sTablehead();
@@ -128,13 +127,48 @@ function balanceDetails(){
 					$CI->html->th('Particular');
 					$CI->html->th('Due Date');
 					$CI->html->th('Amount Due');
-					$CI->html->th('Balance');
 					$CI->html->th('Amount Paid');
 					$CI->html->th('Paid Date');
+					$CI->html->th('Balance');
 				$CI->html->eRow();
 			$CI->html->eTablehead();
 			$CI->html->sTableBody();
-				
+				$total_balance = 0;
+				$total_paid = 0;
+				$total_due = 0;
+				foreach ($result as $res) {
+					$CI->html->sRow();
+						$CI->html->td($res->trans_ref);
+						$particular = "Monthly Payment";
+						if($res->type == 'dp')
+							$particular = "Down Payment";
+						$CI->html->td($particular);
+						$CI->html->td(sql2Date($res->due_date));
+						$CI->html->td(num($res->amount));
+						$total_due += $res->amount;
+						$total_paid += $res->pay;
+						$balance = $res->amount - $res->pay;
+						$total_balance += $balance;
+						$CI->html->td(num($res->pay));
+						$CI->html->td(iSetObjDate($res,'pay_date'));
+						$CI->html->td(num($balance));
+					$CI->html->eRow();
+				}
+				$CI->html->sRow();
+					$CI->html->td("",array('colspan'=>'5'));
+					$CI->html->td('Total Amount Due',array('style'=>'font-weight:bold;text-align:left'));
+					$CI->html->td(num($total_due),array('style'=>'font-weight:bold;text-align:left'));
+				$CI->html->eRow();
+				$CI->html->sRow();
+					$CI->html->td("",array('colspan'=>'5'));
+					$CI->html->td('Total Amount Paid',array('style'=>'font-weight:bold;text-align:left'));
+					$CI->html->td(num($total_paid),array('style'=>'font-weight:bold;text-align:left'));
+				$CI->html->eRow();
+				$CI->html->sRow();
+					$CI->html->td("",array('colspan'=>'5'));
+					$CI->html->td('Remaining Balance',array('style'=>'font-weight:bold;text-align:left'));
+					$CI->html->td(num($total_balance),array('style'=>'font-weight:bold;text-align:left'));
+				$CI->html->eRow();
 			$CI->html->eTableBody();
 		$CI->html->eTable();
 	return $CI->html->code();

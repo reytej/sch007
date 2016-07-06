@@ -666,4 +666,71 @@ class Lists extends CI_Controller {
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
     }
+    public function balances($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/payments';
+        $cols = array('Student','Reference','Total Amount','Total Paid','Remaining Balance',' ');
+        $table = 'enroll_payments';
+        $select[0] = 'enroll_payments.*,enrolls.trans_ref,
+                   IFNULL(SUM(enroll_payments.amount), 0) as total_amount,
+                   IFNULL(SUM(enroll_payments.pay), 0) as total_paid,
+                   students.fname as std_fname,students.mname as std_mname,students.lname as std_lname,students.suffix as std_suffix';
+        $select[1] = false;
+        $join['students'] = "enroll_payments.student_id = students.id";
+        $join['enrolls'] = 'enroll_payments.enroll_id = enrolls.id';
+        $group = 'enroll_payments.student_id';
+
+        if($this->input->post('student_name')){
+            $lk  =$this->input->post('student_name');
+            $args["(students.fname like '%".$lk."%' OR students.mname like '%".$lk."%' OR students.lname like '%".$lk."%' OR students.suffix like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+        if($this->input->post('trans_ref')){
+            $lk  =$this->input->post('trans_ref');
+            $args["(payments.trans_ref like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group,$page['limit']);
+        
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
+                $balance = $res->total_amount - $res->total_paid;
+                $link = "";
+                $link = $this->html->A(fa('fa-calendar fa-lg fa-fw'),'students/profile_balance/'.$res->student_id,array(
+                                       'class'=>'view-btn btn btn-sm btn-primary btn-flat',
+                                       'title'=>fa('fa-mortar-board')." ".$name,
+                                       'return'=>'true'));
+                $json[] = array(
+                    "title"             =>  ucFix($name),   
+                    "reference"         =>  strtoupper($res->trans_ref),   
+                    "total"             =>  num($res->total_amount),   
+                    "paid"              =>  num($res->total_paid),   
+                    "balance"           =>  num($balance),   
+                    "link"              =>  $link
+                );
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
+    public function balances_filter(){
+        $this->html->sForm();
+            $this->html->inputPaper('Reference:','trans_ref','');
+            $this->html->inputPaper('Student:','student_name','');
+        $this->html->eForm();
+        $data['code'] = $this->html->code();
+        $this->load->view('load',$data);   
+    }
 }

@@ -194,4 +194,11 @@ class Payment extends CI_Controller {
 		$json['html'] = $this->html->code();
 		echo json_encode($json);
 	}
+	public function balances(){
+		$data = $this->syter->spawn('balance_list');
+		$data['code'] = listPageCustom("balance-list",fa('fa-balance-scale')." Balances",'balances',null,'list','list',true);
+		$data['load_js'] = 'school/payment';
+		$data['use_js']  = 'balancesJs';
+		$this->load->view('list',$data);
+	}
 }

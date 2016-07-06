@@ -144,8 +144,12 @@ class Students extends CI_Controller {
 		###################################################
 	}
 	public function profile_balance($id=null){
-		
-		$data['code'] = balanceDetails();
+		$select   = "enroll_payments.*,enrolls.trans_ref";
+		$join['enrolls'] = 'enroll_payments.enroll_id = enrolls.id';
+		$args['enroll_payments.student_id'] = $id;
+		$order['enroll_payments.due_date'] = 'asc';
+		$result = $this->site_model->get_tbl('enroll_payments',$args,$order,$join,true,$select);
+		$data['code'] = balanceDetails($result);
 		// $data['load_js'] = 'school/students';
 		// $data['use_js'] = 'profileGeneralJs';
 		$this->load->view('load',$data);

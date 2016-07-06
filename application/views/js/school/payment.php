@@ -154,6 +154,14 @@ $(document).ready(function(){
 		function isNumber(n) {
  			 return !isNaN(parseFloat(n)) && isFinite(n);
 		}
+	<?php elseif($use_js == 'balancesJs'): ?>
+		$('#balance-list').rList({
+			onComplete 		:  	function(data){
+									$('.view-btn').each(function(){
+										$(this).rView();
+									});
+								}
+		});
 	<?php endif; ?>
 });
 </script>

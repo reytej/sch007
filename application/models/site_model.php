@@ -52,7 +52,10 @@ class Site_model extends CI_Model{
 		}
 	}
 	public function get_tbl($table=null,$args=array(),$order=array(),$joinTables=null,$result=true,$select='*',$group=null,$limit=null,$count_only=false){
-		$this->db->select($select);
+		if(is_array($select))
+			$this->db->select($select[0],$select[1]);
+		else
+			$this->db->select($select);
 		$this->db->from($table);
 		if (!is_null($joinTables) && is_array($joinTables)) {
 			foreach ($joinTables as $k => $v) {

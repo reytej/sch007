@@ -19,7 +19,9 @@ $(document).ready(function(){
 		var listPageH = $('.list-page').outerHeight();
 		$('.list-page-body').height(listPageH-80);
 		$('.list-page-body').perfectScrollbar();
-		$('.list-page').rList();
+		if($('.default-list').exists()){
+			$('.default-list').rList();
+		}
 	}
 
 	$('.pick-date').datepicker();
