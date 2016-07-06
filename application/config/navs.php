@@ -14,6 +14,7 @@ $nav = array();
 		$enrollment['enroll_list'] = array('title'=>'Enrollments','path'=>'enrollment','exclude'=>0);
 		$enrollment['pay_list'] = array('title'=>'Payments','path'=>'payment','exclude'=>0);
 		$enrollment['balance_list'] = array('title'=>'Balances','path'=>'payment/balances','exclude'=>0);
+		$enrollment['billing'] = array('title'=>'Billings','path'=>'payment/billings','exclude'=>0);
 	// $enrollment['enr-maintenance'] = array('title'=>'Maintenance','path'=>null,'exclude'=>0);
 	// 	$enrollment['pay_terms'] = array('title'=>'Payment Terms','path'=>'enrollment/pay_terms','exclude'=>0);
 $nav['enrollment'] = array('title'=>'<i class="fa fa-bookmark"></i> <span>Enrollment</span>','path'=>$enrollment,'exclude'=>0);

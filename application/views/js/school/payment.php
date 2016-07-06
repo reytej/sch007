@@ -162,6 +162,15 @@ $(document).ready(function(){
 									});
 								}
 		});
+	<?php elseif($use_js == 'billingJs'): ?>
+		$('#billing-list').rList({
+			onComplete 		:  	function(data){
+									console.log(data);
+								},
+			gridClick 		:  	function(data){
+									alert('ere');
+								}
+		});
 	<?php endif; ?>
 });
 </script>

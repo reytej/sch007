@@ -203,7 +203,8 @@
       form            :   this.find('.list-load').attr('form'),
       view            :   this.find('.list-load').attr('view'),
       dflt            :   this.find('.list-load').attr('dflt-view'),
-      onComplete      :   function(response){}
+      onComplete      :   function(response){},
+      gridClick       :   null,
     },options);
     var getUrl = 'lists/'+atr.table;
     var div = atr.div;
@@ -304,22 +305,35 @@
       $.each(rows,function(key,val){
           var img = baseUrl+'dist/img/no-photo.jpg';
           if(val.hasOwnProperty('grid-image')){
-            img = val['grid-image'];
+            img = baseUrl+val['grid-image'];
           }  
-          var col = $('<div class="col-md-3 no-margin" style="padding:3px;"></div>');
+          var reg_date = "";
+          if(typeof val.reg_date !== 'undefined' && val.reg_date !== false){
+            reg_date = ' <span class="info-box-text" style="font-size:12px; color:#888">'+val.reg_date+'</span> ';
+          }
+          var box_id = "";
+          if(typeof val.tagid !== 'undefined' && val.tagid !== false){
+            box_id = 'id="'+val.tagid+'"';
+          }
+          var col = $('<div class="col-md-3 no-margin" '+box_id+' style="padding:3px;"></div>');
           col.append('<div class="info-box" style="margin:0px;padding:0px;cursor:pointer">'
                         +'<span class="info-box-icon"><img src="'+img+'" style="max-width:90px; height:90px;vertical-align:initial !important;"></span>'
                         +'<div class="info-box-content">'
                           +'<span class="info-box-number" style="font-size:14px;">'+val.title+'</span>'
                           +'<span class="info-box-text" style="font-size:12px; color:#888">'+val.desc+'</span>'
-                          +'<span class="info-box-text" style="font-size:12px; color:#888">'+val.reg_date+'</span>'
+                          +reg_date
                           +'<span class="info-box-text" style="font-size:12px; color:#888">'+val.subtitle+'</span>'
                         +'</div>'
                       +'</div>'
                     +'</div>')
               .click(function(){
-                 var link = val.link;
-                 window.location = $(link).attr('href');
+                 if($.isFunction(atr.gridClick)){
+                    atr.gridClick.call(this,val);
+                 }
+                 else{
+                   var link = val.link;
+                   window.location = $(link).attr('href');
+                 }
                  return false;
               });
           row.append(col);

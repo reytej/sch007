@@ -733,4 +733,66 @@ class Lists extends CI_Controller {
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
     }
+    public function billings($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/payments';
+        $cols = array('Student','Reference','Total Amount','Total Paid','Remaining Balance',' ');
+        $table = 'enroll_payments';
+        $select[0] = 'enroll_payments.*,enrolls.trans_ref,
+                      students.fname as std_fname,students.mname as std_mname,students.lname as std_lname,students.suffix as std_suffix';
+        $select[1] = false;
+        $join['students'] = "enroll_payments.student_id = students.id";
+        $join['enrolls'] = 'enroll_payments.enroll_id = enrolls.id';
+        $group = null;
+        $args["DATE(enroll_payments.due_date) <= DATE(NOW())"] = array('use'=>'where','val'=>"",'third'=>false);
+        $args["enroll_payments.amount > enroll_payments.pay"] = array('use'=>'where','val'=>"",'third'=>false);
+        if($this->input->post('student_name')){
+            $lk  =$this->input->post('student_name');
+            $args["(students.fname like '%".$lk."%' OR students.mname like '%".$lk."%' OR students.lname like '%".$lk."%' OR students.suffix like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+        if($this->input->post('trans_ref')){
+            $lk  =$this->input->post('trans_ref');
+            $args["(payments.trans_ref like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group);
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
+                $json[] = array(
+                    "id"                => $res->id,
+                    "tagid"             => $res->id,
+                    "student_id"        => $res->student_id,
+                    "title"             => ucFix($name),   
+                    "desc"              => "Amount Due: ".num($res->amount),   
+                    "subtitle"          => "Due Date: ".sql2Date($res->due_date),   
+                    // "paid"              =>  num($res->total_paid),   
+                    // "balance"           =>  num($balance),   
+                    // "link"              =>  $link
+                );
+                $ids[$res->id] = $res->student_id;
+            }
+            $images = $this->site_model->get_image(null,null,'students',array('images.img_ref_id'=>$ids)); 
+            foreach ($json as $ctr => $row) {
+                foreach ($images as $res ){
+                    if($row['student_id'] == $res->img_ref_id){
+                        $row['grid-image'] = $res->img_path;
+                        break;
+                    }
+                }
+                $json[$ctr] = $row;
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$pagi,'post'=>$post));
+    }
 }

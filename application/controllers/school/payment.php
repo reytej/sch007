@@ -201,4 +201,11 @@ class Payment extends CI_Controller {
 		$data['use_js']  = 'balancesJs';
 		$this->load->view('list',$data);
 	}
+	public function billings(){
+		$data = $this->syter->spawn('billing');
+		$data['code'] = billingPage("billing-list",fa('fa-inbox')." Billings",'billings',null,'grid','grid',true);
+		$data['load_js'] = 'school/payment';
+		$data['use_js']  = 'billingJs';
+		$this->load->view('list',$data);
+	}
 }
