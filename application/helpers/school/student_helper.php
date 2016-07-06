@@ -34,7 +34,7 @@ function studentsProfile($det=array(),$img=array()){
 			$CI->html->sDiv(array('class'=>'btn-group-vertical btn-profile-vertical','style'=>'width:100%;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);'));
 				$CI->html->button(fa('fa-info-circle').' General Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_general'));
 				if(iSetObj($det,"id")){
-					#$CI->html->button(fa('fa-users').' Guardian Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_guardian'));
+					$CI->html->button(fa('fa-money').' Payment Balance',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_balance'));
 				}
 
 			$CI->html->eDiv();
@@ -117,6 +117,26 @@ function generalDetails($next_ref="",$det=array()){
 			$CI->html->eDivRow();
 		$CI->html->eForm();
 
+	return $CI->html->code();
+}
+function balanceDetails(){
+	$CI =& get_instance();
+		$CI->html->sTable(array('class'=>'table paper-table','id'=>'balance-tbl'));
+			$CI->html->sTablehead();
+				$CI->html->sRow();
+					$CI->html->th('Reference');
+					$CI->html->th('Particular');
+					$CI->html->th('Due Date');
+					$CI->html->th('Amount Due');
+					$CI->html->th('Balance');
+					$CI->html->th('Amount Paid');
+					$CI->html->th('Paid Date');
+				$CI->html->eRow();
+			$CI->html->eTablehead();
+			$CI->html->sTableBody();
+				
+			$CI->html->eTableBody();
+		$CI->html->eTable();
 	return $CI->html->code();
 }
 

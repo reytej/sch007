@@ -609,4 +609,61 @@ class Lists extends CI_Controller {
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
     }
+    public function payments($tbl=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        
+        $page_link = 'lists/payments';
+        $cols = array('Reference','Student','Total Amount','Trans Date',' ');
+        $table = 'payments';
+        $select = 'payments.*,
+                   students.fname as std_fname,students.mname as std_mname,students.lname as std_lname,students.suffix as std_suffix';
+        $join['students'] = "payments.student_id = students.id";
+
+        if($this->input->post('student_name')){
+            $lk  =$this->input->post('student_name');
+            $args["(students.fname like '%".$lk."%' OR students.mname like '%".$lk."%' OR students.lname like '%".$lk."%' OR students.suffix like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+        if($this->input->post('trans_ref')){
+            $lk  =$this->input->post('trans_ref');
+            $args["(payments.trans_ref like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
+        }
+
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $page = paginate($page_link,$count,$total_rows,$pagi);
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+
+        $json = array();
+        if(count($items) > 0){
+            $ids = array();
+            foreach ($items as $res) {
+                $link = "";
+                $link = $this->html->A(fa('fa-times fa-lg fa-fw'),base_url().'enrollment/form/'.$res->id,array('class'=>'btn btn-sm btn-danger btn-flat','return'=>'true'));
+                $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
+                $json[] = array(
+                    "title"     =>  strtoupper($res->trans_ref),   
+                    "name"      =>  ucFix($name),   
+                    "total"      =>  num($res->total_amount),   
+                    "trans_date"=>  sql2Date($res->trans_date),   
+                    "link"      =>  $link
+                );
+            }
+        }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
+    }
+    public function payments_filter(){
+        $this->html->sForm();
+            $this->html->inputPaper('Reference:','trans_ref','');
+            $this->html->inputPaper('Student:','student_name','');
+        $this->html->eForm();
+        $data['code'] = $this->html->code();
+        $this->load->view('load',$data);   
+    }
 }

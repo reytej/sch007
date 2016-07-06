@@ -5,14 +5,14 @@ class Payment extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('school/payment_helper');
 	}
-	// public function index(){
-	// 	$data = $this->syter->spawn('students');
-	// 	$data['code'] = listPage(fa('fa-mortar-board')." Students",'students','students/profile','grid','all',true);
-	// 	$this->load->view('list',$data);
-	// }
+	public function index(){
+		$data = $this->syter->spawn('enroll_pay');
+		$data['code'] = listPage(fa('fa-money')." Student Payments",'payments','payment/form','list','list',true);
+		$this->load->view('list',$data);
+	}
 	public function form($id=null){
 		$data = $this->syter->spawn('enroll_pay');
-		$data['page_title'] = fa('fa-money')." Student Payment";
+		$data['page_title'] = fa('fa-money')." Payment Entry";
 		$now = $this->site_model->get_db_now();
 
 		$next_ref = $this->site_model->get_next_ref(PAYMENT);

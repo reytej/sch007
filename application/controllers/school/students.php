@@ -143,4 +143,11 @@ class Students extends CI_Controller {
 		echo json_encode(array('error'=>$error,'msg'=>$msg));
 		###################################################
 	}
+	public function profile_balance($id=null){
+		
+		$data['code'] = balanceDetails();
+		// $data['load_js'] = 'school/students';
+		// $data['use_js'] = 'profileGeneralJs';
+		$this->load->view('load',$data);
+	}
 }
