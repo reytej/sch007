@@ -33,16 +33,49 @@ class Prints extends Print_headers {
 								$html .= '</td>';
 								$html .= '<td>';
 									$html .= $comp['comp_name'];
+									$html .= '<br>';
+									$html .= '<small>'.$comp['comp_address'].'</small>';
+									
 								$html .= '</td>';
 							$html .= '</tr>';
 						$html .= '</table>';
-				$html .= '</td>';
-				
-				$html .= '<td height="'.$colH.'" width="'.$colW.'" style="border: 1px solid #000;">';
-				$html .= '</td>';
-				
-				$html .= '<td height="'.$colH.'" width="'.$colW.'" style="border: 1px solid #000;">';
-				
+						$html .= '<table style="font-size:6px;">';
+							$html .= '<tr>';
+								$html .= '<td width="60">Student Name:</td>';
+								$html .= '<td width="150">Reynaldo Tejada</td>';
+							$html .= '</tr>';
+							$html .= '<tr>';
+								$html .= '<td width="60">Course:</td>';
+								$html .= '<td width="150">Kindergarten</td>';
+							$html .= '</tr>';
+							$html .= '<tr>';
+								$html .= '<td width="60">Batch:</td>';
+								$html .= '<td width="150">Kindergarten 2016 - 2017</td>';
+							$html .= '</tr>';
+							$html .= '<tr>';
+								$html .= '<td width="60">Section:</td>';
+								$html .= '<td width="150">Hope</td>';
+							$html .= '</tr>';
+						$html .= '</table>';
+						$html .= '<br>';
+						$html .= '<br>';
+						$html .= '<table style="font-size:6px;">';
+							$html .= '<tr>';
+								$html .= '<th>Particular</th>';
+								$html .= '<th>Due Date</th>';
+								$html .= '<th>Amount Due</th>';
+							$html .= '</tr>';
+							$html .= '<tr>';
+								$html .= '<td>Monthly Payment</td>';
+								$html .= '<td>06/07/2016</td>';
+								$html .= '<td>PHP 20,000</td>';
+							$html .= '</tr>';
+							$html .= '<tr>';
+								$html .= '<td>Monthly Payment</td>';
+								$html .= '<td>07/07/2016</td>';
+								$html .= '<td>PHP 20,000</td>';
+							$html .= '</tr>';
+						$html .= '</table>';
 				$html .= '</td>';
 			$html .= "</tr>";	
 		$html .= '</table>';
