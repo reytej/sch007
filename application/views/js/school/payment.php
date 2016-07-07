@@ -168,8 +168,82 @@ $(document).ready(function(){
 									console.log(data);
 								},
 			gridClick 		:  	function(data){
-									alert('ere');
+									addSelected(data.tagid);									
 								}
+		});
+		$('#select-all-btn').click(function(){
+			if($(this).hasClass('on-select')){
+				$('.grid-boxes').each(function(){
+					var tagid = $(this).attr('ref');
+					var grid = $('#grid-box-'+tagid);
+					if(!grid.hasClass('selected')){
+						addOverlay(tagid);
+					}	
+				});
+				$(this).html('<i class="fa fa-fw fa-times"></i> Unselect All');
+				$(this).removeClass('btn-success');
+				$(this).removeClass('on-select');
+				$(this).addClass('un-select');
+				$(this).addClass('btn-danger');
+			}
+			else{
+				$('.grid-boxes').each(function(){
+					var tagid = $(this).attr('ref');
+					var grid = $('#grid-box-'+tagid);
+					if(grid.hasClass('selected')){
+						removeOverlay(tagid);
+					}	
+				});
+				$(this).html('<i class="fa fa-fw fa-check"></i> Select All');
+				$(this).addClass('on-select');
+				$(this).removeClass('un-select');
+				$(this).addClass('btn-success');
+				$(this).removeClass('btn-danger');
+			}
+			return false;
+		});
+		function addSelected(tagid){
+			var grid = $('#grid-box-'+tagid);
+			if(!grid.hasClass('selected')){
+				addOverlay(tagid);
+			}
+			else{
+				removeOverlay(tagid);
+			}
+		}
+		function removeOverlay(tagid){
+			var grid = $('#grid-box-'+tagid);
+			grid.find('.grid-overlay').remove();
+			grid.removeClass('selected');
+		}	
+		function addOverlay(tagid){
+			var grid = $('#grid-box-'+tagid);
+			var box = $('#grid-box-'+tagid).find('.info-box');
+			$('<div class="grid-overlay"><div style="padding:5px;"><i class = "fa fa-check fa-3x fa-fw" ></i></div></div>').css({
+			    position: "absolute",
+			    color: "#7FFF00",
+			    opacity: '0.5',
+			    width: "100%",
+			    height: "100%",
+			    "text-align":"right",
+			    top: 0,
+			    left: 0,
+			    background: "#000",
+			    "padding-bottom": "90px",
+			}).appendTo(box.css("position", "relative"));
+			grid.addClass('selected');
+		}
+		$('#print-btn').click(function(){
+			var ids = "";
+			$('.grid-boxes').each(function(){
+				if($(this).hasClass('selected')){
+					var tagid = $(this).attr('ref');
+					ids += tagid+',';
+				}
+			});
+			var formData = "tagid="+ids;
+			$.rPrint("school/prints/bills?"+formData);
+			return false;
 		});
 	<?php endif; ?>
 });

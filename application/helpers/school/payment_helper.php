@@ -154,6 +154,7 @@ function billingPage($id,$title="",$tbl_name="",$form="",$default_view="grid",$v
 			$CI->html->eDivRow();
 			$CI->html->sDivRow();
 				$CI->html->sDivCol(5);
+					$CI->html->button(fa('fa-check fa-fw').' SELECT ALL',array('id'=>'select-all-btn','class'=>'btn-flat on-select'),'success');
 					if($form != "")
 						$CI->html->button(fa('fa-plus fa-fw').' CREATE',array('class'=>'btn-create btn-flat pull-left'),'success');
 				$CI->html->eDivCol();
@@ -162,6 +163,7 @@ function billingPage($id,$title="",$tbl_name="",$form="",$default_view="grid",$v
 					$CI->html->eDiv();
 				$CI->html->eDivCol();
 				$CI->html->sDivCol(4,'right');
+					$CI->html->button(fa('fa-print fa-fw').' PRINT',array('id'=>'print-btn','style'=>'margin-right:10px;','class'=>'btn-flat'),'success');
 					$grid = "";
 					$list = "";
 					// $CI->html->button(fa('fa-filter'),array('class'=>'btn-flat pull-right'),'primary');

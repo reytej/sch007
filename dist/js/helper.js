@@ -35,6 +35,11 @@
         });
       } 
     },
+    rPrint: function(printUrl){
+      var width = screen.availWidth-80;
+      var height = screen.availHeight-80;
+      window.open (baseUrl+printUrl,"print",'toolbar=no,width='+width+',height='+height+',top=15,left=0,directores=no');
+    },
   });
   $.fn.exists = function(){return this.length>0;}
   $.fn.serializeAnything = function() {
@@ -313,9 +318,9 @@
           }
           var box_id = "";
           if(typeof val.tagid !== 'undefined' && val.tagid !== false){
-            box_id = 'id="'+val.tagid+'"';
+            box_id = 'id="grid-box-'+val.tagid+'" ref="'+val.tagid+'"';
           }
-          var col = $('<div class="col-md-3 no-margin" '+box_id+' style="padding:3px;"></div>');
+          var col = $('<div class="col-md-3 no-margin grid-boxes" '+box_id+' style="padding:3px;"></div>');
           col.append('<div class="info-box" style="margin:0px;padding:0px;cursor:pointer">'
                         +'<span class="info-box-icon"><img src="'+img+'" style="max-width:90px; height:90px;vertical-align:initial !important;"></span>'
                         +'<div class="info-box-content">'
