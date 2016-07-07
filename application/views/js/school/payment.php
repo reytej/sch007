@@ -239,10 +239,16 @@ $(document).ready(function(){
 				if($(this).hasClass('selected')){
 					var tagid = $(this).attr('ref');
 					ids += tagid+',';
+					removeOverlay(tagid);
 				}
 			});
 			var formData = "tagid="+ids;
 			$.rPrint("school/prints/bills?"+formData);
+			$('#select-all-btn').html('<i class="fa fa-fw fa-check"></i> Select All');
+			$('#select-all-btn').addClass('on-select');
+			$('#select-all-btn').removeClass('un-select');
+			$('#select-all-btn').addClass('btn-success');
+			$('#select-all-btn').removeClass('btn-danger');
 			return false;
 		});
 	<?php endif; ?>
