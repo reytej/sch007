@@ -145,6 +145,7 @@ class Enrollment extends CI_Controller {
 			if(count($pay) > 0){
 				$this->site_model->add_tbl_batch('enroll_payments',$pay);
 			}
+			$this->site_model->update_tbl('students','id',array('enroll_id'=>$id),$this->input->post('student'));
 		}
 		if($error == 0){
 			site_alert($msg,'success');

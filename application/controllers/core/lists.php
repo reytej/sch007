@@ -292,13 +292,26 @@ class Lists extends CI_Controller {
         if($this->input->post('pagi'))
             $pagi = $this->input->post('pagi');
         
-        $cols = array('ID','Code','Name','Gender','Age','Reg Date','Inactive','');
+        $cols = array('ID','Code','Name','Gender','Age','Reg Date','Course','Batch','Section','');
         $table  = 'students';
-        $select = 'students.*';
-        $join   = null;
-        
+        $select = 'students.*,
+                   enrolls.start_date,enrolls.end_date,
+                   courses.name as course_name,
+                   course_batches.name as batch_name,
+                   sections.name as section_name,
+                  ';
+        $join['enrolls'] = array("content"=>"students.enroll_id = enrolls.id",
+                                 "mode"=>"left");
+        $join['courses'] = array("content"=>"enrolls.course_id = courses.id",
+                                 "mode"=>"left");
+        $join['course_batches'] = array("content"=>"enrolls.batch_id = course_batches.id",
+                                 "mode"=>"left");
+        $join['sections'] = array("content"=>"enrolls.section_id = sections.id",
+                                 "mode"=>"left");
+
         $post = array();
         $args = array();
+        
         if(count($this->input->post()) > 0){
             $post = $this->input->post();
         }
@@ -311,21 +324,38 @@ class Lists extends CI_Controller {
         $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
         $page = paginate('lists/students',$count,$total_rows,$pagi);
         $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
+        // echo $this->site_model->db->last_query();
+        // return false;
         
         $json = array();
         if(count($items) > 0){
             $ids = array();
+            $now = $this->site_model->get_db_now('sql',true);
+            
             foreach ($items as $res) {
                 $link = $this->html->A(fa('fa-edit fa-lg'),base_url().'students/profile/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
                 $name = $res->fname." ".$res->mname." ".$res->lname." ".$res->suffix;
+                
+                $course = ucFix($res->course_name);
+                $batch = ucFix($res->batch_name);
+                $section = ucFix($res->section_name);                
+                if(strtotime($now) > strtotime($res->end_date)){
+                    $course = "";
+                    $batch = "";
+                    $section = "";
+                }
+
                 $json[$res->id] = array(
                     "id"=>$res->id,   
                     "code"=>$res->code,   
                     "title"=>$name,   
                     "desc"=>strtoupper($res->sex),   
                     "subtitle"=>"Age ".age($res->bday),   
-                    "reg_date"=>sql2Date($res->reg_date),
-                    "inactive"=>($res->inactive == 0 ? 'No' : 'Yes'),
+                    "reg_date_"=>sql2Date($res->reg_date),
+                    "other"=>$course,   
+                    "batch"=>$batch,   
+                    "section"=>$section,   
+                    "inactive"=>$res->inactive,
                     "link"=>$link
                 );
                 $ids[] = $res->id;
@@ -583,7 +613,7 @@ class Lists extends CI_Controller {
         if($this->input->post('inactive') == 1){
             unset($args['enrolls.inactive']);
         }
-
+        $order = array('enrolls.reg_date'=>'desc');
         $group = "enrolls.id";
         $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group,null,true);
         $page = paginate($page_link,$count,$total_rows,$pagi);
@@ -595,10 +625,12 @@ class Lists extends CI_Controller {
             foreach ($items as $res) {
                 $link = "";
                 $inactive = $res->inactive;
-                if($inactive == 0 && $res->amount_paid == 0)
-                    $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'enrollment/form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
-
-                $link = $this->html->A(fa('fa-times fa-lg fa-fw'),'void/form/'.$res->id.'/'.ENROLLMENT,array('class'=>'void-btn btn btn-sm btn-danger btn-flat','ref'=>$res->id,'return'=>'true'));
+                if($inactive == 0 && $res->amount_paid == 0){
+                    $link .= $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'enrollment/form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                }
+                if($inactive == 0){
+                    $link .= " ".$this->html->A(fa('fa-times fa-lg fa-fw'),'void/form/'.$res->id.'/'.ENROLLMENT,array('class'=>'void-btn btn btn-sm btn-danger btn-flat','ref'=>$res->id,'return'=>'true'));
+                }
 
                 $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
                 $json[] = array(
@@ -607,9 +639,9 @@ class Lists extends CI_Controller {
                     "course"    =>  ucFix($res->course_name),   
                     "batch"     =>  ucFix($res->batch_name),   
                     "section"   =>  ucFix($res->section_name),   
-                    "trans_date"=>  sql2Date($res->trans_date),   
                     "start_date"=>  sql2Date($res->start_date),   
                     "end_date"  =>  sql2Date($res->end_date),   
+                    "trans_date"=>  sql2Date($res->trans_date),   
                     "link"      =>  $link,
                     "inactive"  =>  $inactive,
                 );
@@ -718,6 +750,8 @@ class Lists extends CI_Controller {
         $join['enrolls'] = 'enroll_payments.enroll_id = enrolls.id';
         $group = 'enroll_payments.student_id';
 
+        $args['enrolls.inactive'] = 0;
+
         if($this->input->post('student_name')){
             $lk  =$this->input->post('student_name');
             $args["(students.fname like '%".$lk."%' OR students.mname like '%".$lk."%' OR students.lname like '%".$lk."%' OR students.suffix like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
@@ -784,6 +818,7 @@ class Lists extends CI_Controller {
         $group = null;
         $args["DATE(enroll_payments.due_date) <= DATE(NOW())"] = array('use'=>'where','val'=>"",'third'=>false);
         $args["enroll_payments.amount > enroll_payments.pay"] = array('use'=>'where','val'=>"",'third'=>false);
+        $args['enrolls.inactive'] = 0;
         if($this->input->post('student_name')){
             $lk  =$this->input->post('student_name');
             $args["(students.fname like '%".$lk."%' OR students.mname like '%".$lk."%' OR students.lname like '%".$lk."%' OR students.suffix like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);

@@ -12,7 +12,7 @@ class Prints extends Print_headers {
 		$pdf->SetTitle($title);
 		$pdf->setPrintHeader(false);
 		$pdf->setPrintFooter(false);
-		$pdf->SetMargins(5,5,5);
+		$pdf->SetMargins(1,1,1);
 		$pdf->SetAutoPageBreak(true);
 		$pdf->AddPage();
 		$html = '';
@@ -66,7 +66,7 @@ class Prints extends Print_headers {
 		
 		
 		$col = 2;
-		$colW = 562;
+		$colW = 585;
 		// $colH = 200;
 		// echo $this->site_model->db->last_query();
 		// return false;

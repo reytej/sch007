@@ -162,6 +162,7 @@ class Payment extends CI_Controller {
 		$join['enrolls'] = 'enroll_payments.enroll_id = enrolls.id';
 		$args['enroll_payments.student_id'] = $id;
 		$args['enroll_payments.amount > enroll_payments.pay '] = array('use'=>'where','val'=>"",'third'=>false);
+		$args['enrolls.inactive'] = 0;
 		$order['enroll_payments.due_date'] = 'asc';
 		$result = $this->site_model->get_tbl('enroll_payments',$args,$order,$join,true,$select);
 		if($result){
