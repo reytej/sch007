@@ -7,7 +7,9 @@ class Payment extends CI_Controller {
 	}
 	public function index(){
 		$data = $this->syter->spawn('enroll_pay');
-		$data['code'] = listPage(fa('fa-money')." Student Payments",'payments','payment/form','list','list',true);
+		$data['code'] = listPageCustom('payments-list',fa('fa-money')." Student Payments",'payments','payment/form','list','list',true);
+		$data['load_js'] = 'school/payment';
+		$data['use_js']  = 'paymentListJs';
 		$this->load->view('list',$data);
 	}
 	public function form($id=null){

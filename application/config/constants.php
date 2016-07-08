@@ -5,19 +5,10 @@
 | TRANS TYPES
 |--------------------------------------------------------------------------
 */
-define('STUDENT_CODE', 1);
-define('ENROLLMENT', 10);
-define('PAYMENT', 20);
-
-
-
-
-
-
-
-
-
-
+define('STUDENT_CODE'		, 1);
+define('ENROLLMENT'			, 10);
+define('PAYMENT'			, 20);
+define('VOID' 				, 99);
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes

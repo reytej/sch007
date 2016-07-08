@@ -556,15 +556,20 @@ class Lists extends CI_Controller {
         $page_link = 'lists/enrolls';
         $cols = array('Reference','Student','Course','Batch','Section','Start Date','End Date','Trans Date',' ');
         $table = 'enrolls';
-        $select = 'enrolls.*,
+        $select[0] = 'enrolls.*,
                    students.fname as std_fname,students.mname as std_mname,students.lname as std_lname,students.suffix as std_suffix,
                    courses.name as course_name,
                    course_batches.name as batch_name,
-                   sections.name as section_name';
+                   sections.name as section_name,
+                   IFNULL(SUM(payment_for.amount),0) as amount_paid 
+                   ';
+        $select[1] = false;
         $join['students'] = "enrolls.student_id = students.id";
         $join['courses'] = "enrolls.course_id = courses.id";
         $join['course_batches'] = "enrolls.batch_id = course_batches.id";
         $join['sections'] = "enrolls.section_id = sections.id";
+        $join['payment_for'] = array("content"=>"enrolls.id = payment_for.src_id AND payment_for.src_type='".ENROLLMENT."'",
+                                     "mode"=>"left");
 
         if($this->input->post('student_name')){
             $lk  =$this->input->post('student_name');
@@ -574,17 +579,27 @@ class Lists extends CI_Controller {
             $lk  =$this->input->post('trans_ref');
             $args["(enrolls.trans_ref like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
         }
+        $args['enrolls.inactive'] = 0; 
+        if($this->input->post('inactive') == 1){
+            unset($args['enrolls.inactive']);
+        }
 
-        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
+        $group = "enrolls.id";
+        $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group,null,true);
         $page = paginate($page_link,$count,$total_rows,$pagi);
-        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
-
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group,$page['limit']);
+        
         $json = array();
         if(count($items) > 0){
             $ids = array();
             foreach ($items as $res) {
                 $link = "";
-                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'enrollment/form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $inactive = $res->inactive;
+                if($inactive == 0 && $res->amount_paid == 0)
+                    $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'enrollment/form/'.$res->id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+
+                $link = $this->html->A(fa('fa-times fa-lg fa-fw'),'void/form/'.$res->id.'/'.ENROLLMENT,array('class'=>'void-btn btn btn-sm btn-danger btn-flat','ref'=>$res->id,'return'=>'true'));
+
                 $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
                 $json[] = array(
                     "title"     =>  strtoupper($res->trans_ref),   
@@ -595,7 +610,8 @@ class Lists extends CI_Controller {
                     "trans_date"=>  sql2Date($res->trans_date),   
                     "start_date"=>  sql2Date($res->start_date),   
                     "end_date"  =>  sql2Date($res->end_date),   
-                    "link"      =>  $link
+                    "link"      =>  $link,
+                    "inactive"  =>  $inactive,
                 );
             }
         }
@@ -605,6 +621,7 @@ class Lists extends CI_Controller {
         $this->html->sForm();
             $this->html->inputPaper('Reference:','trans_ref','');
             $this->html->inputPaper('Student:','student_name','');
+            $this->html->selectPaper('Show Inactive','inactive',array('Yes'=>1,'No'=>0),0);
         $this->html->eForm();
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
@@ -635,7 +652,11 @@ class Lists extends CI_Controller {
             $lk  =$this->input->post('trans_ref');
             $args["(payments.trans_ref like '%".$lk."%')"] = array('use'=>'where','val'=>"",'third'=>false);
         }
-
+        $args['payments.inactive'] = 0; 
+        if($this->input->post('inactive') == 1){
+            unset($args['payments.inactive']);
+        }
+        $order = array('payments.trans_date'=>'desc','payments.id'=>'desc');
         $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,null,true);
         $page = paginate($page_link,$count,$total_rows,$pagi);
         $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,null,$page['limit']);
@@ -645,14 +666,21 @@ class Lists extends CI_Controller {
             $ids = array();
             foreach ($items as $res) {
                 $link = "";
-                $link = $this->html->A(fa('fa-times fa-lg fa-fw'),base_url().'enrollment/form/'.$res->id,array('class'=>'btn btn-sm btn-danger btn-flat','return'=>'true'));
+                $inactive = 1;
+                if($res->inactive == 0){
+                    $inactive = 0;
+                    $link = $this->html->A(fa('fa-times fa-lg fa-fw'),'void/form/'.$res->id.'/'.PAYMENT,array('class'=>'void-btn btn btn-sm btn-danger btn-flat','ref'=>$res->id,'return'=>'true'));
+                }
+
+
                 $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
                 $json[] = array(
-                    "title"     =>  strtoupper($res->trans_ref),   
-                    "name"      =>  ucFix($name),   
+                    "title"      =>  strtoupper($res->trans_ref),   
+                    "name"       =>  ucFix($name),   
                     "total"      =>  num($res->total_amount),   
-                    "trans_date"=>  sql2Date($res->trans_date),   
-                    "link"      =>  $link
+                    "trans_date" =>  sql2Date($res->trans_date),   
+                    "link"       =>  $link,
+                    "inactive"   =>  $inactive
                 );
             }
         }
@@ -662,6 +690,7 @@ class Lists extends CI_Controller {
         $this->html->sForm();
             $this->html->inputPaper('Reference:','trans_ref','');
             $this->html->inputPaper('Student:','student_name','');
+            $this->html->selectPaper('Show Inactive','inactive',array('Yes'=>1,'No'=>0),0);
         $this->html->eForm();
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
@@ -767,15 +796,21 @@ class Lists extends CI_Controller {
         $json = array();
         if(count($items) > 0){
             $ids = array();
+            $curr = "";
             foreach ($items as $res) {
                 $name  = $res->std_fname." ".$res->std_mname." ".$res->std_lname." ".$res->std_suffix;
+                $particular = "Monthly Payment";
+                if($res->type == 'dp')
+                    $particular = "Down Payment";
+                $balance = $res->amount - $res->pay;
                 $json[] = array(
                     "id"                => $res->id,
                     "tagid"             => $res->id,
                     "student_id"        => $res->student_id,
                     "title"             => ucFix($name),   
-                    "desc"              => "Amount Due: ".num($res->amount),   
-                    "subtitle"          => "Due Date: ".sql2Date($res->due_date),   
+                    "desc"              => $particular,   
+                    "subtitle"             => "Balance Due: ".num($balance),   
+                    "other"             => "Due Date: ".sql2Date($res->due_date),   
                     // "paid"              =>  num($res->total_paid),   
                     // "balance"           =>  num($balance),   
                     // "link"              =>  $link
@@ -794,5 +829,13 @@ class Lists extends CI_Controller {
             }
         }
         echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$pagi,'post'=>$post));
+    }
+    public function billings_filter(){
+        $this->html->sForm();
+            // $this->html->inputPaper('Reference:','trans_ref','');
+            $this->html->inputPaper('Student:','student_name','');
+        $this->html->eForm();
+        $data['code'] = $this->html->code();
+        $this->load->view('load',$data);   
     }
 }

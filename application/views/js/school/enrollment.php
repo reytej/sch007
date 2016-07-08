@@ -1,6 +1,14 @@
 <script>
 $(document).ready(function(){
-	<?php if($use_js == 'enrollmentJs'): ?>
+	<?php if($use_js == 'enrollListJs'): ?>
+		$('#enroll-list').rList({
+			onComplete 		:  	function(data){
+									$('.void-btn').each(function(){
+										$(this).rVoid({loadUrl:$(this).attr('href')});
+									})
+								}
+		});
+	<?php elseif($use_js == 'enrollmentJs'): ?>
 		$('#save-btn').click(function(){
 			var btn = $(this);
 			var noError = $('#enrollment-form').rOkay({

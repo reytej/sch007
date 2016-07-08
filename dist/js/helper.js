@@ -91,7 +91,7 @@
           var txt = $(this).prev('label').text();
           var msg = $(this).attr('ro-msg');
 
-          var display_msg = 'Error! '+txt+' must not be empty.';
+          var display_msg = 'Alert! '+txt+' must not be empty.';
           if(typeof msg !== 'undefined' && msg !== false)
             display_msg = msg;
             
@@ -298,9 +298,9 @@
             }  
           }
         },'json').fail(function(XMLHttpRequest, textStatus, errorThrown) {
-          alert(XMLHttpRequest);
-          alert(textStatus);
-          alert(errorThrown);
+          alert(XMLHttpRequest.responseText);
+          // alert(textStatus);
+          // alert(errorThrown);
         });
     }
     function gridView(div,rows,cols){
@@ -316,6 +316,10 @@
           if(typeof val.reg_date !== 'undefined' && val.reg_date !== false){
             reg_date = ' <span class="info-box-text" style="font-size:12px; color:#888">'+val.reg_date+'</span> ';
           }
+          var other = "";
+          if(typeof val.other !== 'undefined' && val.other !== false){
+            other = ' <span class="info-box-text" style="font-size:12px; color:#888">'+val.other+'</span> ';
+          }
           var box_id = "";
           if(typeof val.tagid !== 'undefined' && val.tagid !== false){
             box_id = 'id="grid-box-'+val.tagid+'" ref="'+val.tagid+'"';
@@ -326,6 +330,7 @@
                         +'<div class="info-box-content">'
                           +'<span class="info-box-number" style="font-size:14px;">'+val.title+'</span>'
                           +'<span class="info-box-text" style="font-size:12px; color:#888">'+val.desc+'</span>'
+                          +other
                           +reg_date
                           +'<span class="info-box-text" style="font-size:12px; color:#888">'+val.subtitle+'</span>'
                         +'</div>'
@@ -358,10 +363,16 @@
       var tbody = $('<tbody/>');
       $.each(rows,function(id,row){
         var tbRow = $('<tr/>');
+        var hasInactive = false;
         $.each(row,function(ctr,dt){
-          if(ctr != 'grid-image')
+          if(ctr == 'inactive' && dt == 1)
+            hasInactive = true;
+          if(ctr != 'grid-image' && ctr != 'inactive')
             tbRow.append('<td>'+dt+'</td>');
+            
         });
+        if(hasInactive)
+          tbRow.addClass('inactive');
         tbody.append(tbRow);
       });
       tbl.append(thead);
@@ -518,6 +529,50 @@
         message: baseUrl+href,
         title: boxTitle,
         className: 'bootbox-wide',
+      });
+      return false;
+    });
+  }
+  $.fn.rVoid = function(options){
+    var opts = $.extend({
+      title       :       '<i class="fa fa-fw fa-warning"></i> Transaction Void',
+      loadUrl     :       'void/form',
+      onComplete  :       null,
+    },options);
+    $(this).click(function(){
+      bootbox.dialog({
+        message: baseUrl+opts.loadUrl,
+        title: opts.title,
+        className: 'bootbox-normal',
+        buttons: {
+          submit: {
+            label: "<i class='fa fa-fw fa-times'></i> VOID",
+            className: "btn btn-danger btn-flat void-submit-btn",
+            callback: function() {
+              var form = $('#void-form');
+              form.rOkay({
+                btn_load        :   $('.void-submit-btn'),
+                bnt_load_remove :   false,
+                onComplete      :   function(data){
+                                        if($.isFunction(opts.onComplete)){
+                                           opts.onComplete.call(this,val);
+                                        }
+                                        else{
+                                          location.reload();
+                                        }
+                                    },
+              });
+              return false;
+            }
+          },
+          cancel: {
+            label: "CANCEL",
+            className: "btn btn-default btn-flat",
+            callback: function() {
+              // Example.show("uh oh, look out!");
+            }
+          }
+        }
       });
       return false;
     });

@@ -7,7 +7,9 @@ class Enrollment extends CI_Controller {
 	}
 	public function index(){
 		$data = $this->syter->spawn('enroll_list');
-		$data['code'] = listPage(fa('fa-bookmark')." Enrollments",'enrolls','enrollment/form','list','list',true);
+		$data['code'] = listPageCustom('enroll-list',fa('fa-bookmark')." Enrollments",'enrolls','enrollment/form','list','list',true);
+		$data['load_js'] = 'school/enrollment';
+		$data['use_js']  = 'enrollListJs';
 		$this->load->view('list',$data);
 	}
 	public function form($id=null){

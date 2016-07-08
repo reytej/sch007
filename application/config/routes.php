@@ -69,5 +69,7 @@ $route['fetch'] = "core/fetch";
 $route['fetch/(:any)'] = "core/fetch/$1";
 $route['cart'] = "core/cart";
 $route['cart/(:any)'] = "core/cart/$1";
+$route['void'] = "core/void";
+$route['void/(:any)'] = "core/void/$1";
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

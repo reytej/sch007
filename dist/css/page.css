@@ -108,6 +108,13 @@ outline: none !important;
 .list-page table tbody tr td{
   vertical-align: middle;
 }
+
+.list-page table tbody tr.inactive td{
+  background-color: #ff3232;
+  color: #fff;
+  border-bottom: 1px solid #ff3232; 
+}
+
 .list-page table tbody tr td:last-child{
   text-align: right !important;
 }
@@ -344,6 +351,9 @@ outline: none !important;
 }
 .bootbox-wide{
   width: 80%;
+}
+.bootbox-normal{
+  width: 60%;
 }
 
 .btn-white {

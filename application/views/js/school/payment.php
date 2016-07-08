@@ -1,6 +1,14 @@
 <script>
 $(document).ready(function(){
-	<?php if($use_js == 'paymentFormJs'): ?>
+	<?php if($use_js == 'paymentListJs'): ?>
+		$('#payments-list').rList({
+			onComplete 		:  	function(data){
+									$('.void-btn').each(function(){
+										$(this).rVoid({loadUrl:$(this).attr('href')});
+									})
+								}
+		});
+	<?php elseif($use_js == 'paymentFormJs'): ?>
 		$('#save-btn').click(function(){
 			var check = checkTenders();
 			if(check){
