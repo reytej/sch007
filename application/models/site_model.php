@@ -285,8 +285,15 @@ class Site_model extends CI_Model{
 		}
 		$this->db->from($tbl);
 
-		if($where != '' || $val != '')
-			$this->db->where($tbl.".".$where,$val);
+		if($where != '' || $val != ''){
+			if(is_array($where)){
+				foreach ($where as $k => $v) {
+					$this->db->where($k,$v);
+				}
+			}
+			else
+				$this->db->where($tbl.".".$where,$val);
+		}
 		
 		$query = $this->db->get();
 		$result = $query->result();

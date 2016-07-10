@@ -37,6 +37,7 @@ $rnav['inventory'] = array('title'=>'<i class="fa fa-cubes"></i> <span>Inventory
 		$academic['sections'] = array('title'=>'Sections','path'=>'academic/sections','exclude'=>0);
 		$academic['subjects'] = array('title'=>'Subjects','path'=>'academic/subjects','exclude'=>0);
 		$academic['aca_years'] = array('title'=>'Academic Years','path'=>'academic/years','exclude'=>0);
+		$academic['schedule'] = array('title'=>'Schedule','path'=>'academic/schedule_form','exclude'=>0);
 $rnav['academic'] = array('title'=>'<i class="fa fa-university"></i> <span>Academic</span>','path'=>$academic,'exclude'=>0);
 	
 		$controlSettings['users'] = array('title'=>'Users','path'=>'users','exclude'=>0);

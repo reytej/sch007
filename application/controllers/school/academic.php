@@ -191,20 +191,85 @@ class Academic extends CI_Controller {
 		$data['page_title'] = fa('fa-map-o')." Course Batch";
 		$data['page_subtitle'] = "Add Batch";
 		$det = array();
-		$img = array();
+		$sections = array();
 		if($id != null){
 			$details = $this->site_model->get_tbl('course_batches',array('id'=>$id));
 			if($details){
 				$det = $details[0];
 				$data['page_subtitle'] = "Edit Batch ".ucwords(strtolower($det->name));
+
+				$select   = "course_batch_sections.*,sections.code as sec_code,sections.name as sec_name,
+						     users.fname,users.lname,users.mname,users.suffix";
+				$join['sections']='course_batch_sections.section_id = sections.id';
+				$join['users']='course_batch_sections.teacher_id = users.id';
+				$result = $this->site_model->get_tbl('course_batch_sections',array('batch_id'=>$id),array(),$join,true,$select);
+				foreach ($result as $res) {
+					$name = ucFix($res->fname." ".$res->mname." ".$res->lname." ".$res->suffix);
+					$sections[] = array(
+						"sec_id" => $res->section_id,
+						"sec_name" => $res->sec_name,
+						"teacher_id" => $res->teacher_id,
+						"teacher_name" => $name,
+					);
+				}
 			}
 		}
+		sess_initialize("sections",$sections);
 		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
 		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'academic/batches"','text'=>"<i class='fa fa-fw fa-reply'></i>");
-		$data['code'] = batchesPage($det);
+		$data['code'] = batchesPage($det,$sections);
 		$data['load_js'] = 'school/academic';
 		$data['use_js'] = 'batchesFormJs';
 		$this->load->view('page',$data);
+	}
+	public function batches_add_section($sec_id=null,$teacher_id=null){
+		$sections = sess('sections');
+		$status = "success";
+		$msg    = "";
+		$check  = true;
+		$row    = array();
+		$id 	= null;
+		if(count($sections) > 0){
+			foreach ($sections as $ctr => $row) {
+				if($row['sec_id'] == $sec_id){
+					$check = false;
+					$status = "error";
+					$msg    = "Section is already added.";
+					break;
+				}	
+			}
+			foreach ($sections as $ctr => $row) {
+				if($row['teacher_id'] == $teacher_id){
+					$check = false;
+					$status = "error";
+					$msg    = "Teacher is already added.";
+					break;
+				}	
+			}
+		}
+		if($check){
+			$sec_details = $this->site_model->get_tbl('sections',array('id'=>$sec_id));
+			if(count($sec_details) > 0){
+				$det = $sec_details[0];
+				$row = array('sec_id'=>$det->id,'sec_name'=>$det->name); 
+			}
+			$tea_details = $this->site_model->get_tbl('users',array('id'=>$teacher_id),array(),null,true,'id,fname,mname,lname,suffix');
+			if(count($tea_details) > 0){
+				$det = $tea_details[0];
+				$name = ucFix($det->fname." ".$det->mname." ".$det->lname." ".$det->suffix);
+				$row['teacher_id']=$det->id;
+				$row['teacher_name']=$name; 
+			}
+			if(count($sec_details) > 0 && count($tea_details) > 0){
+				$cart = sess_add('sections',$row);
+				$id = $cart['id'];
+				$msg   = "Section Added.";				
+			}
+		}
+		echo json_encode(array('status'=>$status,'msg'=>$msg,'row'=>$row,'id'=>$id));
+	}
+	public function batch_remove_section($id=null){
+		sess_delete('sections',$id);
 	}
 	public function batches_db($id=null){
 		$user = sess('user');
@@ -225,6 +290,19 @@ class Academic extends CI_Controller {
 			$id = $this->input->post('id');
 			$this->site_model->update_tbl('course_batches','id',$items,$id);
 			$msg = "Updated Batch ".$items['name'];
+			$this->site_model->delete_tbl('course_batch_sections',array('batch_id'=>$id));
+		}
+		$sections = sess('sections');
+		if(count($sections) > 0){
+			$details = array();
+			foreach ($sections as $ctr => $row) {
+				$details[] = array(
+					"batch_id" => $id,
+					"section_id" => $row['sec_id'],
+					"teacher_id" => $row['teacher_id'],
+				);
+			}
+			$this->site_model->add_tbl_batch('course_batch_sections',$details);
 		}
 		if($error == 0){
 			site_alert($msg,'success');
@@ -339,4 +417,167 @@ class Academic extends CI_Controller {
 		}
 		echo json_encode(array('error'=>$error,'msg'=>$msg));
 	}	
+	public function schedule_form($id=null){
+		$data = $this->syter->spawn('schedule');
+		$schedules = array();
+		sess_initialize('schedules',$schedules);
+		$data['page_title'] = fa('fa-clock-o')." Schedule";
+		$data['top_btns'][] = array('tag'=>'button','params'=>'id="save-btn" class="btn-flat btn-flat btn btn-success"','text'=>"<i class='fa fa-fw fa-save'></i> SAVE");
+		$data['code'] = schedulePage();
+		$data['add_css'] = 'plugins/fullcalendar/fullcalendar.min.css';
+		$data['add_js'] = 'plugins/fullcalendar/fullcalendar.min.js';
+		$data['load_js'] = 'school/academic';
+		$data['use_js'] = 'scheduleFormJs';
+		$this->load->view('page',$data);
+	}
+	public function schedule_pop($id=null){
+		$schedules = sess('schedules');
+		
+		$det = array();
+		if($id != null){
+			if(isset($schedules[$id]))
+				$det = $schedules[$id];
+		}
+		$this->html->sForm();
+		    $this->html->subjectsDropPaper('Subject','subject',iSet($det,'subject'));
+		    $this->html->teachersDropPaper('Teacher','teacher',iSet($det,'teacher'));
+		$this->html->eForm();
+		$data['code'] = $this->html->code();
+		$this->load->view('load',$data); 
+	}
+	public function schedule_cart(){
+		$schedules = sess('schedules');
+		$event_id = $this->input->post('event_id');
+
+		if($this->input->post('update_event_id')){
+			$event_id = $this->input->post('update_event_id');
+			if(isset($schedules[$event_id])){
+				$sched = $schedules[$event_id];
+				$sched['subject'] = $this->input->post('subject');
+				$sched['teacher'] = $this->input->post('teacher');
+				$schedules[$event_id] = $sched;
+				sess_update('schedules',$event_id,$sched);
+				
+			}
+		}
+		else if($this->input->post('delete_event_id')){
+			$event_id = $this->input->post('delete_event_id');
+			sess_delete('schedules',$event_id);
+		}
+		else{
+			$sched = array(
+	        	'event_id' 	=> $event_id,
+				'start' 	=> $this->input->post('start'),
+				'end' 		=> $this->input->post('end'),
+				'subject' 	=> $this->input->post('subject'),
+				'teacher' 	=> $this->input->post('teacher'),
+			);		
+			sess_add('schedules',$sched,$event_id);
+		}
+		// echo var_dump(sess('schedules'));
+	}
+	public function schedule_db(){
+		$schedules = sess('schedules');
+		$error = 0;
+		$msg = "";
+		if(count($schedules) > 0){
+			$sched = array();
+			foreach ($schedules as $ctr => $row) {
+				$day = date('D',strtotime($row['start']));
+				$start = time2Sql($row['start']);
+				$end = time2Sql($row['end']);
+				$sched[] = array(
+					'course_id'  => $this->input->post('course'),
+					'batch_id'   => $this->input->post('batch'),
+					'section_id' => $this->input->post('section'),
+					'teacher_id' => $row['teacher'],
+					'subject_id' => $row['subject'],
+					'start_time' => $start,
+					'end_time' 	 => $end,
+					'day' 	 	 => $day,
+				);
+			}
+			$args['batch_id'] = $this->input->post('batch');
+			$args['section_id'] = $this->input->post('section');
+			$this->site_model->delete_tbl('course_batch_schedules',$args);
+			$this->site_model->add_tbl_batch('course_batch_schedules',$sched);
+			$msg = "Updated Time Schedule";
+		}
+		else{
+			$msg = "No Schedule found.";
+			$error = 1;
+		}
+		if($error == 0){
+			site_alert($msg,'success');
+		}
+		echo json_encode(array('error'=>$error,'msg'=>$msg));
+	}
+	public function schedule_load($batch_id,$section_id){
+        $args = array();
+        $join = array();
+        $order = array();
+        $table = 'course_batch_schedules';
+        $select = 'course_batch_schedules.*,
+        		   subjects.name as subject_name,
+        		   users.fname,users.lname,users.mname,users.suffix,
+        		  ';
+        $join['subjects'] = "course_batch_schedules.subject_id = subjects.id";
+        $join['users'] = "course_batch_schedules.teacher_id = users.id";
+        $args['course_batch_schedules.batch_id'] = $batch_id;
+        $args['course_batch_schedules.section_id'] = $section_id;
+        $order['course_batch_schedules.day'] = 'desc';
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select);
+        $json = array();
+        sess_initialize('schedules',array());
+        if(count($items) > 0){
+        	$ctr = 1;
+            foreach ($items as $res) {
+            	$name = $res->fname." ".$res->mname." ".$res->lname." ".$res->suffix;
+                $start = null;
+                $end = null;
+                switch (strtolower($res->day)){
+                	case 'mon':
+                		$start = '2016-07-04T'.$res->start_time;
+                		$end = '2016-07-04T'.$res->end_time;
+                		break;
+                	case 'tue':
+                		$start = '2016-07-05T'.$res->start_time;
+                		$end = '2016-07-05T'.$res->end_time;
+                		break;
+                	case 'wed':
+                		$start = '2016-07-06T'.$res->start_time;
+                		$end = '2016-07-06T'.$res->end_time;
+                		break;
+                	case 'thu':
+                		$start = '2016-07-07T'.$res->start_time;
+                		$end = '2016-07-07T'.$res->end_time;
+                		break;
+                	case 'fri':
+                		$start = '2016-07-08T'.$res->start_time;
+                		$end = '2016-07-08T'.$res->end_time;
+                		break;
+                	case 'sat':
+                		$start = '2016-07-09T'.$res->start_time;
+                		$end = '2016-07-09T'.$res->end_time;
+                		break;
+                	case 'sun':
+                		$start = '2016-07-03T'.$res->start_time;
+                		$end = '2016-07-03T'.$res->end_time;
+                		break;
+                }
+                $json[$ctr] = array(
+                    "event_id"=>$ctr,   
+                    "subject"=>$res->subject_id,   
+                    "subject_name"=>ucFix($res->subject_name),   
+                    "teacher"=>$res->teacher_id,   
+                    "teacher_name"=>ucFix($name),   
+                    "start"=>$start,
+                    "end"=>$end
+                );
+                sess_add('schedules',$json[$ctr],$ctr);
+                $ctr++;
+            }
+        }
+        echo json_encode(array('details'=>$json));
+    }
 }

@@ -1147,6 +1147,24 @@ class Html{
 				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams,false);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
+	    function daysDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+				
+				$opts["Monday"] = "monday";
+				$opts["Tuesday"] = "tuesday";
+				$opts["Wednesday"] = "wednesday";
+				$opts["Thursday"] = "thursday";
+				$opts["Friday"] = "friday";
+				$opts["Satuday"] = "saturday";
+				$opts["Sunday"] = "sunday";
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams,false);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
 	    function itemsDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array()){
 	    	$CI =& get_instance();
 	 		$CI->load->model('site/site_model');
@@ -1249,6 +1267,23 @@ class Html{
 				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
+	    function sectionsDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('sections',array('id,name'),null,null,true);
+				$opts  = array();
+				$opts['Select Section']  = "";
+				foreach ($results as $res) {
+					$opts[$res->name] = $res->id;
+				}
+				$str .= $this->select($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
 	    function sectionsDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
 	    	$CI =& get_instance();
 	 		$CI->load->model('site/site_model');
@@ -1283,6 +1318,42 @@ class Html{
     			$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
     		if($this->returnitize($params)) return $str; else $this->code .= $str;
         }
+        function teachersDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('users',array('id,fname,lname,mname,suffix'),array('inactive'=>0,'role'=>TEACHERS),null,true);
+				$opts  = array();
+				$opts['Select Teacher']  = "";
+				foreach ($results as $res) {
+					$name = ucFix($res->fname." ".$res->mname." ".$res->lname." ".$res->suffix);
+					$opts[$name] = $res->id;
+				}
+				$str .= $this->select($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
+        function teachersDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
+	    	$CI =& get_instance();
+	 		$CI->load->model('site/site_model');
+	    	$str = "";
+				$selectParams = $params;
+				if(!isset($selectParams['return']))
+					$selectParams['return'] = true;
+
+				$results=$CI->site_model->get_custom_val('users',array('id,fname,lname,mname,suffix'),array('inactive'=>0,'role'=>TEACHERS),null,true);
+				$opts  = array();
+				$opts['Select Teacher']  = "";
+				foreach ($results as $res) {
+					$name = ucFix($res->fname." ".$res->mname." ".$res->lname." ".$res->suffix);
+					$opts[$name] = $res->id;
+				}
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+			if($this->returnitize($params)) return $str; else $this->code .= $str;
+	    }
         function uomDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
 	    	$CI =& get_instance();
 	 		$CI->load->model('site/site_model');

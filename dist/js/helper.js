@@ -88,6 +88,7 @@
     if(settings.validate){
       check_form.find('.rOkay').each(function(){
         if($(this).val() == ""){
+          
           var txt = $(this).prev('label').text();
           var msg = $(this).attr('ro-msg');
 

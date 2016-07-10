@@ -78,4 +78,44 @@ class Fetch extends CI_Controller {
         }
         echo json_encode(array('details'=>$json));
     }
+    public function course_batches($id=null){
+        $args = array();
+        $join = array();
+        $order = array();
+        $table = 'course_batches';
+        $select = 'course_batches.name,course_batches.id';
+        $args['course_batches.course_id'] = $id;
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select);
+        $json = array();
+        if(count($items) > 0){
+            foreach ($items as $res) {
+                $json[] = array(
+                    "id"=>$res->id,   
+                    "name"=>ucFix($res->name),   
+                );
+            }
+        }
+        echo json_encode(array('details'=>$json));
+    }
+    public function course_batch_sections($id=null){
+        $args = array();
+        $join = array();
+        $order = array();
+        $table = 'course_batch_sections';
+        $select = 'sections.name,sections.id';
+        $join['sections'] = "course_batch_sections.section_id = sections.id";
+        $args['course_batch_sections.batch_id'] = $id;
+        $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select);
+        $json = array();
+        if(count($items) > 0){
+            foreach ($items as $res) {
+                $json[] = array(
+                    "id"=>$res->id,   
+                    "name"=>ucFix($res->name),   
+                );
+            }
+        }
+        echo json_encode(array('details'=>$json));
+    }
+    
 }

@@ -161,7 +161,7 @@ function coursesPage($det=array(),$subjects=array(),$items=array()){
 	$CI->html->eDivRow();
 	return $CI->html->code();
 }
-function batchesPage($det=array()){
+function batchesPage($det=array(),$sections=array()){
 	$CI =& get_instance();
 	$CI->html->sDivRow();
 		$CI->html->sDivCol(10,'left',1);
@@ -169,16 +169,72 @@ function batchesPage($det=array()){
 				$CI->html->sBoxBody(array('class'=>'paper'));
 					$CI->html->sForm("academic/batches_db","general-form");
 						$CI->html->hidden('id',iSetObj($det,'id'));
-						$CI->html->sDivRow();
+						$CI->html->sDivRow(array('style'=>'margin-top:10px;'));
+							$CI->html->sDivCol(2);
+								$CI->html->inputPaper('','code',iSetObj($det,'code'),'Batch Code',array('class'=>'rOkay'));
+							$CI->html->eDivCol();
 							$CI->html->sDivCol(6);
-								$CI->html->H(4,"General Information",array('class'=>'form-titler'));
-								$CI->html->inputPaper('Code:','code',iSetObj($det,'code'),null,array('class'=>'rOkay'));
-								$CI->html->inputPaper('Name:','name',iSetObj($det,'name'),null,array('class'=>'rOkay'));
-								$CI->html->courseDropPaper('Course:','course_id',iSetObj($det,'course_id'),null,array('class'=>'rOkay'));
-								$CI->html->inputPaper('Start Date:','start_date',(iSetObjDate($det,'start_date')),null,array('class'=>'pick-date'),"fa-calendar");
-								$CI->html->inputPaper('End Date:','end_date',(iSetObjDate($det,'end_date')),null,array('class'=>'pick-date'),"fa-calendar");
+								$CI->html->inputPaper('','name',iSetObj($det,'name'),'Batch Name',array('class'=>'rOkay'));
 							$CI->html->eDivCol();
 						$CI->html->eDivRow();
+						$CI->html->sTab(array('class'=>'paper-tab','style'=>'margin-top:20px;'));
+							$tabs = array(fa('fa-info-circle').' General Details'=>array('href'=>'#general-pane'),
+										  fa('fa-flag').' Sections'=>array('href'=>'#sections-pane'),
+										 );
+							$CI->html->tabHead($tabs,null,array());
+							$CI->html->sTabBody();
+								$CI->html->sTabPane(array('id'=>'general-pane','class'=>'tab-pane active'));
+									$CI->html->sDivRow();
+										$CI->html->sDivCol(6);
+											$CI->html->courseDropPaper('Course:','course_id',iSetObj($det,'course_id'),null,array('class'=>'rOkay'));
+											$CI->html->inputPaper('Start Date:','start_date',(iSetObjDate($det,'start_date')),null,array('class'=>'pick-date'),"fa-calendar");
+											$CI->html->inputPaper('End Date:','end_date',(iSetObjDate($det,'end_date')),null,array('class'=>'pick-date'),"fa-calendar");
+											// $CI->html->teachersDropPaper('Course:','course_id',iSetObj($det,'course_id'),null,array('class'=>'rOkay'));
+										$CI->html->eDivCol();
+									$CI->html->eDivRow();
+								$CI->html->eTabPane();
+								$CI->html->sTabPane(array('id'=>'sections-pane','class'=>'tab-pane'));
+									$CI->html->sDivRow();
+										$CI->html->sDivCol(8);
+												$CI->html->sDivRow();
+													$CI->html->sDivCol(5);	
+														$CI->html->sectionsDropPaper('Section:','section',null,null,array('class'=>''));
+													$CI->html->eDivCol();
+													$CI->html->sDivCol(5);	
+														$CI->html->teachersDropPaper('Teacher:','teacher',null,null,array('class'=>''));
+													$CI->html->eDivCol();
+													$CI->html->sDivCol(2,'right');
+														$CI->html->button(fa('fa-plus').' ADD',array('id'=>'add-sec-btn','class'=>'btn-sm btn-flat'),'primary');	
+													$CI->html->eDivCol();
+												$CI->html->eDivRow();
+												$CI->html->sDivRow();
+													$CI->html->sDivCol(12);
+														$CI->html->sTable(array('class'=>'table paper-table','id'=>'sections-tbl'));
+															$CI->html->sTablehead();
+																$CI->html->sRow();
+																	$CI->html->th('Section');
+																	$CI->html->th('Teacher');
+																	$CI->html->th(' ');
+																$CI->html->eRow();
+															$CI->html->eTablehead();
+															$CI->html->sTableBody();
+																foreach ($sections as $ctr => $row) {
+																	$CI->html->sRow(array('id'=>'row-'.$ctr));
+																		$link = $CI->html->A(fa('fa-remove fa-lg'),'#',array('class'=>'remove','id'=>'remove-'.$ctr,'ref'=>$ctr,'return'=>'true'));
+																		$CI->html->td($row['sec_name']);
+																		$CI->html->td($row['teacher_name']);
+																		$CI->html->td($link,array('style'=>'text-align:right;margin:0px;'));
+																	$CI->html->eRow();
+																}
+															$CI->html->eTableBody();
+														$CI->html->eTable();
+													$CI->html->eDivCol();
+												$CI->html->eDivRow();
+										$CI->html->eDivCol();
+									$CI->html->eDivRow();
+								$CI->html->eTabPane();
+							$CI->html->eTabBody();
+						$CI->html->eTab();	
 					$CI->html->eForm();
 				$CI->html->eBoxBody();
 			$CI->html->eBox();
@@ -225,6 +281,32 @@ function sectionsPage($det=array()){
 							$CI->html->eDivCol();
 						$CI->html->eDivRow();
 					$CI->html->eForm();
+				$CI->html->eBoxBody();
+			$CI->html->eBox();
+		$CI->html->eDivCol();
+	$CI->html->eDivRow();
+	return $CI->html->code();
+}
+function schedulePage($det=array()){
+	$CI =& get_instance();
+	$CI->html->sDivRow();
+		$CI->html->sDivCol(3);
+			$CI->html->sBox('solid');
+				$CI->html->sBoxBody();
+					$CI->html->sForm("academic/schedule_db","general-form");
+						$CI->html->courseDropPaper("Course:","course",null,null);
+						$CI->html->selectPaper("Batch:","batch",array(),null,'Select Batch');
+						$CI->html->selectPaper("Section:","section",array(),null,'Select Section');
+						$CI->html->daysDropPaper('Select Day:','day');
+					$CI->html->eForm();	
+				$CI->html->eBoxBody();
+			$CI->html->eBox();
+		$CI->html->eDivCol();
+		$CI->html->sDivCol(9);
+			$CI->html->sBox('solid');
+				$CI->html->sBoxBody();
+					$CI->html->sDiv(array('id'=>'time-tbl'));
+					$CI->html->eDiv();
 				$CI->html->eBoxBody();
 			$CI->html->eBox();
 		$CI->html->eDivCol();
