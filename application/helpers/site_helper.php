@@ -149,8 +149,8 @@ function got_pic_img($img){
     }
 }
 
-function getDatesOfMonths(){
-    $num_of_days = date('t');
+function getDatesOfMonths($now=null){
+    $num_of_days = date('t',strtotime($now));
     for( $i=1; $i<= $num_of_days; $i++)
      $dates[]= date('Y') . "-". date('m'). "-". str_pad($i,2,'0', STR_PAD_LEFT);
     // var_dump($dates);

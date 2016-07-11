@@ -28,7 +28,7 @@
            </section>
 
            <!-- Main content -->
-           <section class="content code-div">
+           <section class="content code-div <?php if(isset($no_padding) && $no_padding == true) echo 'no-padding'; ?>">
              <?php 
                  if(isset($code))
                      echo $code; 

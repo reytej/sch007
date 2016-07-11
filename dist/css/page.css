@@ -373,3 +373,31 @@ outline: none !important;
   background-color:#f9f9fb !important;
 }
 
+
+
+table.fixed-tbl {
+  margin-bottom: 0px;
+  table-layout:fixed;
+}
+table.fixed-tbl thead tr td {
+   /* white-space:nowrap;*/
+}
+div.fixed-tbl-div { 
+    /*width: 100%; */
+    overflow-x:auto;  
+    margin-left:200px; 
+    /*overflow-y:visible;*/
+    padding-bottom:1px;
+    border-left:2px solid #f4f4f4;
+    border-right:2px solid #f4f4f4;
+}
+.headcol {
+    position:absolute; 
+    width:205px; 
+    left:5px;
+    top:auto;
+    border-right: 0px none black; 
+    border:none !important;
+    text-align: center;
+}
+.long {width:100px;}
