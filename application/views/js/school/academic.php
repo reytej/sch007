@@ -303,7 +303,7 @@ $(document).ready(function(){
 		                calendar.fullCalendar('unselect');
 		                var start =  moment(start_ev).format( "YYYY-MM-DD HH:mm:ss");
 		                var end =  moment(end_ev).format( "YYYY-MM-DD HH:mm:ss");
-						console.log( moment(start_ev).format( "YYYY-MM-DD HH:mm:ss"));
+						// console.log( moment(start_ev).format( "YYYY-MM-DD HH:mm:ss"));
 						
 						popForm(lineID,start,end);
 						lineID++;
@@ -336,7 +336,7 @@ $(document).ready(function(){
 		      		var subject_name = subj.find("option:selected").text();
 		      		var teacher_name = teach.find("option:selected").text();
 		      		var eve = calendar.fullCalendar( 'clientEvents', event_id );
-		      		console.log(eve[0]);
+		      		// console.log(eve[0]);
 		      		eve[0].title = 'Subject: '+subject_name+';'+' Teacher: '+teacher_name;
 		      		eve[0].description = 'Subject: '+subject_name;
 		      		calendar.fullCalendar('updateEvent', eve[0]);
@@ -391,12 +391,12 @@ $(document).ready(function(){
 		      		var subject_name = subj.find("option:selected").text();
 		      		var teacher_name = teach.find("option:selected").text();
 		      		var eve = calendar.fullCalendar( 'clientEvents', event_id );
-		      		console.log(eve[0]);
+		      		// console.log(eve[0]);
 		      		eve[0].title = 'Subject: '+subject_name+';'+' Teacher: '+teacher_name;
 		      		eve[0].description = 'Subject: '+subject_name;
 		      		calendar.fullCalendar('updateEvent', eve[0]);
 			      	$.post(baseUrl+'academic/schedule_cart',formData,function(data){
-			      		// console.log(data);
+			      		console.log(data);
 			      		$.post(baseUrl+'cart/all/schedules',function(data){
 							console.log(data);
 						},'json');
@@ -476,6 +476,7 @@ $(document).ready(function(){
 		function loadEvents(){
 			var batch = $('#batch').val();
 			var section = $('#section').val();
+			calendar.fullCalendar('removeEvents');
 			$.post(baseUrl+'academic/schedule_load/'+batch+'/'+section,function(data){
 
 				$.each(data.details,function(ctr,row){
@@ -487,7 +488,7 @@ $(document).ready(function(){
 		                    // end: moment(row.end).format( "YYYY-MM-DDTHH:MM:SS"),
 		                    end: row.end,
 		                }, true);
-					lineID = row.event_id;
+					lineID = parseFloat(row.event_id);
 				});
 				lineID++;
 				// console.log(lineID);

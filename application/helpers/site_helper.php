@@ -52,6 +52,9 @@ function date2SqlDateTime($date){
 function time2Sql($date){
    return date('H:i:s', strtotime($date));
 }
+function sql2Time($date){
+   return date('h:i a', strtotime($date));
+}
 function date2Word($date){
 	return date('F d, Y', strtotime($date));
 }

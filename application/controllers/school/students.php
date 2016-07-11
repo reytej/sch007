@@ -154,4 +154,72 @@ class Students extends CI_Controller {
 		// $data['use_js'] = 'profileGeneralJs';
 		$this->load->view('load',$data);
 	}
+	public function profile_academic($id=null){
+		$now = $this->site_model->get_db_now('sql',true);
+		$details = array();
+		$subjects = array();
+		$order = array();
+		$table  = 'students';
+		$select = 'students.*,
+		           enrolls.batch_id,enrolls.section_id,enrolls.start_date,enrolls.end_date,
+		           courses.name as course_name,
+		           course_batches.name as batch_name,
+		           sections.name as section_name,
+		           course_batch_sections.teacher_id,
+		           users.fname as tc_fname,users.mname as tc_mname,users.lname as tc_lname,users.suffix as tc_suffix
+		          ';
+		$join['enrolls'] = array("content"=>"students.enroll_id = enrolls.id","mode"=>"left");
+		$join['courses'] = array("content"=>"enrolls.course_id = courses.id","mode"=>"left");
+		$join['course_batches'] = array("content"=>"enrolls.batch_id = course_batches.id","mode"=>"left");
+		$join['sections'] = array("content"=>"enrolls.section_id = sections.id","mode"=>"left");
+		$join['course_batch_sections'] = array("content"=>"course_batches.id = course_batch_sections.batch_id AND sections.id = course_batch_sections.section_id","mode"=>"left");
+		$join['users'] = array("content"=>"course_batch_sections.teacher_id = users.id","mode"=>"left");
+		$args['students.id'] = $id;
+		$items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select);
+		if(count($items) > 0){
+			$details = $items[0];
+			$table  = 'enroll_subjects';
+			$select = 'enroll_subjects.*,
+					   subjects.code subj_code,subjects.name as subj_name,
+					   course_batch_schedules.day,course_batch_schedules.start_time,course_batch_schedules.end_time,
+					   users.fname as tc_fname,users.mname as tc_mname,users.lname as tc_lname,users.suffix as tc_suffix
+					  ';
+			$join2['subjects'] = array("content"=>"enroll_subjects.subject_id = subjects.id","mode"=>"left");
+			$join2['course_batch_schedules'] = array("content"=>"enroll_subjects.subject_id = course_batch_schedules.subject_id","mode"=>"left");
+			$join2['users'] = array("content"=>"course_batch_schedules.teacher_id = users.id","mode"=>"left");
+			$args2['enroll_subjects.enroll_id'] = $details->enroll_id;
+			$args2['course_batch_schedules.batch_id'] = $details->batch_id;
+			$args2['course_batch_schedules.section_id'] = $details->section_id;
+			$order = array('subjects.name'=>'asc');
+			$subjects_result = $this->site_model->get_tbl($table,$args2,$order,$join2,true,$select);
+
+			foreach ($subjects_result as $sres) {
+				$days = array('mon'=>'','tue'=>'','wed'=>'','thu'=>'','fri'=>'','sat'=>'','sun'=>'');
+				$teacher = ucFix($sres->tc_fname." ".$sres->tc_mname." ".$sres->tc_lname." ".$sres->tc_suffix);
+				$time = sql2Time($sres->start_time)." - ".sql2Time($sres->end_time)."<br>".$teacher;
+				$days[strtolower($sres->day)] = $time;
+				if(!isset($subjects[$sres->subject_id])){
+					$subjects[$sres->subject_id] = array(
+						"name" => "[".$sres->subj_code."] ".$sres->subj_name,
+						"mon"  => $days['mon'],
+						"tue"  => $days['tue'],
+						"wed"  => $days['wed'],
+						"thu"  => $days['thu'],
+						"fri"  => $days['fri'],
+						"sat"  => $days['sat'],
+						"sun"  => $days['sun'],
+					);
+				}
+				else{
+					$subj = $subjects[$sres->subject_id];
+					$subj[strtolower($sres->day)] = $days[strtolower($sres->day)];
+					$subjects[$sres->subject_id] = $subj;
+				}
+			}
+		}
+		$data['code'] = academicDetails($details,$now,$subjects);
+		$data['load_js'] = 'school/students';
+		$data['use_js'] = 'profileGeneralJs';
+		$this->load->view('load',$data);
+	}
 }

@@ -1,5 +1,5 @@
 <?php
-function listPage($title="",$tbl_name="",$form="",$default_view="grid",$view="all",$filter=false){
+function listPage($title="",$tbl_name="",$form="",$default_view="grid",$view="all",$filter=false,$urlAddOns=null){
 	$CI =& get_instance();
 	$CI->html->sDiv(array('class'=>'list-page default-list'));
 		$CI->html->sDiv(array('class'=>'list-page-head'));

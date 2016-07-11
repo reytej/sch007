@@ -32,8 +32,10 @@ function studentsProfile($det=array(),$img=array()){
 				$CI->html->eBoxBody();
 			$CI->html->eBox();
 			$CI->html->sDiv(array('class'=>'btn-group-vertical btn-profile-vertical','style'=>'width:100%;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);'));
+				
 				$CI->html->button(fa('fa-info-circle').' General Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_general'));
 				if(iSetObj($det,"id")){
+					$CI->html->button(fa('fa-university').' Academic Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_academic'));
 					$CI->html->button(fa('fa-money').' Payment Balance',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_balance'));
 				}
 
@@ -171,6 +173,44 @@ function balanceDetails($result=array()){
 				$CI->html->eRow();
 			$CI->html->eTableBody();
 		$CI->html->eTable();
+	return $CI->html->code();
+}
+function academicDetails($res=array(),$now=null,$subjects=array()){
+	$CI =& get_instance();
+		if(strtotime($now) > strtotime($res->end_date)){
+			$CI->html->H(4,"Not Yet Enrolled",array('style'=>'text-align:center;'));
+		    return $CI->html->code();
+		}
+		$name = $res->fname." ".$res->mname." ".$res->lname." ".$res->suffix;
+		$adviser = ucFix($res->tc_fname." ".$res->tc_mname." ".$res->tc_lname." ".$res->tc_suffix);
+		$course = ucFix($res->course_name);
+		$batch = ucFix($res->batch_name);
+		$section = ucFix($res->section_name);                
+		$CI->html->H(3,$course.' <small style="font-style:italic;">('.sql2Date($res->start_date).' - '.sql2Date($res->end_date).')</small>');
+		$CI->html->H(4,$batch);
+		$CI->html->H(4,$section." - ".$adviser);
+		$CI->html->H(4,"",array('class'=>'page-header'));
+		// $CI->html->H(6,"Class Schedule",array('class'=>'form-titler','style'=>'font-size:16px;'));
+		$CI->html->sTable(array('class'=>'table paper-table','id'=>'schedule-tbl'));
+			$days = array('mon'=>'Monday','tue'=>'Tuesday','wed'=>'Wednesday','thu'=>'Thursday','fri'=>'Friday','sat'=>'Saturday','sun'=>'Sunday');
+			$CI->html->sTablehead();
+				$CI->html->sRow();
+					$CI->html->th('Subject');
+					foreach ($days as $day) {
+						$CI->html->th($day);
+					}
+				$CI->html->eRow();
+			$CI->html->eTablehead();
+			$CI->html->sTableBody();
+				foreach ($subjects as $subj_id => $sub) {
+					$CI->html->sRow();
+						foreach ($sub as $code => $val) {
+							$CI->html->td($val);
+						}
+					$CI->html->eRow();					
+				}
+			$CI->html->eTableBody();
+		$CI->html->eTable();	
 	return $CI->html->code();
 }
 

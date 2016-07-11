@@ -19,6 +19,8 @@ $nav = array();
 	// 	$enrollment['pay_terms'] = array('title'=>'Payment Terms','path'=>'enrollment/pay_terms','exclude'=>0);
 $nav['enrollment'] = array('title'=>'<i class="fa fa-bookmark"></i> <span>Enrollment</span>','path'=>$enrollment,'exclude'=>0);
 $nav['students'] = array('title'=>'<i class="fa fa-mortar-board"></i> <span>Students</span>','path'=>'students','exclude'=>0);	
+		$classRecord['cr_attendance'] = array('title'=>'Attendance','path'=>'class_record/attendance','exclude'=>0);
+$nav['class_record'] = array('title'=>'<i class="fa fa-book"></i> <span> Class Record</span>','path'=>$classRecord,'exclude'=>0);	
 $config['sideNav'] = $nav;
 //////////////////////////////////////////////////
 /// RIGHT SIDE BAR LINKS ///
