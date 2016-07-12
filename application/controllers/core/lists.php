@@ -910,7 +910,7 @@ class Lists extends CI_Controller {
         if(count($items) > 0){
             $ids = array();
             foreach ($items as $res) {
-                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'class_record/attendance_form/'.$res->subject_id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'class_record/attendance_form/'.$res->batch_id.'/'.$res->section_id.'/'.$res->subject_id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
                 $json[$res->id] = array(
                     "course"=>ucFix($res->course_name),   
                     "batch"=>ucFix($res->batch_name),   

@@ -108,7 +108,13 @@ function iSet($ar,$name,$noneText=null,$equal=null){
 function ucFix($text=""){
     return ucwords(strtolower($text));
 }
-
+function rangeWeek($datestr) {
+    date_default_timezone_set(date_default_timezone_get());
+    $dt = strtotime($datestr);
+    $res['start'] = date('N', $dt)==1 ? date('Y-m-d', $dt) : date('Y-m-d', strtotime('last monday', $dt));
+    $res['end'] = date('N', $dt)==7 ? date('Y-m-d', $dt) : date('Y-m-d', strtotime('next sunday', $dt));
+    return $res;
+}
 function iEqual($value,$equal=0,$dfltTxtActive='Active',$dfltTxtInactive='Inactive'){
     if($value == $equal){
         return "<span class='text-success'>".$dfltTxtActive."</span>";
@@ -122,7 +128,30 @@ function iEqual($value,$equal=0,$dfltTxtActive='Active',$dfltTxtInactive='Inacti
 //         return $a['order'] < $b['order']?1:-1;
 //     };
 // }
+function createDateRangeArray($strDateFrom,$strDateTo)
+{
+    // takes two dates formatted as YYYY-MM-DD and creates an
+    // inclusive array of the dates between the from and to dates.
 
+    // could test validity of dates here but I'm already doing
+    // that in the main script
+
+    $aryRange=array();
+
+    $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
+    $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
+
+    if ($iDateTo>=$iDateFrom)
+    {
+        array_push($aryRange,date('Y-m-d',$iDateFrom)); // first entry
+        while ($iDateFrom<$iDateTo)
+        {
+            $iDateFrom+=86400; // add 24 hours
+            array_push($aryRange,date('Y-m-d',$iDateFrom));
+        }
+    }
+    return $aryRange;
+}
 
 function getMonths($start,$end){
 	$startDate = strtotime($start);

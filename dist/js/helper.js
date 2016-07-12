@@ -40,6 +40,37 @@
       var height = screen.availHeight-80;
       window.open (baseUrl+printUrl,"print",'toolbar=no,width='+width+',height='+height+',top=15,left=0,directores=no');
     },
+    loadPage: function(goLoad){
+      var href = window.location.href.split('/');
+      var doLoad = true;
+
+      if(typeof goLoad !== 'undefined')
+        doLoad = goLoad;
+
+      if(doLoad){
+        var docHeight = $(document).height();
+        $("body").append("<div id='overlayProgress'></div>");
+        $("#overlayProgress")
+          .height(docHeight)
+          .css({
+          // 'opacity' : 0.4,
+          'position': 'absolute',
+          'top': 0,
+          'left': 0,
+          "background-color": "rgba(0,0,0,.5)",
+          'width': '100%',
+          'z-index': 5000
+        });
+        var txt = $('<span/>')
+            .css({"position":'absolute','display':'block','width':'100%','color':'#fff','font-size':'24px','margin':'10px auto'})
+            .html('<center><img src="'+baseUrl+'dist/img/rotate.gif" width="70"><br>Loading ...</center>');
+        var bar = $('<div/>').css({'width':'20%','height':'40px','margin':'20% auto','position':'relative'}).append(txt);
+        $('<div/>').append(bar).appendTo('#overlayProgress');
+      }
+      else{
+        $('#overlayProgress').remove();
+      }
+    },
   });
   $.fn.exists = function(){return this.length>0;}
   $.fn.serializeAnything = function() {

@@ -1,26 +1,35 @@
 <?php
-function attendanceForm($now=null){
+function attendanceForm($now=null,$teacher,$batch_id,$sect_id,$subj_id){
 	$CI =& get_instance();
 	$CI->html->sBox('solid',array('style'=>'margin:0px;'));
 		$CI->html->sBoxBody();
-		$months = getDatesOfMonths();
-			$CI->html->sDiv(array('class'=>'fixed-tbl-div'));
-			$CI->html->sTable(array('class'=>'table fixed-tbl paper-table','id'=>'attendance-tbl'));
-				$CI->html->sTablehead();
-					$CI->html->sRow();
-						$CI->html->th('',array('class'=>'headcol'));
-						foreach ($months as $val) {
-							$CI->html->th(date('l',strtotime($val)),array('style'=>'width:150px;text-align:center;font-weight:bold;background-color:#72AFD2;color:#fff'));
-						}
-					$CI->html->eRow();
-					$CI->html->sRow();
-						$CI->html->th('Student',array('class'=>'headcol','style'=>'background-color:#72AFD2;color:#fff'));
-						foreach ($months as $val) {
-							$CI->html->th(sql2Date($val),array('style'=>'width:150px;text-align:center;border-top:2px solid #f4f4f4;font-weight:normal;background-color:#f1f1f1;'));
-						}
-					$CI->html->eRow();
-				$CI->html->eTablehead();
-			$CI->html->eTable();
+			$CI->html->sForm("","search-form");
+				$CI->html->hidden('teacher',$teacher);
+				$CI->html->hidden('batch_id',$batch_id);
+				$CI->html->hidden('sect_id',$sect_id);
+				$CI->html->hidden('subj_id',$subj_id);
+				$CI->html->sDivRow(array('style'=>'margin-top:10px;padding-left:200px;'));
+					$CI->html->sDivCol(3);
+						$dates = rangeWeek($now);
+						
+						$CI->html->inputPaper('From Date:','from_date',sql2Date($dates['start']),null,array('class'=>'pick-date rOkay','ro-msg'=>'From date must not be empty'));
+					$CI->html->eDivCol();
+					$CI->html->sDivCol(3);
+						$CI->html->inputPaper('To Date:','to_date',sql2Date($dates['end']),null,array('class'=>'pick-date rOkay','ro-msg'=>'From date must not be empty'));
+					$CI->html->eDivCol();
+					$CI->html->sDivCol(3);
+						$CI->html->button(fa('fa-search')." Search",array('id'=>'search-btn','class'=>'btn-sm btn-flat'),'primary');
+					$CI->html->eDivCol();
+				$CI->html->eDivRow();
+			$CI->html->eForm();
+			$months = getDatesOfMonths();
+			$CI->html->sDiv(array('class'=>'fixed-tbl-div','style'=>'margin-top:20px;margin-bottom:10px;'));
+				$CI->html->sTable(array('class'=>'table fixed-tbl paper-table','id'=>'attendance-tbl'));
+					$CI->html->sTablehead();
+					$CI->html->eTablehead();
+					$CI->html->sTableBody();
+					$CI->html->eTableBody();
+				$CI->html->eTable();
 			$CI->html->eDiv();
 		$CI->html->eBoxBody();
 	$CI->html->eBox();

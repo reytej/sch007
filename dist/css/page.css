@@ -1,3 +1,6 @@
+.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+.toggle.ios .toggle-handle { border-radius: 20px; }
+
 *:focus{
 outline: none !important;
 }
@@ -383,13 +386,13 @@ table.fixed-tbl thead tr td {
    /* white-space:nowrap;*/
 }
 div.fixed-tbl-div { 
-    /*width: 100%; */
     overflow-x:auto;  
     margin-left:200px; 
     /*overflow-y:visible;*/
     padding-bottom:1px;
-    border-left:2px solid #f4f4f4;
-    border-right:2px solid #f4f4f4;
+    border-left:2px solid #72AFD2;
+    /*text-align: left;*/
+    border-right:2px solid #72AFD2;
 }
 .headcol {
     position:absolute; 
