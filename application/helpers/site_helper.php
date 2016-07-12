@@ -108,6 +108,20 @@ function iSet($ar,$name,$noneText=null,$equal=null){
 function ucFix($text=""){
     return ucwords(strtolower($text));
 }
+function dateRange($first, $last, $step = '+1 day', $format = 'm/d/Y' ) { 
+
+    $dates = array();
+    $current = strtotime($first);
+    $last = strtotime($last);
+
+    while( $current <= $last ) { 
+
+        $dates[] = date($format, $current);
+        $current = strtotime($step, $current);
+    }
+
+    return $dates;
+}
 function rangeWeek($datestr) {
     date_default_timezone_set(date_default_timezone_get());
     $dt = strtotime($datestr);

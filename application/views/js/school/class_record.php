@@ -1,6 +1,7 @@
 <script>
 $(document).ready(function(){
 	<?php if($use_js == 'attendanceJs'): ?>
+		loadAttendance();
 		$('#search-btn').click(function(){
 			loadAttendance();
 			return false;

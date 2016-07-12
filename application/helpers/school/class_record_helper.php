@@ -11,11 +11,10 @@ function attendanceForm($now=null,$teacher,$batch_id,$sect_id,$subj_id){
 				$CI->html->sDivRow(array('style'=>'margin-top:10px;padding-left:200px;'));
 					$CI->html->sDivCol(3);
 						$dates = rangeWeek($now);
-						
-						$CI->html->inputPaper('From Date:','from_date',sql2Date($dates['start']),null,array('class'=>'pick-date rOkay','ro-msg'=>'From date must not be empty'));
+						$CI->html->inputPaper('From Date:','from_date',date('m/01/Y',strtotime($now)),null,array('class'=>'pick-date rOkay','ro-msg'=>'From date must not be empty'));
 					$CI->html->eDivCol();
 					$CI->html->sDivCol(3);
-						$CI->html->inputPaper('To Date:','to_date',sql2Date($dates['end']),null,array('class'=>'pick-date rOkay','ro-msg'=>'From date must not be empty'));
+						$CI->html->inputPaper('To Date:','to_date',date('m/t/Y',strtotime($now)),null,array('class'=>'pick-date rOkay','ro-msg'=>'From date must not be empty'));
 					$CI->html->eDivCol();
 					$CI->html->sDivCol(3);
 						$CI->html->button(fa('fa-search')." Search",array('id'=>'search-btn','class'=>'btn-sm btn-flat'),'primary');

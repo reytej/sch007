@@ -381,6 +381,7 @@ outline: none !important;
 table.fixed-tbl {
   margin-bottom: 0px;
   table-layout:fixed;
+  width: auto;
 }
 table.fixed-tbl thead tr td {
    /* white-space:nowrap;*/
@@ -392,7 +393,7 @@ div.fixed-tbl-div {
     padding-bottom:1px;
     border-left:2px solid #72AFD2;
     /*text-align: left;*/
-    border-right:2px solid #72AFD2;
+    /*border-right:2px solid #72AFD2;*/
 }
 .headcol {
     position:absolute; 
