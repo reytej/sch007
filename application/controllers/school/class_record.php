@@ -66,14 +66,7 @@ class Class_record extends CI_Controller {
 							if(strtotime($now) > strtotime($date)){
 								$day = strtolower(date('D',strtotime($val)));
 								if($std[$day])
-									// $this->html->A(fa('fa-pencil'),'#',array('class'=>'atts btn btn-primary btn-sm btn-flat','style'=>'width:80px;',
-									// 								   'id'=>'att-'.$std_id.'-'.date('mdy',strtotime($val)),
-									// 								   'date'=>date2Sql($val),
-									// 								   'student'=>$std_id,
-									// 								   'title'=>$std['name'].'<small>'.sql2Date($val).'</small>'
-									// 								   )
-									// 			  );
-									$this->html->checkbox(null,'dates[]',1,array('class'=>'dates','data-on'=>'Present','data-off'=>'Absent',
+									$this->html->checkbox(null,'date-'.$std_id.'-'.date('mdy',strtotime($val)),1,array('student'=>$std_id,'date'=>sql2Date($val),'class'=>'dates','data-on'=>'Present','data-off'=>'Absent','data-style'=>'ios',
 																				 'data-onstyle'=>'success','data-offstyle'=>'danger','data-size'=>'small'
 																				)
 														 );
@@ -86,8 +79,25 @@ class Class_record extends CI_Controller {
 			$json['tbody'] = $this->html->code();
 		echo json_encode($json);
 	}
-	public function attendance_pop(){
-
+	public function attendance_db(){
+		$user = sess('user');
+		$items = array(
+			"student_id" 	=> $this->input->post('student'),
+			"batch_id" 		=> $this->input->post('batch_id'),
+			"section_id" 	=> $this->input->post('sect_id'),
+			"subject_id"	=> $this->input->post('subj_id'),
+			"teacher_id"	=> $this->input->post('teacher'),
+			"trans_date"	=> date2Sql($this->input->post('date')),
+			"status" 		=> $this->input->post('status'),
+		);
+		$args['trans_date'] = date2Sql($this->input->post('date'));
+		$args['batch_id'] = $this->input->post('batch_id');
+		$args['student_id'] = $this->input->post('student');
+		$args['subject_id'] = $this->input->post('subj_id');
+		$args['section_id'] = $this->input->post('sect_id');
+		$args['teacher_id'] = $this->input->post('teacher');
+		$this->site_model->delete_tbl('student_attendance',$args);
+		$id = $this->site_model->add_tbl('student_attendance',$items,array('reg_date'=>'NOW()','reg_user'=>$user['id']));
 	}
 	public function get_class($teacher,$batch,$section,$subject){
 		$class  = array();
