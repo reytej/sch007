@@ -39,6 +39,7 @@ class Class_record extends CI_Controller {
 		$sect_id = $this->input->post('sect_id');
 		$subj_id = $this->input->post('subj_id');
 		$class = $this->get_class($teacher,$batch_id,$sect_id,$subj_id);
+		$attendance = $this->get_attendance($teacher,$batch_id,$sect_id,$subj_id,date2Sql($this->input->post('from_date')),date2Sql($this->input->post('to_date')));
 		$json['thead'] = "";
 			// $months = getDatesOfMonths();
 			$dates = createDateRangeArray(date2Sql($this->input->post('from_date')),date2Sql($this->input->post('to_date')) );
@@ -65,11 +66,19 @@ class Class_record extends CI_Controller {
 						$this->html->sTd(array('style'=>'width:150px;text-align:center;'));
 							if(strtotime($now) > strtotime($date)){
 								$day = strtolower(date('D',strtotime($val)));
-								if($std[$day])
-									$this->html->checkbox(null,'date-'.$std_id.'-'.date('mdy',strtotime($val)),1,array('student'=>$std_id,'date'=>sql2Date($val),'class'=>'dates','data-on'=>'Present','data-off'=>'Absent','data-style'=>'ios',
-																				 'data-onstyle'=>'success','data-offstyle'=>'danger','data-size'=>'small'
-																				)
-														 );
+								if($std[$day]){
+									$params = array('student'=>$std_id,'date'=>sql2Date($val),'class'=>'dates','data-on'=>'Present','data-off'=>'Absent','data-style'=>'ios','data-onstyle'=>'success','data-offstyle'=>'danger','data-size'=>'small');
+									foreach ($attendance as $ctr => $row) {
+										if($row['student_id'] == $std_id && sql2Date($row['trans_date']) == sql2Date($val)){
+											// echo $std_id." - ".sql2Date($row['trans_date']).' - '.$row['status'];
+											if($row['status'] == 'present'){
+												$params['checked'] = '';
+											}
+										}
+									}
+									$this->html->checkbox(null,'date-'.$std_id.'-'.date('mdy',strtotime($val)),1,$params);
+
+								}
 							}
 							else $this->html->span('&nbsp;');
 						$this->html->eTd();
@@ -145,5 +154,39 @@ class Class_record extends CI_Controller {
 		    }
 		}
 		return $class;
+	}
+	public function get_attendance($teacher,$batch,$section,$subject,$start_date,$to_date){
+			$json  = array();
+			$args   = array();
+			$join   = array();
+			$order  = array();
+			$group  = null;
+			$table  = 'student_attendance';
+			$select = 'student_attendance.student_id,trans_date,status';
+			
+		    $args['student_attendance.teacher_id'] = $teacher;
+		    $args['student_attendance.batch_id']   = $batch;
+		    $args['student_attendance.section_id'] = $section;
+		    $args['student_attendance.subject_id'] = $subject;
+		    $args["DATE(trans_date) >= '".date2Sql($start_date)."'"] = array('use'=>'where','val'=>"",'third'=>false);
+		    $args["DATE(trans_date) <= '".date2Sql($to_date)."'"] = array('use'=>'where','val'=>"",'third'=>false);
+			$items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group);
+
+			if(count($items) > 0){
+			    foreach ($items as $res) {
+					$json[] = array(
+						'student_id'=>$res->student_id,
+						'trans_date'=>$res->trans_date,
+						'status'=>$res->status,
+					);
+			    }
+			}
+			return $json;
+	}
+	public function activities(){
+		$user = sess('user');
+		$data = $this->syter->spawn('cr_activities');
+		$data['code'] = listPage(fa('fa-star')." Activities",'classes/'.$user['id'],'','list','list',false);
+		$this->load->view('list',$data);
 	}
 }

@@ -20,6 +20,7 @@ $nav = array();
 $nav['enrollment'] = array('title'=>'<i class="fa fa-bookmark"></i> <span>Enrollment</span>','path'=>$enrollment,'exclude'=>0);
 $nav['students'] = array('title'=>'<i class="fa fa-mortar-board"></i> <span>Students</span>','path'=>'students','exclude'=>0);	
 		$classRecord['cr_attendance'] = array('title'=>'Attendance','path'=>'class_record/attendance','exclude'=>0);
+		$classRecord['cr_activities'] = array('title'=>'Activities','path'=>'class_record/activities','exclude'=>0);
 $nav['class_record'] = array('title'=>'<i class="fa fa-book"></i> <span> Class Record</span>','path'=>$classRecord,'exclude'=>0);	
 $config['sideNav'] = $nav;
 //////////////////////////////////////////////////
