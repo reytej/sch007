@@ -2,7 +2,7 @@
 MySQL Backup
 Source Server Version: 5.5.25
 Source Database: sch007
-Date: 7/13/2016 20:46:15
+Date: 7/24/2016 20:09:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,7 +56,7 @@ CREATE TABLE `courses` (
 -- ----------------------------
 DROP TABLE IF EXISTS `course_batches`;
 CREATE TABLE `course_batches` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(50) DEFAULT NULL,
   `name` varchar(150) DEFAULT NULL,
   `course_id` int(11) DEFAULT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE `course_batches` (
   `reg_date` datetime DEFAULT NULL,
   `reg_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `course_batch_schedules`
@@ -82,7 +82,7 @@ CREATE TABLE `course_batch_schedules` (
   `start_time` time DEFAULT NULL,
   `end_time` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `course_batch_sections`
@@ -94,7 +94,7 @@ CREATE TABLE `course_batch_sections` (
   `section_id` int(11) DEFAULT NULL,
   `teacher_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `course_items`
@@ -106,7 +106,7 @@ CREATE TABLE `course_items` (
   `item_id` int(11) DEFAULT NULL,
   `qty` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `course_subjects`
@@ -117,7 +117,7 @@ CREATE TABLE `course_subjects` (
   `course_id` int(11) DEFAULT NULL,
   `subject_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `enrolls`
@@ -141,7 +141,7 @@ CREATE TABLE `enrolls` (
   `reg_user` int(11) DEFAULT NULL,
   `inactive` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `enroll_items`
@@ -156,7 +156,7 @@ CREATE TABLE `enroll_items` (
   `price` double DEFAULT NULL,
   `discount` double DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `enroll_payments`
@@ -172,7 +172,7 @@ CREATE TABLE `enroll_payments` (
   `pay` double DEFAULT '0',
   `pay_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `enroll_subjects`
@@ -183,7 +183,7 @@ CREATE TABLE `enroll_subjects` (
   `enroll_id` int(11) DEFAULT NULL,
   `subject_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `images`
@@ -199,7 +199,7 @@ CREATE TABLE `images` (
   `datetime` datetime DEFAULT NULL,
   `disabled` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`img_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `items`
@@ -219,7 +219,7 @@ CREATE TABLE `items` (
   `reg_date` datetime DEFAULT NULL,
   `reg_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `item_categories`
@@ -250,7 +250,7 @@ CREATE TABLE `payments` (
   `reg_user` int(11) DEFAULT NULL,
   `inactive` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `payment_details`
@@ -267,7 +267,7 @@ CREATE TABLE `payment_details` (
   `approval_code` varchar(150) DEFAULT NULL,
   `check_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `payment_for`
@@ -281,7 +281,7 @@ CREATE TABLE `payment_for` (
   `src_det_id` int(11) DEFAULT NULL,
   `amount` double DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `payment_terms`
@@ -325,7 +325,7 @@ CREATE TABLE `sections` (
   `reg_date` datetime DEFAULT NULL,
   `reg_user` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `settings`
@@ -366,7 +366,23 @@ CREATE TABLE `students` (
   `reg_date` datetime DEFAULT NULL,
   `reg_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `student_activities`
+-- ----------------------------
+DROP TABLE IF EXISTS `student_activities`;
+CREATE TABLE `student_activities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `batch_id` int(11) DEFAULT NULL,
+  `section_id` int(11) DEFAULT NULL,
+  `subject_id` int(11) DEFAULT NULL,
+  `teacher_id` int(11) DEFAULT NULL,
+  `trans_date` date DEFAULT NULL,
+  `title` varchar(150) DEFAULT NULL,
+  `description` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `student_attendance`
@@ -386,7 +402,7 @@ CREATE TABLE `student_attendance` (
   `reg_date` datetime DEFAULT NULL,
   `reg_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `student_details`
@@ -402,7 +418,7 @@ CREATE TABLE `student_details` (
   `mothers_contact_no` varchar(150) DEFAULT NULL,
   `mothers_job` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `student_guardians`
@@ -420,7 +436,7 @@ CREATE TABLE `student_guardians` (
   `reg_date` datetime DEFAULT NULL,
   `reg_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `subjects`
@@ -458,7 +474,7 @@ CREATE TABLE `trans_refs` (
   `user_id` int(11) DEFAULT NULL,
   `inactive` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `trans_types`
@@ -533,37 +549,33 @@ CREATE TABLE `voids` (
 -- ----------------------------
 --  Records 
 -- ----------------------------
-INSERT INTO `academic_years` VALUES ('1','School Year 2016 - 2017','2016-06-06','2017-03-31','2016-06-23 08:31:03','1','0'), ('2','School Year 2015 - 2016','2015-06-08','2016-03-31','2016-06-23 15:51:41','1','0');
-INSERT INTO `ci_sessions` VALUES ('033acbc13c47aee4870694e7e1ed5c12','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468304043','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('0f57598391fbea82c09592e4058b85bc','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468216309','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('11a02a80544743b66d867ca3d299c203','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468218723','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('286c14bce340a9b96b361053c53550f4','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468298607',''), ('295bce76cbfdcdfd7e0b7ac5ffa8dbbf','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468224429','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('29ba343f65cfdc220c84eb8c88c2b606','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468214968','a:4:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}s:8:\"sections\";a:2:{i:0;a:4:{s:6:\"sec_id\";s:1:\"1\";s:8:\"sec_name\";s:4:\"Hope\";s:10:\"teacher_id\";s:1:\"2\";s:12:\"teacher_name\";s:15:\"Karlene  Haber \";}i:1;a:4:{s:6:\"sec_id\";s:1:\"2\";s:8:\"sec_name\";s:5:\"Faith\";s:10:\"teacher_id\";s:1:\"8\";s:12:\"teacher_name\";s:15:\"Orlando  Bloom \";}}}'), ('32d8e25288c87ee0dbe6592641156528','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468308077','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('3a51aa3a109d9e1be4d4e3a563bfff8b','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468290263','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('3cb9a9eb950f32361b33b9119aa586e5','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468292112','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('4dcd280ca65c44a92f6c37328a7cbda3','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468222786','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('5bd647bee644521139a045b24e44eed9','::1','Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468410598',''), ('653076772f0d1632c947231a328c9b33','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468290296','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('695ea93738e7cf81def09f62db9cb4e1','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468290290','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('69b885b6ecb76b19f43a7137c6f69a36','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468280104',''), ('6e9d83c7fb9c9c43dc672df6dd5171f6','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468283244','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('8616a6c021d7bc7eea84b44f996939a2','::1','Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468410595','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('9a4f9cf30fcea93747eda16a4c8192f7','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468304828','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('a9ad8776395b2298332213a7be6042a9','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468285913','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('b403c0b5b8bb5619c5e19f0e3687c7bd','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468215165','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('b452b2146e301679fa9a54845ab2e00c','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468281343','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('bf356a236fde601b0d292f2ce9b673db','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468290264',''), ('bfd04c99904061f7e3b2386acf701d4f','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468290295',''), ('d1e2f045e9a363f494b87e80d0750cb6','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468216148','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('d1fd15c7f5191407f548b3ec2310f59d','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468221650','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('dfa571d9e07faa4f1038564ae8362760','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468216513','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('e16f9b731fe53dab291583369d8f065b','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468309775','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('e60b99e911315f4295a88f555aa5cf38','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468227846','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('ea21792b3e2db244bbb894541389e899','::1','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468283567','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}'), ('f677e0e1885e5d2ea92333d20643c69d','::1','Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1468413698','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"2\";s:8:\"username\";s:7:\"karlene\";s:5:\"fname\";s:7:\"Karlene\";s:5:\"lname\";s:5:\"Haber\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:15:\"Karlene  Haber \";s:7:\"role_id\";s:2:\"10\";s:4:\"role\";s:7:\"Teacher\";s:6:\"access\";s:26:\"class_record,cr_attendance\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/2.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:0:\"\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:6:\"Sch007\";s:8:\"comp_tin\";s:0:\"\";}}');
-INSERT INTO `courses` VALUES ('1','CRSE001','Kindergarten','Kids in garten','2016-06-23 08:18:42','1','0');
-INSERT INTO `course_batches` VALUES ('1','CRSB001','Kindergarten 2016 - 2017','1','2016-06-06','2017-03-31','2016-06-23 08:23:30','1');
-INSERT INTO `course_batch_schedules` VALUES ('1','1','1','1','2','1','Mon','08:30:00','10:30:00'), ('2','1','1','1','8','4','Mon','10:30:00','12:00:00'), ('3','1','1','1','2','6','Mon','13:00:00','15:30:00'), ('4','1','1','1','2','1','Tue','08:30:00','10:30:00'), ('5','1','1','1','8','4','Tue','10:30:00','12:00:00'), ('6','1','1','1','2','6','Tue','13:00:00','15:00:00'), ('7','1','1','1','2','1','Wed','08:30:00','10:30:00'), ('8','1','1','1','8','4','Wed','10:30:00','12:00:00'), ('9','1','1','1','2','6','Wed','13:00:00','15:00:00'), ('10','1','1','1','2','1','Thu','08:30:00','10:30:00'), ('11','1','1','1','8','4','Thu','10:30:00','12:00:00'), ('12','1','1','1','2','6','Thu','13:00:00','15:00:00'), ('13','1','1','1','2','1','Fri','08:30:00','10:30:00'), ('14','1','1','1','2','4','Fri','10:30:00','12:00:00'), ('15','1','1','1','2','6','Fri','13:00:00','15:00:00'), ('16','1','1','2','8','1','Mon','08:30:00','10:30:00'), ('17','1','1','2','2','4','Mon','10:30:00','12:00:00'), ('18','1','1','2','8','6','Mon','13:00:00','15:30:00'), ('19','1','1','2','8','1','Tue','08:30:00','10:30:00'), ('20','1','1','2','2','4','Tue','10:30:00','12:00:00'), ('21','1','1','2','8','6','Tue','13:00:00','15:00:00'), ('22','1','1','2','8','1','Wed','08:30:00','10:30:00'), ('23','1','1','2','2','4','Wed','10:30:00','12:00:00'), ('24','1','1','2','8','6','Wed','13:00:00','15:00:00'), ('25','1','1','2','8','1','Thu','08:30:00','10:30:00'), ('26','1','1','2','2','4','Thu','10:30:00','12:00:00'), ('27','1','1','2','8','6','Thu','13:00:00','15:00:00'), ('28','1','1','2','8','1','Fri','08:30:00','10:30:00'), ('29','1','1','2','2','4','Fri','10:30:00','12:00:00'), ('30','1','1','2','8','6','Fri','13:00:00','15:00:00');
-INSERT INTO `course_batch_sections` VALUES ('4','1','1','2'), ('5','1','2','8');
-INSERT INTO `course_items` VALUES ('18','1','1','1'), ('19','1','2','1'), ('20','1','3','1');
-INSERT INTO `course_subjects` VALUES ('19','1','1'), ('20','1','4'), ('21','1','6');
-INSERT INTO `enrolls` VALUES ('1','ENR0001','1','1','1','1','2016-07-01','2016-11-01','3','4','5','52000','2016-07-08','2016-07-08 20:53:09','1','0'), ('2','ENR0002','2','1','1','1','2016-07-01','2016-10-01','3','3','5','39000','2016-07-08','2016-07-08 20:53:27','1','0'), ('3','ENR0003','3','1','1','1','2016-07-01','2016-10-01','3','3','5','39000','2016-07-08','2016-07-08 20:53:42','1','0');
-INSERT INTO `enroll_items` VALUES ('1','1','1','1','unit','8000','0'), ('2','1','2','1','unit','2000','0'), ('3','1','3','1','unit','3000','0'), ('4','2','1','1','unit','8000','0'), ('5','2','2','1','unit','2000','0'), ('6','2','3','1','unit','3000','0'), ('7','3','1','1','unit','8000','0'), ('8','3','2','1','unit','2000','0'), ('9','3','3','1','unit','3000','0');
-INSERT INTO `enroll_payments` VALUES ('1','1','1','dp','13000','2016-07-05','13000','2016-07-08'), ('2','1','1','month','13000','2016-08-05','0',NULL), ('3','1','1','month','13000','2016-09-05','0',NULL), ('4','1','1','month','13000','2016-10-05','0',NULL), ('5','2','2','dp','13000','2016-07-05','13000','2016-07-11'), ('6','2','2','month','13000','2016-08-05','0',NULL), ('7','2','2','month','13000','2016-09-05','0',NULL), ('8','3','3','dp','13000','2016-07-05','13000','2016-07-11'), ('9','3','3','month','13000','2016-08-05','0',NULL), ('10','3','3','month','13000','2016-09-05','0',NULL);
-INSERT INTO `enroll_subjects` VALUES ('1','1','1'), ('2','1','4'), ('3','1','6'), ('4','2','1'), ('5','2','4'), ('6','2','6'), ('7','3','1'), ('8','3','4'), ('9','3','6');
-INSERT INTO `images` VALUES ('1','2.png','uploads/users/2.png','2','users',NULL,'2016-02-12 08:23:10','0'), ('5','1.png','uploads/users/1.png','1','users',NULL,'2016-02-12 08:30:45','0'), ('6','3.png','uploads/users/3.png','3','users',NULL,'2016-02-12 08:33:04','0'), ('7','5.png','uploads/users/5.png','5','users',NULL,'2016-02-12 08:37:36','0'), ('8','6.png','uploads/users/6.png','6','users',NULL,'2016-02-12 08:37:41','0'), ('9','7.png','uploads/users/7.png','7','users',NULL,'2016-02-12 08:37:41','0'), ('11','9.png','uploads/users/9.png','9','users',NULL,'2016-02-12 08:40:22','0'), ('12','8.png','uploads/users/8.png','8','users',NULL,'2016-02-12 08:45:13','0'), ('13','4.png','uploads/users/4.png','4','users',NULL,'2016-02-12 08:50:13','0'), ('14','10.png','uploads/users/10.png','10','users',NULL,'2016-02-12 09:43:46','0'), ('18','1.png','uploads/students/1.png','1','students',NULL,'2016-06-27 12:20:16','0'), ('19','2.png','uploads/students/2.png','2','students',NULL,'2016-06-27 12:20:37','0'), ('20','3.png','uploads/students/3.png','3','students',NULL,'2016-06-27 12:20:46','0'), ('22','4.png','uploads/items/4.png','4','items',NULL,'2016-06-28 09:14:11','0'), ('24','1.png','uploads/items/1.png','1','items',NULL,'2016-06-28 15:12:44','0');
-INSERT INTO `items` VALUES ('1','FEE001','Kindergarten Tuition Fee','Kindergarten Fee','unit','8000','1','service','1','0','2016-06-28 07:36:02','1'), ('2','FEE002','Misc. Fee','Miscellaneous Fee','unit','2000','1','service','1','0','2016-06-28 07:36:05','1'), ('3','FEE003','Meals Fee','Meals Fee','unit','3000','1','service','1','0','2016-06-28 07:36:08','1'), ('4','BK0001','English Kinder Book','English Kinder Book','pc','580','2','inventory','1','0','2016-06-28 09:11:22','1');
+INSERT INTO `academic_years` VALUES ('1','School Year 2016 - 2017','2016-06-06','2017-03-31','2016-06-23 08:31:03','1','0');
+INSERT INTO `ci_sessions` VALUES ('30c689d22acdb4d1bb9d312e50e1e310','::1','Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36','1469361841','a:3:{s:9:\"user_data\";s:0:\"\";s:4:\"user\";a:11:{s:2:\"id\";s:1:\"1\";s:8:\"username\";s:5:\"admin\";s:5:\"fname\";s:3:\"Rey\";s:5:\"lname\";s:8:\"Reynalds\";s:5:\"mname\";s:0:\"\";s:6:\"suffix\";s:0:\"\";s:9:\"full_name\";s:14:\"Rey  Reynalds \";s:7:\"role_id\";s:1:\"1\";s:4:\"role\";s:14:\"Administrator \";s:6:\"access\";s:3:\"all\";s:3:\"img\";s:43:\"http://localhost/sch007/uploads/users/1.png\";}s:7:\"company\";a:6:{s:12:\"comp_address\";s:50:\"1013 Emerald Bldg. Barangay San Antonio Pasig City\";s:15:\"comp_contact_no\";s:13:\"(02) 887 9643\";s:10:\"comp_email\";s:15:\"email@email.com\";s:9:\"comp_logo\";s:24:\"uploads/company/logo.png\";s:9:\"comp_name\";s:18:\"Kidscoco Preschool\";s:8:\"comp_tin\";s:15:\"000-888-888-888\";}}');
+INSERT INTO `courses` VALUES ('1','COURSE0001','Nursery','Nursery','2016-07-24 19:41:21','1','0');
+INSERT INTO `course_batches` VALUES ('1','NURBAT0001','Nursery 2016 - 2017','1','2016-06-06','2017-04-30','2016-07-24 19:43:54','1');
+INSERT INTO `course_batch_schedules` VALUES ('5','1','1','1','2','6','Mon','11:00:00','12:00:00'), ('6','1','1','1','2','4','Mon','10:00:00','11:00:00'), ('7','1','1','1','2','1','Mon','14:00:00','15:00:00'), ('8','1','1','1','2','2','Mon','13:00:00','14:00:00'), ('9','1','1','1','2','5','Tue','10:00:00','11:00:00'), ('10','1','1','1','2','1','Tue','11:00:00','12:00:00'), ('11','1','1','1','2','3','Tue','13:00:00','14:00:00'), ('12','1','1','1','2','4','Tue','14:00:00','15:00:00'), ('13','1','1','1','2','6','Wed','11:00:00','12:00:00'), ('14','1','1','1','2','4','Wed','10:00:00','11:00:00'), ('15','1','1','1','2','1','Wed','14:00:00','15:00:00'), ('16','1','1','1','2','2','Wed','13:00:00','14:00:00'), ('17','1','1','1','2','5','Thu','10:00:00','11:00:00'), ('18','1','1','1','2','1','Thu','11:00:00','12:00:00'), ('19','1','1','1','2','3','Thu','13:00:00','14:00:00'), ('20','1','1','1','2','4','Thu','14:00:00','15:00:00'), ('21','1','1','1','2','6','Fri','11:00:00','12:00:00'), ('22','1','1','1','2','4','Fri','10:00:00','11:00:00'), ('23','1','1','1','2','1','Fri','14:00:00','15:00:00'), ('24','1','1','1','2','2','Fri','13:00:00','14:00:00');
+INSERT INTO `course_batch_sections` VALUES ('1','1','1','2');
+INSERT INTO `course_items` VALUES ('1','1','1','1'), ('2','1','2','1');
+INSERT INTO `course_subjects` VALUES ('1','1','1'), ('2','1','2'), ('3','1','3'), ('4','1','4'), ('5','1','5'), ('6','1','6');
+INSERT INTO `enrolls` VALUES ('1','ENR0001','1','1','1','1','2016-06-06','2017-05-06','3','11','5','181500','2016-07-24','2016-07-24 19:59:59','1','0');
+INSERT INTO `enroll_items` VALUES ('1','1','1','1','unit','15000','0'), ('2','1','2','1','unit','1500','0');
+INSERT INTO `enroll_payments` VALUES ('1','1','1','dp','16500','2016-06-05','16500','2016-07-24'), ('2','1','1','month','16500','2016-07-05','0',NULL), ('3','1','1','month','16500','2016-08-05','0',NULL), ('4','1','1','month','16500','2016-09-05','0',NULL), ('5','1','1','month','16500','2016-10-05','0',NULL), ('6','1','1','month','16500','2016-11-05','0',NULL), ('7','1','1','month','16500','2016-12-05','0',NULL), ('8','1','1','month','16500','2017-01-05','0',NULL), ('9','1','1','month','16500','2017-02-05','0',NULL), ('10','1','1','month','16500','2017-03-05','0',NULL), ('11','1','1','month','16500','2017-04-05','0',NULL);
+INSERT INTO `enroll_subjects` VALUES ('1','1','1'), ('2','1','2'), ('3','1','3'), ('4','1','4'), ('5','1','5'), ('6','1','6');
+INSERT INTO `images` VALUES ('1','2.png','uploads/users/2.png','2','users',NULL,'2016-02-12 08:23:10','0'), ('5','1.png','uploads/users/1.png','1','users',NULL,'2016-02-12 08:30:45','0'), ('25','1.png','uploads/students/1.png','1','students',NULL,'2016-07-24 19:54:00','0'), ('26','2.png','uploads/students/2.png','2','students',NULL,'2016-07-24 19:55:17','0'), ('27','3.png','uploads/students/3.png','3','students',NULL,'2016-07-24 19:56:31','0'), ('28','4.png','uploads/students/4.png','4','students',NULL,'2016-07-24 19:58:27','0');
+INSERT INTO `items` VALUES ('1','ITEM0001','Nursery Tuition Fee','Nursery Tuition Fee','unit','15000','1','service','1','0','2016-07-24 19:40:00','1'), ('2','ITEM0002','Lunch Fee','Lunch Fee','unit','1500','1','service','1','0','2016-07-24 19:40:26','1');
 INSERT INTO `item_categories` VALUES ('1','Fees','unit','service','1','0'), ('2','Books','pc','inventory','1','0');
-INSERT INTO `payments` VALUES ('1','PAY0001','1','2016-07-08','13000','','2016-07-08 20:54:22','1','0'), ('2','PAY0002','2','2016-07-11','13000','','2016-07-11 12:51:49','1','0'), ('3','PAY0003','3','2016-07-11','13000','','2016-07-11 12:52:15','1','0');
-INSERT INTO `payment_details` VALUES ('1','1','cash','13000','','','','',NULL), ('2','2','cash','13000','','','','',NULL), ('3','3','cash','13000','','','','',NULL);
-INSERT INTO `payment_for` VALUES ('1','1','10','1','1','13000'), ('2','2','10','2','5','13000'), ('3','3','10','3','8','13000');
+INSERT INTO `payments` VALUES ('1','PAY0001','1','2016-07-24','16500','Test','2016-07-24 20:01:05','1','0');
+INSERT INTO `payment_details` VALUES ('1','1','cash','13000','','','','',NULL), ('2','2','cash','13000','','','','',NULL), ('3','3','cash','13000','','','','',NULL), ('4','1','cash','16500','','','','',NULL);
+INSERT INTO `payment_for` VALUES ('1','1','10','1','1','13000'), ('2','2','10','2','5','13000'), ('3','3','10','3','8','13000'), ('4','1','10','1','1','16500');
 INSERT INTO `payment_terms` VALUES ('1','Whole Payment','25000','0','5','1','0','1','5','0','2016-07-01 16:55:39','1'), ('2','Quarterly Payment','25000','0','5','1','0','4','5','0','2016-07-01 16:57:13','1'), ('3','Monthly Payment','0','0','0','0','1','0','5','0','2016-07-01 16:57:38','1');
-INSERT INTO `references` VALUES ('1','Student Code','STD0002');
-INSERT INTO `sections` VALUES ('1','SCHOPE','Hope','2016-07-01 14:24:20','1'), ('2','SCFAITH','Faith','2016-07-01 14:24:42','1');
-INSERT INTO `settings` VALUES ('comp_address','company','1013 Emerald Bldg. Barangay San Antonio Pasig City'), ('comp_contact_no','company','(02) 887 9643'), ('comp_email','company',''), ('comp_logo','company','uploads/company/logo.png'), ('comp_name','company','Sch007'), ('comp_tin','company','');
-INSERT INTO `students` VALUES ('1','1','STD0001','Kaya','Haber','Tejada','','female','0+','2010-04-14',NULL,'','','','','','','','','0','2016-06-27 12:16:51','1'), ('2','2','STD0002','Boy','Bouy','Bought','','male','A','2009-02-28',NULL,'','','','','','','','','0','2016-06-27 12:18:54','1'), ('3','3','STD0003','Girl','Girlie','Gurl','','female','AB','2009-03-05',NULL,'','','','','','','','','0','2016-06-27 12:20:04','1');
-INSERT INTO `student_attendance` VALUES ('7','2','1','1','1','2','2016-07-01','present',NULL,NULL,'2016-07-13 20:45:14','2'), ('8','3','1','1','1','2','2016-07-01','present',NULL,NULL,'2016-07-13 20:45:15','2'), ('9','1','1','1','1','2','2016-07-01','present',NULL,NULL,'2016-07-13 20:45:16','2'), ('10','2','1','1','1','2','2016-07-04','present',NULL,NULL,'2016-07-13 20:45:17','2'), ('11','3','1','1','1','2','2016-07-04','present',NULL,NULL,'2016-07-13 20:45:17','2'), ('12','1','1','1','1','2','2016-07-04','present',NULL,NULL,'2016-07-13 20:45:18','2'), ('13','2','1','1','1','2','2016-07-05','present',NULL,NULL,'2016-07-13 20:45:18','2'), ('14','3','1','1','1','2','2016-07-05','present',NULL,NULL,'2016-07-13 20:45:18','2'), ('15','1','1','1','1','2','2016-07-05','present',NULL,NULL,'2016-07-13 20:45:19','2'), ('17','3','1','1','1','2','2016-07-11','present',NULL,NULL,'2016-07-13 20:45:28','2'), ('18','1','1','1','1','2','2016-07-11','present',NULL,NULL,'2016-07-13 20:45:29','2'), ('19','2','1','1','1','2','2016-07-12','present',NULL,NULL,'2016-07-13 20:45:30','2'), ('20','3','1','1','1','2','2016-07-12','present',NULL,NULL,'2016-07-13 20:45:30','2'), ('21','1','1','1','1','2','2016-07-12','present',NULL,NULL,'2016-07-13 20:45:30','2'), ('22','2','1','1','1','2','2016-07-11','absent',NULL,NULL,'2016-07-13 20:45:49','2');
-INSERT INTO `student_details` VALUES ('1','1','Reynaldo C. Tejada Jr','0917 555 06 82','Programmer','Karlene Haber','0917 222 888','Teacher');
-INSERT INTO `student_guardians` VALUES ('1','1','Rey Tejada','Father','1013 Kamagong Street Napico Pasig City','02 898 3813','0987 737 1737','rey.tejada01@gmail.com','2016-06-24 07:34:16','1');
-INSERT INTO `subjects` VALUES ('1','ENG0001','English Kinder','Teach English','2016-06-24 07:38:01','1'), ('2','ENG0002','English Nursery','Teach English ','2016-06-24 08:10:49','1'), ('3','MAT0001','MATH Nursery','Teach MATH','2016-06-24 12:19:05','1'), ('4','SCI0001','Science Kinder','Teach MATH','2016-06-24 12:19:24','1'), ('5','SCI0002','Science Nursery','Teach MATH','2016-06-24 12:22:02','1'), ('6','MAT0002','MATH Kinder','Teach MATH','2016-06-24 12:22:13','1');
+INSERT INTO `sections` VALUES ('1','SECTION01','Nursery','2016-07-24 19:43:02','1');
+INSERT INTO `settings` VALUES ('comp_address','company','1013 Emerald Bldg. Barangay San Antonio Pasig City'), ('comp_contact_no','company','(02) 887 9643'), ('comp_email','company','email@email.com'), ('comp_logo','company','uploads/company/logo.png'), ('comp_name','company','Kidscoco Preschool'), ('comp_tin','company','000-888-888-888');
+INSERT INTO `students` VALUES ('1','1','STD0001','Yung Do','','Choi','','male','','2011-01-14',NULL,'Korean','Korean, English','','','','','','','0','2016-07-24 19:53:47','1'), ('2',NULL,'STD0002','Eun Sang','','Cha','','female','','2011-05-06',NULL,'Korean','Korean, English','','','','','','','0','2016-07-24 19:55:11','1'), ('3',NULL,'STD0003','Ji Yun','','Han','','male','','2011-06-01',NULL,'Korean','Korean, English','','','','','','','0','2016-07-24 19:56:28','1'), ('4',NULL,'STD0004','Eva','','Kim','','female','','2011-08-03',NULL,'Filipino Korean','Korean, English','','','','','','','0','2016-07-24 19:58:00','1');
+INSERT INTO `subjects` VALUES ('1','SUBJNUR0001','Nursery Phonnics','Nursery Phonnics','2016-07-24 19:36:01','1'), ('2','SUBJNUR0002','Nursery Math','Math for Nursery','2016-07-24 19:36:18','1'), ('3','SUBJNUR0003','Nursery Science','Science for Nursery','2016-07-24 19:36:42','1'), ('4','SUBJNUR0004','Nursery Writing','Writing for Nursery','2016-07-24 19:36:56','1'), ('5','SUBJNUR0005','Nursery KidsBrown','KidsBrown for Nursery','2016-07-24 19:37:33','1'), ('6','SUBJNUR0006','Nursery P.E.','P.E. for Nursery','2016-07-24 19:37:56','1');
 INSERT INTO `tax_types` VALUES ('1','VAT','12'), ('2','NON-VAT','0');
-INSERT INTO `trans_refs` VALUES ('1','1','STD0001','1',NULL), ('2','1','STD0002','1',NULL), ('3','1','STD0003','1',NULL), ('38','10','ENR0001','1',NULL), ('39','10','ENR0002','1',NULL), ('40','10','ENR0003','1',NULL), ('41','20','PAY0001','1',NULL), ('42','20','PAY0002','1',NULL), ('43','20','PAY0003','1',NULL);
-INSERT INTO `trans_types` VALUES ('1','Student Code','STD0004'), ('10','Enrollment','ENR0004'), ('20','Payment','PAY0004'), ('99','Void','VOD0001');
+INSERT INTO `trans_refs` VALUES ('1','1','STD0001','1',NULL), ('2','1','STD0002','1',NULL), ('3','1','STD0003','1',NULL), ('4','1','STD0004','1',NULL), ('5','10','ENR0001','1',NULL), ('6','20','PAY0001','1',NULL);
+INSERT INTO `trans_types` VALUES ('1','Student Code','STD0005'), ('10','Enrollment','ENR0002'), ('20','Payment','PAY0002'), ('99','Void','VOD0001');
 INSERT INTO `uom` VALUES ('1','pc','Piece','0'), ('2','unit','Unit','0');
-INSERT INTO `users` VALUES ('1','admin','5f4dcc3b5aa765d61d8327deb882cf99','Rey','','Reynalds','','1','rey.tejada01@gmail.com','0917-555-06-82','2014-06-16 14:41:31','0'), ('2','karlene','5f4dcc3b5aa765d61d8327deb882cf99','Karlene','','Haber','','10','email@email.com','1234567','2016-02-12 08:32:05','0'), ('3','joe','5f4dcc3b5aa765d61d8327deb882cf99','John','','Doe','','10','','','2016-02-12 08:33:04','0'), ('4','kaneki','5f4dcc3b5aa765d61d8327deb882cf99','Kaneki','','Ken','','20','','','2016-02-12 08:33:35','0'), ('8','asd','7815696ecbf1c96e6894b779456d330e','Orlando','','Bloom','','10','','','2016-02-12 08:39:04','0'), ('9','madona','a8f5f167f44f4964e6c998dee827110c','Mad','','Dona','','10','','','2016-02-12 08:40:22','0'), ('10','junji','5f4dcc3b5aa765d61d8327deb882cf99','Jun Ji','','Hyun','','10','','','2016-02-12 09:43:45','0');
-INSERT INTO `user_roles` VALUES ('1','Administrator ','System Administrator','all'), ('10','Teacher','Teacher','class_record,cr_attendance'), ('20','Principal','Principal','control,users,roles');
+INSERT INTO `users` VALUES ('1','admin','5f4dcc3b5aa765d61d8327deb882cf99','Rey','','Reynalds','','1','rey.tejada01@gmail.com','0917-555-06-82','2014-06-16 14:41:31','0'), ('2','karlene','5f4dcc3b5aa765d61d8327deb882cf99','Karlene','','Haber','','10','email@email.com','1234567','2016-02-12 08:32:05','0');
+INSERT INTO `user_roles` VALUES ('1','Administrator ','System Administrator','all'), ('10','Teacher','Teacher','dashboard,class_record,cr_attendance,cr_activities'), ('20','Principal','Principal','control,users,roles');
 INSERT INTO `voids` VALUES ('1','VOD0001','10','2','Yes','2016-07-08 13:55:22','1'), ('2','VOD0001','10','1','test','2016-07-08 20:22:06','1');

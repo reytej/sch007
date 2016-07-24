@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "pages/users";
+$route['default_controller'] = "website";
 $route['404_override'] = '';
 
 $route['login'] = "site/login";
@@ -63,7 +63,6 @@ $route['inventory'] = "inventory/inventory";
 $route['inventory/(:any)'] = "inventory/inventory/$1";
 $route['items'] = "inventory/items";
 $route['items/(:any)'] = "inventory/items/$1";
-
 
 $route['lists'] = "core/lists";
 $route['lists/(:any)'] = "core/lists/$1";

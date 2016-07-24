@@ -34,4 +34,23 @@ function attendanceForm($now=null,$teacher,$batch_id,$sect_id,$subj_id){
 	$CI->html->eBox();
 	return $CI->html->code();
 }
+function activitiesForm($now=null,$teacher,$batch_id,$sect_id,$subj_id){
+	$CI =& get_instance();
+	$CI->html->sDivRow();
+		$CI->html->sDivCol(10,'left',1);
+			$CI->html->sBox('solid');
+				$CI->html->sBoxBody();
+					$CI->html->sDivRow();
+						$CI->html->sDivCol(4);
+							$CI->html->inputPaper('Title:','title',null,null,array('class'=>'rOkay'));
+						$CI->html->eDivCol();
+					$CI->html->eDivRow();
+				$CI->html->eBoxBody();
+			$CI->html->eBox();
+		$CI->html->eDivCol();
+	$CI->html->eDivRow();
+	return $CI->html->code();
+}
+
+
 

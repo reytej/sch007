@@ -6,7 +6,7 @@
 $nav = array();
 ///ADMIN CONTROL////////////////////////////////
 // $nav['dashboard'] = array('title'=>'<i class="fa fa-dashboard"></i> <span>Dashboard</span>','path'=>'site','exclude'=>1);
-
+$nav['dashboard'] = array('title'=>'<i class="fa fa-dashboard"></i> <span> Dashboard</span>','path'=>'site','exclude'=>0);	
 	$enrollment['enr-transactions'] = array('title'=>'Transactions','path'=>null,'exclude'=>0);
 		$enrollment['enroll'] = array('title'=>'Enroll Student','path'=>'enrollment/form','exclude'=>0);
 		$enrollment['enroll_pay'] = array('title'=>'Payment Entry','path'=>'payment/form','exclude'=>0);
@@ -19,9 +19,9 @@ $nav = array();
 	// 	$enrollment['pay_terms'] = array('title'=>'Payment Terms','path'=>'enrollment/pay_terms','exclude'=>0);
 $nav['enrollment'] = array('title'=>'<i class="fa fa-bookmark"></i> <span>Enrollment</span>','path'=>$enrollment,'exclude'=>0);
 $nav['students'] = array('title'=>'<i class="fa fa-mortar-board"></i> <span>Students</span>','path'=>'students','exclude'=>0);	
-		$classRecord['cr_attendance'] = array('title'=>'Attendance','path'=>'class_record/attendance','exclude'=>0);
-		$classRecord['cr_activities'] = array('title'=>'Activities','path'=>'class_record/activities','exclude'=>0);
-$nav['class_record'] = array('title'=>'<i class="fa fa-book"></i> <span> Class Record</span>','path'=>$classRecord,'exclude'=>0);	
+// 		$classRecord['cr_attendance'] = array('title'=>'Attendance','path'=>'class_record/attendance','exclude'=>0);
+// 		$classRecord['cr_activities'] = array('title'=>'Activities','path'=>'class_record/activities','exclude'=>0);
+// $nav['class_record'] = array('title'=>'<i class="fa fa-book"></i> <span> Class Record</span>','path'=>$classRecord,'exclude'=>0);	
 $config['sideNav'] = $nav;
 //////////////////////////////////////////////////
 /// RIGHT SIDE BAR LINKS ///

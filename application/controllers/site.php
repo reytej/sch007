@@ -8,6 +8,7 @@ class Site extends CI_Controller {
 	## DASHBOARD
 		public function index(){
 			$data = $this->syter->spawn('dashboard');
+			$user = sess('user');
 			$this->load->view('page',$data);
 		}
 	##############################	

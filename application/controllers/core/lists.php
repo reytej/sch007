@@ -873,7 +873,7 @@ class Lists extends CI_Controller {
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
     }
-    public function classes($teacher_id=null){
+    public function classes($teacher_id=null,$for="attendance"){
         $total_rows = 30;
         $pagi = null;
         if($this->input->post('pagi'))
@@ -886,7 +886,7 @@ class Lists extends CI_Controller {
         $group = null;
         $page_link = 'lists/uom';
         $cols = array('Course','Batch','Section','Subject',' ');
-        $table = 'course_batch_schedules';
+        $table =  'course_batch_schedules';
         $select = 'course_batch_schedules.*,
                    subjects.code subj_code,subjects.name as subj_name,
                    sections.name as section_name,
@@ -910,7 +910,12 @@ class Lists extends CI_Controller {
         if(count($items) > 0){
             $ids = array();
             foreach ($items as $res) {
-                $link = $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'class_record/attendance_form/'.$res->batch_id.'/'.$res->section_id.'/'.$res->subject_id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                $link = "";
+                if($for == 'attendance')
+                    $link .= $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'class_record/attendance_form/'.$res->batch_id.'/'.$res->section_id.'/'.$res->subject_id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                if($for == 'activites')
+                    $link .= $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'class_record/activities_list/'.$res->batch_id.'/'.$res->section_id.'/'.$res->subject_id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                
                 $json[$res->id] = array(
                     "course"=>ucFix($res->course_name),   
                     "batch"=>ucFix($res->batch_name),   
@@ -929,5 +934,60 @@ class Lists extends CI_Controller {
         $this->html->eForm();
         $data['code'] = $this->html->code();
         $this->load->view('load',$data);   
+    }
+    public function class_activities($teacher_id=null){
+        $total_rows = 30;
+        $pagi = null;
+        if($this->input->post('pagi'))
+            $pagi = $this->input->post('pagi');
+       
+        $post = array();
+        $args = array();
+        $join = array();
+        $order = array();
+        $group = null;
+        $page_link = 'lists/uom';
+        $cols = array('Title','Description','Date',' ');
+        $table =  'student_activities';
+        $select = 'student_activities.*,
+                   subjects.code subj_code,subjects.name as subj_name,
+                   sections.name as section_name,
+                   course_batches.name as batch_name,
+                   courses.name as course_name,
+                  ';
+        $join['subjects'] = array("content"=>"student_activities.subject_id = subjects.id","mode"=>"left");
+        $join['sections'] = array("content"=>"student_activities.section_id = sections.id","mode"=>"left");
+        $join['course_batches'] = array("content"=>"student_activities.batch_id = course_batches.id","mode"=>"left");
+        $join['courses'] = array("content"=>"course_batches.course_id = courses.id","mode"=>"left");
+
+        // if($teacher_id != null)
+        //     $args['student_activities.teacher_id'] = $teacher_id;
+        // $order = array('sections.name'=>'asc','subjects.name'=>'desc');
+        // $group = "student_activities.subject_id,student_activities.section_id";
+        // $count = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group,null,true);
+        // $page = paginate($page_link,$count,$total_rows,$pagi);
+        // $items = $this->site_model->get_tbl($table,$args,$order,$join,true,$select,$group,$page['limit']);
+
+        // $json = array();
+        // if(count($items) > 0){
+        //     $ids = array();
+        //     foreach ($items as $res) {
+        //         $link = "";
+        //         if($for == 'attendance')
+        //             $link .= $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'class_record/attendance_form/'.$res->batch_id.'/'.$res->section_id.'/'.$res->subject_id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+        //         if($for == 'activites')
+        //             $link .= $this->html->A(fa('fa-edit fa-lg fa-fw'),base_url().'class_record/activities_list/'.$res->batch_id.'/'.$res->section_id.'/'.$res->subject_id,array('class'=>'btn btn-sm btn-primary btn-flat','return'=>'true'));
+                
+        //         $json[$res->id] = array(
+        //             "course"=>ucFix($res->course_name),   
+        //             "batch"=>ucFix($res->batch_name),   
+        //             "course"=>ucFix($res->course_name),   
+        //             "section"=>ucFix($res->section_name),   
+        //             "subject"=>ucFix($res->subj_name),   
+        //             "link"=>$link
+        //         );
+        //     }
+        // }
+        echo json_encode(array('cols'=>$cols,'rows'=>$json,'pagi'=>$page['code'],'post'=>$post));
     }
 }

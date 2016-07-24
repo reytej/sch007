@@ -186,7 +186,34 @@ class Class_record extends CI_Controller {
 	public function activities(){
 		$user = sess('user');
 		$data = $this->syter->spawn('cr_activities');
-		$data['code'] = listPage(fa('fa-star')." Activities",'classes/'.$user['id'],'','list','list',false);
+		$data['code'] = listPage(fa('fa-star')." Activities",'classes/'.$user['id'].'/activites','','list','list',false);
 		$this->load->view('list',$data);
+	}
+	public function activities_list($batch_id=null,$sect_id=null,$subj_id=null){
+		$data = $this->syter->spawn('cr_attendance');
+		$user = sess('user');
+		$subj = $this->site_model->get_custom_val('subjects','id,name','id',$subj_id);
+		$sect = $this->site_model->get_custom_val('sections','id,name','id',$sect_id);
+		$data['code'] = listPage(fa('fa-star')." ".ucFix($subj->name)." Activities <small>".ucFix($sect->name)."</small>",'classes/'.$user['id'].'/activites','class_record/activities_form/'.$batch_id.'/'.$sect_id.'/'.$subj_id,'list','list',false);
+		$this->load->view('list',$data);
+	}
+	public function activities_form($batch_id=null,$sect_id=null,$subj_id=null){
+		$data = $this->syter->spawn('cr_attendance');
+		$user = sess('user');
+		$subj = $this->site_model->get_custom_val('subjects','id,name','id',$subj_id);
+		$sect = $this->site_model->get_custom_val('sections','id,name','id',$sect_id);
+		$data['page_title'] = fa('fa-flag')." ".ucFix($subj->name);
+		$data['page_subtitle'] = "Section ".ucFix($sect->name);
+		$now = $this->site_model->get_db_now();
+		
+		// $class = $this->get_class($user['id'],$batch_id,$sect_id,$subj_id);
+		$data['top_btns'][] = array('tag'=>'a','params'=>'class="btn btn-primary btn-flat" href="'.base_url().'class_record/activities_list/'.$batch_id.'/'.$sect_id.'/'.$subj_id.'"','text'=>"<i class='fa fa-fw fa-reply'></i>");
+		$data['code'] = "";
+		$data['add_js'] = 'plugins/bootstrap-toggle/bootstrap-toggle.min.js';
+		$data['add_css'] = 'plugins/bootstrap-toggle/bootstrap-toggle.min.css';
+		$data['load_js'] = 'school/class_record';
+		$data['use_js'] = 'attendanceJs';
+		// $data['no_padding'] = true;
+		$this->load->view('page',$data);
 	}
 }
