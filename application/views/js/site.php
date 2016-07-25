@@ -10,7 +10,7 @@ $(document).ready(function(){
 										$.alertMsg({msg:data,type:'error'});
 									}
 									else{
-										window.location = baseUrl;
+										window.location = baseUrl+'site';
 									}
 								}
 			});

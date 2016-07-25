@@ -3,15 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Site extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
+		$this->load->helper('pages/dashboard_helper');
 	}
 	##############################
 	## DASHBOARD
 		public function index(){
 			$data = $this->syter->spawn('dashboard');
 			$user = sess('user');
+			$data['code'] = dashboardPage();
+			$data['load_js'] = 'pages/dashboard';
+			$data['use_js'] = 'dashboardJs';
 			$this->load->view('page',$data);
 		}
-	##############################	
 	##############################
 	## LOGIN
 		public function login(){
