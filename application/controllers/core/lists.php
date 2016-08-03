@@ -300,7 +300,7 @@ class Lists extends CI_Controller {
                    course_batches.name as batch_name,
                    sections.name as section_name,
                   ';
-        $join['enrolls'] = array("content"=>"students.enroll_id = enrolls.id",
+        $join['enrolls'] = array("content"=>"students.enroll_id = enrolls.id and enrolls.inactive = 0",
                                  "mode"=>"left");
         $join['courses'] = array("content"=>"enrolls.course_id = courses.id",
                                  "mode"=>"left");

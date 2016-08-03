@@ -1,4 +1,18 @@
 <?php
+function next_code($tbl,$col="code"){
+    $CI =& get_instance();
+    $code = $CI->site_model->get_last_code($tbl,$col);
+    if (preg_match('/^(\D*?)(\d+)(.*)/', $code, $result) == 1){
+        list($all, $prefix, $number, $postfix) = $result;
+        $dig_count = strlen($number); // How many digits? eg. 0003 = 4
+        $fmt = '%0' . $dig_count . 'd'; // Make a format string - leading zeroes
+        $nextval =  sprintf($fmt, intval($number + 1)); // Add one on, and put prefix back on
+        $new_ref=$prefix.$nextval.$postfix;
+    }
+    else 
+        $new_ref=$code;
+    return $new_ref;
+}
 function site_alert($text="",$type="alert"){
     $CI =& get_instance();
     $site_alerts = array();

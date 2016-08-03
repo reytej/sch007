@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$('input, textarea').placeholder();
-     $('.slider-').bxSlider({
+     $('.slider').bxSlider({
         mode:'fade',
         speed:1000,
         touchEnabled: false,

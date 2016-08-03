@@ -42,6 +42,9 @@ $route['default_controller'] = "website";
 $route['404_override'] = '';
 
 $route['login'] = "site/login";
+$route['school'] = "site";
+$route['school/(:any)'] = "site/$1";
+
 
 $route['users'] = "pages/users";
 $route['users/(:any)'] = "pages/users/$1";

@@ -255,6 +255,15 @@ class Site_model extends CI_Model{
 		else
 			return $now;
 	}
+	public function get_last_code($tbl,$col='code'){
+		$code = "";
+		$query = $this->db->query("SELECT max(".$col.") as code from ".$tbl,false);
+		$result = $query->result();
+		foreach($result as $val){
+			$code = $val->code;
+		}	
+		return $code;
+	}
 	public function update_language($items,$id){
 		$this->db->trans_start();
 		$this->db->where('id',$id);

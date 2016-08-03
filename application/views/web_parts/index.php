@@ -37,7 +37,16 @@
 							<div class="slide-info">
 								<h1><a href="#">Education for kids</a></h1>
 								<p>Accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.</p>
-								<a class="btn red" href="#">Learn more</a>
+								<!-- <a class="btn red" href="#">Learn more</a> -->
+							</div>
+						</li>
+						<li>
+							<img class="slide" src="<?php echo base_url(); ?>dist/images/img-slide01.jpg" alt="">
+							<img class="slide-mask" src="<?php echo base_url(); ?>dist/images/bg_slider-mask.png" alt="">
+							<div class="slide-info">
+								<h1><a href="#">Good Teachers</a></h1>
+								<p>Accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.</p>
+								<!-- <a class="btn red" href="#">Learn more</a> -->
 							</div>
 						</li>
 					</ul>

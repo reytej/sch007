@@ -58,7 +58,7 @@ function itemGeneralDetails($det=array()){
 							if(iSetObj($det,'id')){
 								$params['readOnly'] = 'readOnly';
 							}
-							$CI->html->inputPaper(null,'code',iSetObj($det,'code'),'Student Code',$params);
+							$CI->html->inputPaper(null,'code',iSetObj($det,'code',next_code('items')),'Code',$params);
 						$CI->html->eDivCol();
 					$CI->html->eDivRow();
 				$CI->html->eDivCol();

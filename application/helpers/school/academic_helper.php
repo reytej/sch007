@@ -32,10 +32,10 @@ function coursesPage($det=array(),$subjects=array(),$items=array()){
 						$CI->html->hidden('id',iSetObj($det,'id'));
 						$CI->html->sDivRow(array('style'=>'margin-top:10px;'));
 							$CI->html->sDivCol(2);
-								$CI->html->inputPaper('','code',iSetObj($det,'code'),'Item Code',array('class'=>'rOkay'));
+								$CI->html->inputPaper('','code',iSetObj($det,'code',next_code('courses')),'Code',array('class'=>'rOkay'));
 							$CI->html->eDivCol();
 							$CI->html->sDivCol(6);
-								$CI->html->inputPaper('','name',iSetObj($det,'name'),'Item Name',array('class'=>'rOkay'));
+								$CI->html->inputPaper('','name',iSetObj($det,'name'),'Course Name',array('class'=>'rOkay'));
 							$CI->html->eDivCol();
 						$CI->html->eDivRow();
 						$CI->html->sDivRow();
@@ -171,7 +171,7 @@ function batchesPage($det=array(),$sections=array()){
 						$CI->html->hidden('id',iSetObj($det,'id'));
 						$CI->html->sDivRow(array('style'=>'margin-top:10px;'));
 							$CI->html->sDivCol(2);
-								$CI->html->inputPaper('','code',iSetObj($det,'code'),'Batch Code',array('class'=>'rOkay'));
+								$CI->html->inputPaper('','code',iSetObj($det,'code',next_code('course_batches')),'Batch Code',array('class'=>'rOkay'));
 							$CI->html->eDivCol();
 							$CI->html->sDivCol(6);
 								$CI->html->inputPaper('','name',iSetObj($det,'name'),'Batch Name',array('class'=>'rOkay'));
@@ -253,7 +253,7 @@ function subjectsPage($det=array()){
 						$CI->html->sDivRow();
 							$CI->html->sDivCol(6);
 								$CI->html->H(4,"General Information",array('class'=>'form-titler'));
-								$CI->html->inputPaper('Code:','code',iSetObj($det,'code'),null,array('class'=>'rOkay'));
+								$CI->html->inputPaper('Code:','code',iSetObj($det,'code',next_code('subjects')),null,array('class'=>'rOkay'));
 								$CI->html->inputPaper('Name:','name',iSetObj($det,'name'),null,array('class'=>'rOkay'));
 								$CI->html->inputPaper('Description:','description',iSetObj($det,'description'),null,array('class'=>'rOkay'));
 							$CI->html->eDivCol();
@@ -276,7 +276,7 @@ function sectionsPage($det=array()){
 						$CI->html->sDivRow();
 							$CI->html->sDivCol(6);
 								$CI->html->H(4,"General Information",array('class'=>'form-titler'));
-								$CI->html->inputPaper('Code:','code',iSetObj($det,'code'),null,array('class'=>'rOkay'));
+								$CI->html->inputPaper('Code:','code',iSetObj($det,'code',next_code('sections')),null,array('class'=>'rOkay'));
 								$CI->html->inputPaper('Name:','name',iSetObj($det,'name'),null,array('class'=>'rOkay'));
 							$CI->html->eDivCol();
 						$CI->html->eDivRow();
