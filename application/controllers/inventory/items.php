@@ -168,9 +168,11 @@ class Items extends CI_Controller {
 			$this->site_model->update_tbl('item_categories','id',$items,$id);
 			$msg = "Updated Item Category ".$items['name'];
 		}
-		if($error == 0){
-			site_alert($msg,'success');
+		if(!$this->input->post('rForm')){
+			if($error == 0){
+				site_alert($msg,'success');
+			}
 		}
-		echo json_encode(array('error'=>$error,'msg'=>$msg));
+		echo json_encode(array('error'=>$error,'msg'=>$msg,'items'=>$items,'id'=>$id));
 	}
 }

@@ -359,10 +359,12 @@ class Academic extends CI_Controller {
 				$msg = "Updated Subject ".$items['name'];
 			}
 		}
-		if($error == 0){
-			site_alert($msg,'success');
+		if(!$this->input->post('rForm')){
+			if($error == 0){
+				site_alert($msg,'success');
+			}
 		}
-		echo json_encode(array('error'=>$error,'msg'=>$msg));
+		echo json_encode(array('error'=>$error,'msg'=>$msg,'items'=>$items,'id'=>$id));
 	}
 	public function sections(){
 		$data = $this->syter->spawn('sections');
@@ -412,10 +414,12 @@ class Academic extends CI_Controller {
 				$msg = "Updated Section ".$items['name'];
 			}
 		}
-		if($error == 0){
-			site_alert($msg,'success');
+		if(!$this->input->post('rForm')){
+			if($error == 0){
+				site_alert($msg,'success');
+			}
 		}
-		echo json_encode(array('error'=>$error,'msg'=>$msg));
+		echo json_encode(array('error'=>$error,'msg'=>$msg,'items'=>$items,'id'=>$id));
 	}	
 	public function schedule_form($id=null){
 		$data = $this->syter->spawn('schedule');

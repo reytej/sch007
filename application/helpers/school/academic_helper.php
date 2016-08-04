@@ -56,7 +56,14 @@ function coursesPage($det=array(),$subjects=array(),$items=array()){
 										$CI->html->sDivCol(8);
 												$CI->html->sDivRow();
 													$CI->html->sDivCol(10);	
-														$CI->html->subjectsDropPaper('Subject:','subject',null,null,array('class'=>'rOkay'));
+														$pop = array(
+															"href"  => "academic/subjects_form?viewpop=1",
+															"params"=> array(
+																"title" => "Create New Subject",
+																"id"    => "create-subj-pop"
+															),
+														);
+														$CI->html->subjectsDropPaper('Subject:','subject',null,null,array('class'=>'rOkay','pop-form'=>$pop));
 													$CI->html->eDivCol();
 													$CI->html->sDivCol(2,'right');
 														$CI->html->button(fa('fa-plus').' ADD',array('id'=>'add-subj-btn','class'=>'btn-sm btn-flat'),'primary');	
@@ -186,7 +193,10 @@ function batchesPage($det=array(),$sections=array()){
 								$CI->html->sTabPane(array('id'=>'general-pane','class'=>'tab-pane active'));
 									$CI->html->sDivRow();
 										$CI->html->sDivCol(6);
-											$CI->html->courseDropPaper('Course:','course_id',iSetObj($det,'course_id'),null,array('class'=>'rOkay'));
+											$pop = array(
+												"href"  => base_url()."academic/courses_form",
+											);
+											$CI->html->courseDropPaper('Course:','course_id',iSetObj($det,'course_id'),null,array('class'=>'rOkay','pop-form'=>$pop));
 											$CI->html->inputPaper('Start Date:','start_date',(iSetObjDate($det,'start_date')),null,array('class'=>'pick-date'),"fa-calendar");
 											$CI->html->inputPaper('End Date:','end_date',(iSetObjDate($det,'end_date')),null,array('class'=>'pick-date'),"fa-calendar");
 											// $CI->html->teachersDropPaper('Course:','course_id',iSetObj($det,'course_id'),null,array('class'=>'rOkay'));
@@ -198,7 +208,14 @@ function batchesPage($det=array(),$sections=array()){
 										$CI->html->sDivCol(8);
 												$CI->html->sDivRow();
 													$CI->html->sDivCol(5);	
-														$CI->html->sectionsDropPaper('Section:','section',null,null,array('class'=>''));
+														$pop = array(
+															"href"  => "academic/sections_form?viewpop=1",
+															"params"=> array(
+																"title" => "Create New Section",
+																"id"    => "create-sect-pop"
+															),
+														);
+														$CI->html->sectionsDropPaper('Section:','section',null,null,array('class'=>'','pop-form'=>$pop));
 													$CI->html->eDivCol();
 													$CI->html->sDivCol(5);	
 														$CI->html->teachersDropPaper('Teacher:','teacher',null,null,array('class'=>''));

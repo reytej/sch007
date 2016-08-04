@@ -405,3 +405,13 @@ div.fixed-tbl-div {
     text-align: center;
 }
 .long {width:100px;}
+
+
+.pop-form-link{
+  float:left;
+  margin-top:7px;
+}
+
+.bootbox .bootbox-body .box{
+  box-shadow: none;
+}

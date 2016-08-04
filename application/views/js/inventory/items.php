@@ -77,6 +77,23 @@ $(document).ready(function(){
 	    	$('#fileUpload').trigger('click');
 	    }).css('cursor', 'pointer');
     <?php elseif($use_js == 'itemsGeneralFormJs'): ?>	
+    	$('#create-uom-pop').rForm(function(data){
+    		var items = data.items;
+    		var id = data.id;
+    		console.log(items);			
+    		$('#uom').append('<option value="'+id+'">'+items['name']+'</option>');
+    		$('#uom').selectpicker('refresh');
+    		$('#uom').selectpicker('val',id);
+    	});
+    	$('#create-cat-pop').rForm(function(data){
+    		var items = data.items;
+    		var id = data.id;
+    		console.log(items);			
+    		$('#cat_id').append('<option value="'+id+'">'+items['name']+'</option>');
+    		$('#cat_id').selectpicker('refresh');
+    		$('#cat_id').selectpicker('val',id);
+    		loadCatDetails();
+    	});
     	$('.pick-date').datepicker();
 		$('.paper-select').selectpicker();
 		$('#save-btn').click(function(){

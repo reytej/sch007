@@ -19,6 +19,14 @@ $(document).ready(function(){
 			return false;
     	});	
 	<?php elseif($use_js == 'coursesFormJs'): ?>
+		$('#create-subj-pop').rForm(function(data){
+			var items = data.items;
+			var id = data.id;
+			console.log(items);			
+			$('#subject').append('<option value="'+id+'">'+items['name']+'</option>');
+			$('#subject').selectpicker('refresh');
+			$('#subject').selectpicker('val',id);
+		});
 		$('#save-btn').click(function(){
 			var btn = $(this);
 			var noError = $('#general-form').rOkay({
@@ -138,6 +146,14 @@ $(document).ready(function(){
     		});
     	}
 	<?php elseif($use_js == 'batchesFormJs'): ?>
+		$('#create-sect-pop').rForm(function(data){
+			var items = data.items;
+			var id = data.id;
+			console.log(items);			
+			$('#section').append('<option value="'+id+'">'+items['name']+'</option>');
+			$('#section').selectpicker('refresh');
+			$('#section').selectpicker('val',id);
+		});
 		$('#save-btn').click(function(){
 			var btn = $(this);
 			var noError = $('#general-form').rOkay({

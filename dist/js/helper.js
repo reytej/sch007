@@ -565,6 +565,61 @@
       return false;
     });
   }
+  $.fn.rForm = function(onComplete,atuoHide){
+    var href = $(this).attr('href');
+    var form = $(this).attr('form');
+    var boxTitle = "";
+    var title = $(this).attr('title');
+    if(typeof title !== undefined && title !== false){
+      boxTitle = title;
+    }
+    $(this).click(function(){
+      bootbox.dialog({
+        message: baseUrl+href,
+        title: boxTitle,
+        className: 'rForm bootbox-wide',
+        buttons: {
+            "Save": {   
+              label: "<i class='fa fa-save '></i> Save",
+              className: "btn-success btn-flat rForm-btn-save",
+              callback: function() {
+                  var useForm = $('.rForm').find('form');
+                  if(form != undefined){
+                    useForm = form;
+                  }                  
+                  var noError = useForm.rOkay({
+                    btn_load        :   $('.rForm-btn-save'),
+                    addData         :   'rForm=1',
+                    bnt_load_remove :   true,
+                    asJson          :   true,
+                    onComplete      :   function(data){
+                                          if(data.error == 0){
+                                            $.alertMsg({msg:data.msg,type:'success'});
+                                            if(typeof onComplete !== undefined && onComplete !== false){
+                                              onComplete.call(this,data);
+                                            } 
+                                            if(typeof atuoHide !== undefined && atuoHide !== false){
+                                              bootbox.hideAll();
+                                            } 
+                                          }
+                                          else{
+                                            $.alertMsg({msg:data.msg,type:'error'});
+                                          }
+                                        },
+                  });                   
+                  return false;
+              }
+            },
+            "Cancel": {   
+              label: "Cancel",
+              className: "btn-default btn-flat",
+              callback: function() {return true;}
+            },
+        }    
+      });
+      return false;
+    });
+  }
   $.fn.rVoid = function(options){
     var opts = $.extend({
       title       :       '<i class="fa fa-fw fa-warning"></i> Transaction Void',

@@ -998,6 +998,12 @@ class Html{
 	    		if($label != ""){
 	    			$wi = 'col-sm-8';
 	    		}	
+	    		$form = array();
+	    		if(isset($params['pop-form'])){
+	    			$form = $params['pop-form']; 
+	    			unset($params['pop-form']);
+	    		}
+
 	    		$str .= $this->sTag('div',array('class'=>$wi.' text-left'));
 	    			if($nameID != null){
 	    				$params['id'] = $nameID;
@@ -1009,25 +1015,53 @@ class Html{
 	    			}
 	    			else
 	    				$params['data-live-search'] = "false";
-	    			$str .= $this->sTag('select',$params);
-	    				if(count($options) > 0){
-	    					foreach ($options as $text => $opt) {
-	    						$optParam = array();
-	    						if(is_array($opt)){
-	    							$optParam = $opt;
-	    							if(isset($optParam['value']) && $optParam['value'] == $value)
-	    								$optParam['selected'] = "";
-	    						}
-	    						else{
-	    							$optParam['value']=$opt;
-	    							if($opt == $value)
-	    								$optParam['selected'] = "";
-	    						}
 
-	    						$str .= $this->tag('option',$text,$optParam);
-	    					}
-	    				}
-	    			$str .= $this->eTag('select');
+	    			if(!empty($form)){
+	    			$str .= $this->sTag('div',array('class'=>'row div-under-no-spaces'));
+	    				$str .= $this->sTag('div',array('class'=>'col-sm-11 text-left'));
+	    			}
+
+			    			$str .= $this->sTag('select',$params);
+			    				if(count($options) > 0){
+			    					foreach ($options as $text => $opt) {
+			    						$optParam = array();
+			    						if(is_array($opt)){
+			    							$optParam = $opt;
+			    							if(isset($optParam['value']) && $optParam['value'] == $value)
+			    								$optParam['selected'] = "";
+			    						}
+			    						else{
+			    							$optParam['value']=$opt;
+			    							if($opt == $value)
+			    								$optParam['selected'] = "";
+			    						}
+
+			    						$str .= $this->tag('option',$text,$optParam);
+			    					}
+			    				}
+			    			$str .= $this->eTag('select');
+
+	    			if(!empty($form)){
+		    			$str .= $this->eTag('div');
+	    				$str .= $this->sTag('div',array('class'=>'col-sm-1 text-left'));
+			    				$text = fa('fa-share-square-o fa-lg');
+			    				if(isset($form['text']))
+			    					$text = $form['text'];
+			    				$href = "#";
+			    				if(isset($form['href'])){
+			    					$href = $form['href'];
+			    				}
+			    				$poprams = array();
+			    				if(isset($form['params'])){
+			    					$poprams = $form['params'];	    				
+			    				}
+			    				$poprams['return'] = true;	
+			    				$poprams = $this->classitize($poprams," pop-form-link ");    				
+			    				$str .= $this->A($text,$href,$poprams);
+		    			$str .= $this->eTag('div');
+		    		$str .= $this->eTag('div');
+	    			}
+
 	    		$str .= $this->eTag('div');
 	    	$str .= $this->eTag('div');
 	    	if($this->returnitize($params)) return $str; else $this->code .= $str;
@@ -1213,7 +1247,7 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->role] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function courseDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1230,7 +1264,7 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function batchDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1247,7 +1281,7 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function subjectsDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1264,7 +1298,8 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function sectionsDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1298,7 +1333,7 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
         function studentsDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1315,7 +1350,7 @@ class Html{
     			foreach ($results as $res) {
     				$opts["[".$res->code."] ".$res->fname." ".$res->mname." ".$res->lname." ".$res->suffix] = $res->id;
     			}
-    			$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+    			$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
     		if($this->returnitize($params)) return $str; else $this->code .= $str;
         }
         function teachersDrop($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1351,7 +1386,7 @@ class Html{
 					$name = ucFix($res->fname." ".$res->mname." ".$res->lname." ".$res->suffix);
 					$opts[$name] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
         function uomDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1368,7 +1403,7 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->abbrev;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function itemTypeDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1384,7 +1419,7 @@ class Html{
 				$opts['Service']  = "service";
 				$opts['Inventory']  = "inventory";
 				
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function itemTaxTypeDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1401,7 +1436,7 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 	    function itemCategoriesDropPaper($label=null,$nameID=null,$value=null,$placeholder=null,$params=array(),$searcher=true){
@@ -1418,7 +1453,7 @@ class Html{
 				foreach ($results as $res) {
 					$opts[$res->name] = $res->id;
 				}
-				$str .= $this->selectPaper($label,$nameID,$opts,$value,$selectParams);
+				$str .= $this->selectPaper($label,$nameID,$opts,$value,$placeholder,$selectParams);
 			if($this->returnitize($params)) return $str; else $this->code .= $str;
 	    }
 }

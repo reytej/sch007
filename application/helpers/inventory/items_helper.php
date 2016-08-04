@@ -78,9 +78,23 @@ function itemGeneralDetails($det=array()){
 					$CI->html->textareaPaper('Description:','description',iSetObj($det,'description'),null,array('class'=>'rOkay'));
 				$CI->html->eDivCol();
 				$CI->html->sDivCol(5,'left',2);
-					$CI->html->itemCategoriesDropPaper('Category:','cat_id',iSetObj($det,'cat_id'),null,array('class'=>'rOkay'));
+					$pop = array(
+						"href"  => "inventory/uom_form?viewpop=1",
+						"params"=> array(
+							"title" => "Create New UOM",
+							"id"    => "create-uom-pop"
+						),
+					);
+					$CI->html->uomDropPaper('UOM:','uom',iSetObj($det,'uom'),null,array('class'=>'rOkay','pop-form'=>$pop));
+					$pop = array(
+						"href"  => "items/categories_form?viewpop=1",
+						"params"=> array(
+							"title" => "Create New Category",
+							"id"    => "create-cat-pop"
+						),
+					);
+					$CI->html->itemCategoriesDropPaper('Category:','cat_id',iSetObj($det,'cat_id'),null,array('class'=>'rOkay','pop-form'=>$pop));
 					$CI->html->itemTypeDropPaper('Item Type:','type',iSetObj($det,'type'),null,array('class'=>'rOkay'));
-					$CI->html->uomDropPaper('UOM:','uom',iSetObj($det,'uom'),null,array('class'=>'rOkay'));
 				$CI->html->eDivCol();
 			$CI->html->eDivRow();
 			$CI->html->H(4,"Pricing Details",array('class'=>'form-titler'));
