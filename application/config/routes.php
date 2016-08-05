@@ -62,6 +62,9 @@ $route['payment/(:any)'] = "school/payment/$1";
 $route['class_record'] = "school/class_record";
 $route['class_record/(:any)'] = "school/class_record/$1";
 
+$route['sch_prints'] = "school/prints";
+$route['sch_prints/(:any)'] = "school/prints/$1";
+
 $route['inventory'] = "inventory/inventory";
 $route['inventory/(:any)'] = "inventory/inventory/$1";
 $route['items'] = "inventory/items";

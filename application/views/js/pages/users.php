@@ -58,6 +58,50 @@ $(document).ready(function(){
 	    $('#target').click(function(e){
 	    	$('#fileUpload').trigger('click');
 	    }).css('cursor', 'pointer');
+	<?php elseif($use_js == 'usersProfileJs'): ?>
+		function readURL(input) {
+        	if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+	            reader.onload = function (ev) {
+		            $('#pic-form').submit(function(e){
+					    var formObj = $(this);
+					    var formURL = formObj.attr("action");
+					    var formData = new FormData(this);
+					    $.ajax({
+					        url: baseUrl+formURL,
+					        type: 'POST',
+					        data:  formData,
+					        dataType:  'json',
+					        mimeType:"multipart/form-data",
+					        contentType: false,
+					        cache: false,
+					        processData:false,
+					        success: function(data, textStatus, jqXHR){
+								if(data.error == 0){
+					                $('#profile-pic').attr('src', ev.target.result);
+									$.alertMsg({msg:data.msg,type:'success'});
+								}
+								else{
+									$.alertMsg({msg:data.msg,type:'error'});
+								}
+					        },
+					        error: function(jqXHR, textStatus, errorThrown){
+					        }         
+					    });
+					    e.preventDefault();
+					//     e.unbind();
+					});
+					$('#pic-form').submit();
+	            }
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+    	$("#fileUpload").change(function(){
+	        readURL(this);        			
+	    });
+	    $('#target').click(function(e){
+	    	$('#fileUpload').trigger('click');
+	    }).css('cursor', 'pointer');
 	<?php endif; ?>
 });
 </script>

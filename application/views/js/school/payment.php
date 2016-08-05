@@ -251,7 +251,7 @@ $(document).ready(function(){
 				}
 			});
 			var formData = "tagid="+ids;
-			$.rPrint("school/prints/bills?"+formData);
+			$.rPrint("sch_prints/bills?"+formData);
 			$('#select-all-btn').html('<i class="fa fa-fw fa-check"></i> Select All');
 			$('#select-all-btn').addClass('on-select');
 			$('#select-all-btn').removeClass('un-select');

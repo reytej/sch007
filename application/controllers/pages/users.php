@@ -100,4 +100,60 @@ class Users extends CI_Controller {
 		}
 		echo json_encode(array('error'=>$error,'msg'=>$msg));
 	}
+	public function profile(){
+		$data = $this->syter->spawn('users');
+		$user = $data['user'];
+		$data['page_title'] = fa('fa-user')." ".ucwords(strtolower($user['full_name']));
+		$data['code'] = usersProfile($user);
+		$data['load_js'] = 'pages/users';
+		$data['use_js'] = 'usersProfileJs';
+		$this->load->view('page',$data);
+	}
+	public function pic_upload(){
+		$error = 0;
+		$msg = "";
+		$id = $this->input->post('id');
+		if($id){
+			if(isset($_FILES['fileUpload'])){
+			    if(is_uploaded_file($_FILES['fileUpload']['tmp_name'])){
+
+			        $this->site_model->delete_tbl('images',array('img_tbl'=>'users','img_ref_id'=>$id));
+			        $info = pathinfo($_FILES['fileUpload']['name']);
+			        if(isset($info['extension']))
+			            $ext = $info['extension'];
+			        $newname = $id.".png";            
+			        $res_id = $id;
+			        if (!file_exists("uploads/users/")) {
+			            mkdir("uploads/users/", 0777, true);
+			        }
+			        $target = 'uploads/users/'.$newname;
+			        if(!move_uploaded_file( $_FILES['fileUpload']['tmp_name'], $target)){
+			            $msg = "Image Upload failed";
+			            $error = 1;
+			        }
+			        else{
+			            $new_image = $target;
+			            $result = $this->site_model->get_image(null,$this->input->post('id'),'users');
+			            $items = array(
+			                "img_path" => $new_image,
+			                "img_file_name" => $newname,
+			                "img_ref_id" => $id,
+			                "img_tbl" => 'users',
+			            );
+			            if(count($result) > 0){
+			                $this->site_model->update_tbl('images','id',$items,$result[0]->img_id);
+			            }
+			            else{
+			                $imgid = $this->site_model->add_tbl('images',$items,array('datetime'=>'NOW()'));
+			            }
+			            $msg = "Profile Picture Uploaded Successfully.";
+			        }
+			        ####
+			    }
+			}
+			###################################################
+		}
+		echo json_encode(array('error'=>$error,'msg'=>$msg));
+		###################################################
+	}
 }

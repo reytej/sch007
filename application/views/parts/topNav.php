@@ -36,6 +36,16 @@
               if(isset($rSideNav))
                 echo $rSideNav;
           ?>
+          <li class="dropdown user user-menu">
+            <a href="<?php echo base_url().'users/profile'; ?>">
+              <span class="hidden-xs"><i class="fa fa-user fa-lg"></i> Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="<?php echo base_url().'site/logout'; ?>">
+              <span><i class="fa fa-sign-out fa-lg"></i></span>
+            </a>
+          </li>
         </ul>
       </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->

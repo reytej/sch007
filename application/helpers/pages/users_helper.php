@@ -63,4 +63,40 @@ function usersPage($det=array(),$img=array()){
 	$CI->html->eDivRow();
 	return $CI->html->code();
 }
+function usersProfile($data=array()){
+	$CI =& get_instance();
+	$CI->html->sDivRow();
+		$CI->html->sDivCol(2);
+			$CI->html->sBox('solid',array('style'=>'margin-bottom:5px;'));
+				$CI->html->sBoxBody();
+					$url = $data['img'];
+					$CI->html->sDiv(array('style'=>'position:relative;width:100%;background-color:#ddd;'));
+						$CI->html->img($url,array('style'=>'width:100%;max-height:300px;','id'=>'profile-pic'));
+						$CI->html->sDiv(array('style'=>'position:absolute;bottom:0;left:0;width:100%;height:25px;text-align:right;padding-right:5px;color:#fff'));
+							$CI->html->A(fa('fa-camera fa-lg'),'#',array('style'=>'color:#fff;','id'=>'target'));
+							$CI->html->sForm("users/pic_upload","pic-form");
+								$CI->html->file('fileUpload',array('style'=>'display:none;'));
+								$CI->html->hidden('id',$data['id']);
+							$CI->html->eForm();
+						$CI->html->eDiv();
+					$CI->html->eDiv();
+					$CI->html->H(5,ucwords(strtolower($data['full_name'])),array('style'=>'text-align:center;'));
+					$CI->html->H(6,$data['role'],array('style'=>'text-align:center;'));						
+				$CI->html->eBoxBody();
+			$CI->html->eBox();
+			$CI->html->sDiv(array('class'=>'btn-group-vertical btn-profile-vertical','style'=>'width:100%;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);'));
+				$CI->html->button(fa('fa-info-circle').' General Details',array('class'=>'load-btns btn-block btn-flat btn-white','load'=>'students/profile_general'));
+			$CI->html->eDiv();
+		$CI->html->eDivCol();
+		$CI->html->sDivCol(10);
+			
+			$CI->html->sBox('solid');
+				$CI->html->sBoxBody(array('id'=>'load-div','user'=>""));
+				$CI->html->eBoxBody();
+			$CI->html->eBox();
+
+		$CI->html->eDivCol();
+	$CI->html->eDivRow();
+	return $CI->html->code();
+}
 ?>
